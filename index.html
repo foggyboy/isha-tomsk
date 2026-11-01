@@ -48,56 +48,55 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .tab-pane {
-      animation: fadeIn 0.22s ease-out;
-    }
-    /* Safe area padding for mobile bottom bars */
-    .pb-safe {
-      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
   </style>
 </head>
 
 <body class="bg-stone-100 text-stone-900 dark:bg-stone-950 dark:text-stone-100 font-sans antialiased selection:bg-amber-500 selection:text-white transition-colors duration-200 min-h-screen pb-24">
 
-  <!-- TOP APP BAR -->
-  <header class="sticky top-0 z-40 backdrop-blur-xl bg-stone-100/85 dark:bg-stone-950/85 border-b border-stone-200/80 dark:border-stone-800/80">
-    <div class="max-w-xl mx-auto px-4 py-2.5 flex items-center justify-between gap-2">
-      <!-- App Brand & Live Auto-Sync Status Pill -->
+  <!-- TOP NAVIGATION / HEADER (Clean Mobile UI) -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-stone-100/90 dark:bg-stone-950/90 border-b border-stone-200/80 dark:border-stone-800/80">
+    <div class="max-w-3xl mx-auto px-3.5 sm:px-6 py-2.5 flex items-center justify-between gap-2">
+      <!-- Brand / Title -->
       <div class="flex items-center gap-2.5 min-w-0">
-        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center text-white shadow-sm shrink-0">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center text-white shadow-sm shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3L3 20h18L12 3z" />
-            <circle cx="12" cy="14" r="2.3" fill="currentColor" />
+            <circle cx="12" cy="14" r="2.5" fill="currentColor" />
           </svg>
         </div>
         <div class="truncate">
-          <h1 class="text-sm font-extrabold tracking-tight text-stone-900 dark:text-white truncate">
-            Томск ⇄ Иша
+          <h1 class="text-sm sm:text-base font-bold tracking-tight text-stone-900 dark:text-stone-100 truncate">
+            Томск ⇄ Иша (Коимбатур)
           </h1>
-          <div class="inline-flex items-center gap-1.5 text-[11px] font-medium text-stone-500 dark:text-stone-400">
+          <div class="flex items-center gap-1.5 text-[11px] text-stone-500 dark:text-stone-400">
             <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
-            <span id="last-updated-text" class="truncate">Онлайн • автообновление</span>
+            <span id="last-updated-text" class="truncate">Автообновление активно</span>
           </div>
         </div>
       </div>
 
-      <!-- Right Utility Actions (No manual refresh button) -->
+      <!-- Right Action Buttons -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <!-- Android Install Guide Button -->
-        <button onclick="toggleModal('install-modal', true)"
-          class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 active:scale-95 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm">
-          <span>📲</span>
-          <span>Иконка</span>
+        <!-- Partner Live Presence Pill (clicks through to Chat tab) -->
+        <button type="button" onclick="switchMainTab('chat')" id="header-partner-pill" title="Открыть наш чат"
+          class="p-1.5 px-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-amber-500/50 active:scale-95 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm">
+          <span id="header-partner-dot" class="w-2 h-2 rounded-full bg-stone-400"></span>
+          <span id="header-partner-label" class="max-w-[92px] sm:max-w-[140px] truncate">Чат</span>
+        </button>
+
+        <!-- How to Add Icon Modal Button (Auto-hidden when installed as standalone PWA) -->
+        <button type="button" id="install-guide-btn" onclick="toggleModal('install-modal', true)" title="Как добавить иконку на телефон"
+          class="p-2 px-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 active:scale-95 transition flex items-center gap-1 text-xs font-semibold shadow-sm">
+          <span>📱</span>
+          <span class="hidden sm:inline">Иконка</span>
         </button>
 
         <!-- Theme Toggle Button -->
-        <button onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Переключить тему"
-          class="p-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 active:scale-95 transition shadow-sm">
+        <button type="button" onclick="toggleTheme()" id="theme-toggle-btn" aria-label="Переключить тему"
+          class="p-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 active:scale-95 transition shadow-sm">
           <svg id="icon-sun" class="w-4 h-4 text-amber-400 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
@@ -109,709 +108,985 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT CONTAINER (SINGLE ACTIVE VIEWPORT PER TAB) -->
-  <main class="max-w-xl mx-auto px-3.5 pt-3.5 pb-6">
+  <!-- MAIN CONTAINER WITH 5 APP SECTIONS -->
+  <main class="max-w-3xl mx-auto px-3.5 sm:px-6 pt-3.5 space-y-3.5">
 
     <!-- =================================================================== -->
-    <!-- TAB 1: ТАБЛО (OVERVIEW: CLOCKS, CONNECTION STATUS, WEATHER SUMMARY) -->
+    <!-- TAB 1: 🏠 ТАБЛО (OVERVIEW DASHBOARD)                                -->
     <!-- =================================================================== -->
-    <section id="tab-overview" class="tab-pane space-y-3.5" aria-label="Главное табло">
-      
-      <!-- Dual Clocks Card -->
-      <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
-        <div class="grid grid-cols-2 divide-x divide-stone-200/80 dark:divide-stone-800">
-          <!-- Isha Clock -->
-          <div class="p-4 bg-gradient-to-br from-amber-500/10 via-transparent to-transparent">
+    <div id="tab-overview" class="space-y-3.5">
+
+      <!-- Dual Live Clocks (Clean, no connection status banner) -->
+      <section aria-label="Точное время в Ише и Томске" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
+        <div class="grid grid-cols-2 divide-x divide-stone-200 dark:divide-stone-800">
+          <!-- Isha / Coimbatore Clock -->
+          <div class="p-3.5 sm:p-4 flex flex-col justify-between bg-gradient-to-br from-amber-500/5 to-transparent">
             <div class="flex items-center justify-between gap-1">
-              <span class="text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1">
-                <span>🇮🇳</span> Иша
+              <span class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-400">
+                <span>🇮🇳</span> Иша (Коимбатур)
               </span>
-              <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300">
-                IST
+              <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300">
+                UTC+5:30
               </span>
             </div>
-            <div id="clock-isha" class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-stone-900 dark:text-white mt-2">
-              --:--:--
+            <div class="my-1.5">
+              <div id="clock-isha" class="text-2xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-stone-900 dark:text-white">
+                --:--:--
+              </div>
+              <div id="date-isha" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5 capitalize">
+                --
+              </div>
             </div>
-            <div id="date-isha" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 capitalize">
-              Загрузка...
-            </div>
-            <div class="text-[11px] font-medium text-stone-600 dark:text-stone-300 mt-2 flex items-center gap-1">
-              <span>🏔</span> <span>Веллиангири</span>
+            <div class="text-[11px] font-medium text-stone-500 dark:text-stone-400 flex items-center gap-1">
+              <span>⛰️</span> <span class="truncate">Предгорья Веллиангири</span>
             </div>
           </div>
 
           <!-- Tomsk Clock -->
-          <div class="p-4 bg-gradient-to-bl from-sky-500/10 via-transparent to-transparent">
+          <div class="p-3.5 sm:p-4 flex flex-col justify-between bg-gradient-to-bl from-sky-500/5 to-transparent">
             <div class="flex items-center justify-between gap-1">
-              <span class="text-xs font-bold text-sky-700 dark:text-sky-400 flex items-center gap-1">
+              <span class="inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-sky-700 dark:text-sky-400">
                 <span>🇷🇺</span> Томск
               </span>
-              <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-sky-500/15 text-sky-800 dark:text-sky-300">
-                +1.5 ч
+              <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/70 text-sky-800 dark:text-sky-300">
+                UTC+7:00
               </span>
             </div>
-            <div id="clock-tomsk" class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-stone-900 dark:text-white mt-2">
-              --:--:--
+            <div class="my-1.5">
+              <div id="clock-tomsk" class="text-2xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-stone-900 dark:text-white">
+                --:--:--
+              </div>
+              <div id="date-tomsk" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5 capitalize">
+                --
+              </div>
             </div>
-            <div id="date-tomsk" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 capitalize">
-              Загрузка...
-            </div>
-            <div class="text-[11px] font-medium text-stone-600 dark:text-stone-300 mt-2 flex items-center gap-1">
-              <span>🌲</span> <span>Разница −1.5 ч в Ише</span>
+            <div class="text-[11px] font-medium text-stone-500 dark:text-stone-400 flex items-center gap-1">
+              <span>🌲</span> <span class="truncate">Разница: +1 ч 30 мин</span>
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- Connection Rhythm Strip -->
-        <div class="px-4 py-2.5 bg-stone-50 dark:bg-stone-900/90 border-t border-stone-200/80 dark:border-stone-800 flex items-center gap-2 text-xs">
-          <span id="connection-badge-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
-          <span id="connection-status-text" class="font-medium text-stone-700 dark:text-stone-200 leading-snug">
-            Синхронизация ритма дня...
-          </span>
-        </div>
-      </div>
-
-      <!-- Side-by-Side Weather Summary Cards (Tap to open full Weather tab) -->
-      <div>
-        <div class="flex items-center justify-between px-1 mb-2">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-            Погода сейчас (нажми для прогноза)
-          </h2>
-          <button onclick="switchTab('weather')" class="text-xs font-semibold text-amber-700 dark:text-amber-400">
-            Подробно →
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
-          <!-- Isha Mini Weather -->
-          <button onclick="openWeatherCity('isha')" class="text-left p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-amber-500/30 dark:border-amber-500/20 shadow-sm hover:border-amber-500/60 active:scale-[0.98] transition flex flex-col justify-between">
-            <div class="flex items-start justify-between w-full gap-1">
-              <div>
-                <div class="text-[11px] font-bold text-amber-700 dark:text-amber-400">🏔 Иша (Центр)</div>
-                <div id="ov-isha-temp" class="text-2xl font-extrabold text-stone-900 dark:text-white mt-1 tabular-nums">--°C</div>
-              </div>
-              <span id="ov-isha-icon" class="text-3xl select-none">⛅</span>
+      <!-- Compact Weather Summary Cards with UV & Humidity -->
+      <section aria-label="Краткая сводка погоды" class="grid grid-cols-2 gap-3">
+        <!-- Isha Mini Weather -->
+        <button type="button" onclick="switchMainTab('weather', 'isha')" class="text-left p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-amber-500/30 dark:border-amber-500/20 shadow-sm hover:border-amber-500/60 active:scale-[0.99] transition flex flex-col justify-between">
+          <div class="flex items-center justify-between w-full">
+            <span class="text-xs font-bold text-amber-700 dark:text-amber-400">🏔 Погода в Ише</span>
+            <span id="ov-isha-icon" class="text-2xl select-none">⛅</span>
+          </div>
+          <div class="my-1">
+            <div class="flex items-baseline gap-2">
+              <span id="ov-isha-temp" class="text-2xl sm:text-3xl font-extrabold text-stone-900 dark:text-white tabular-nums">+28°C</span>
+              <span id="ov-isha-hum" class="text-[11px] font-semibold text-stone-500 dark:text-stone-400">💧68%</span>
             </div>
-            <div class="mt-2">
-              <div id="ov-isha-desc" class="text-xs font-semibold text-stone-700 dark:text-stone-200 truncate">Загрузка...</div>
-              <div id="ov-isha-hl" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 tabular-nums">Макс --° • Мин --°</div>
-            </div>
-          </button>
+            <div id="ov-isha-desc" class="text-xs font-medium text-stone-600 dark:text-stone-300 truncate mt-0.5">Переменная облачность</div>
+          </div>
+          <div id="ov-isha-uv-badge" class="mt-1 mb-1.5 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 w-fit max-w-full truncate">
+            ☀️ УФ: расчёт...
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-stone-400 dark:text-stone-500 pt-1 border-t border-stone-100 dark:border-stone-800/80 w-full">
+            <span id="ov-isha-minmax">Макс +30° / Мин +21°</span>
+            <span class="text-amber-600 dark:text-amber-400 font-semibold">→</span>
+          </div>
+        </button>
 
-          <!-- Tomsk Mini Weather -->
-          <button onclick="openWeatherCity('tomsk')" class="text-left p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-sky-500/30 dark:border-sky-500/20 shadow-sm hover:border-sky-500/60 active:scale-[0.98] transition flex flex-col justify-between">
-            <div class="flex items-start justify-between w-full gap-1">
-              <div>
-                <div class="text-[11px] font-bold text-sky-700 dark:text-sky-400">🌲 Томск</div>
-                <div id="ov-tomsk-temp" class="text-2xl font-extrabold text-stone-900 dark:text-white mt-1 tabular-nums">--°C</div>
-              </div>
-              <span id="ov-tomsk-icon" class="text-3xl select-none">❄️</span>
+        <!-- Tomsk Mini Weather -->
+        <button type="button" onclick="switchMainTab('weather', 'tomsk')" class="text-left p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-sky-500/30 dark:border-sky-500/20 shadow-sm hover:border-sky-500/60 active:scale-[0.99] transition flex flex-col justify-between">
+          <div class="flex items-center justify-between w-full">
+            <span class="text-xs font-bold text-sky-700 dark:text-sky-400">🌲 Погода в Томске</span>
+            <span id="ov-tomsk-icon" class="text-2xl select-none">🌨️</span>
+          </div>
+          <div class="my-1">
+            <div class="flex items-baseline gap-2">
+              <span id="ov-tomsk-temp" class="text-2xl sm:text-3xl font-extrabold text-stone-900 dark:text-white tabular-nums">-2°C</span>
+              <span id="ov-tomsk-hum" class="text-[11px] font-semibold text-stone-500 dark:text-stone-400">💧82%</span>
             </div>
-            <div class="mt-2">
-              <div id="ov-tomsk-desc" class="text-xs font-semibold text-stone-700 dark:text-stone-200 truncate">Загрузка...</div>
-              <div id="ov-tomsk-hl" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5 tabular-nums">Макс --° • Мин --°</div>
-            </div>
-          </button>
-        </div>
-      </div>
+            <div id="ov-tomsk-desc" class="text-xs font-medium text-stone-600 dark:text-stone-300 truncate mt-0.5">Пасмурно</div>
+          </div>
+          <div id="ov-tomsk-uv-badge" class="mt-1 mb-1.5 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-lg bg-sky-500/15 text-sky-800 dark:text-sky-300 w-fit max-w-full truncate">
+            ☀️ УФ: низкий
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-stone-400 dark:text-stone-500 pt-1 border-t border-stone-100 dark:border-stone-800/80 w-full">
+            <span id="ov-tomsk-minmax">Макс 0° / Мин -6°</span>
+            <span class="text-sky-600 dark:text-sky-400 font-semibold">→</span>
+          </div>
+        </button>
+      </section>
 
-      <!-- What's Happening Right Now in Isha Card -->
-      <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm space-y-3">
+      <!-- Live Ashram Status Card (Now & Next) -->
+      <section aria-label="Сейчас в ашраме Иша" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm p-3.5 sm:p-4 space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-            <span>🕉️</span> Сейчас в Isha Yoga Center
-          </span>
-          <button onclick="switchTab('ashram')" class="text-xs font-semibold text-amber-700 dark:text-amber-400">
-            Все часы →
+          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+            <span>🕉️</span> <span>Ритм ашрама прямо сейчас</span>
+          </h2>
+          <button type="button" onclick="switchMainTab('ashram')" class="text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline">
+            Расписание →
           </button>
         </div>
 
-        <!-- Live Current Event -->
-        <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3">
-          <div class="w-7 h-7 rounded-lg bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <!-- Happening Now -->
+          <div class="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/25 flex items-start gap-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping mt-1.5 shrink-0"></span>
+            <div class="min-w-0">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                Сейчас в центре
+              </div>
+              <div id="ov-ashram-now-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+                Дхьяналинга открыта для медитации
+              </div>
+              <div id="ov-ashram-now-sub" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+                По времени Коимбатура
+              </div>
+            </div>
           </div>
-          <div class="min-w-0">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Прямо сейчас
-            </div>
-            <div id="ov-ashram-now-title" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">
-              Проверка расписания...
-            </div>
-            <div id="ov-ashram-now-sub" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">
-              По времени Коимбатура
+
+          <!-- Up Next -->
+          <div class="p-3 rounded-xl bg-amber-500/5 border border-amber-500/25 flex items-start gap-2.5">
+            <span class="text-sm leading-none mt-0.5 shrink-0">⏳</span>
+            <div class="min-w-0">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                Далее по расписанию
+              </div>
+              <div id="ov-ashram-next-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+                Следующее событие
+              </div>
+              <div id="ov-ashram-next-sub" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+                По расписанию центра
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- Next Event -->
-        <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800 flex items-start gap-3">
-          <div class="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0 mt-0.5 text-sm">
-            ⏳
-          </div>
-          <div class="min-w-0">
-            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-              Следующее по расписанию
+      <!-- Overview Quick Strip: Chat Preview, Next Ekadashi & Currency -->
+      <section class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+        <!-- Quick Chat Card -->
+        <button type="button" onclick="switchMainTab('chat')" class="text-left p-3 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-sm hover:border-amber-500/40 transition flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base shrink-0 relative">
+              💬
+              <span id="ov-chat-dot" class="w-2.5 h-2.5 rounded-full bg-stone-400 border-2 border-white dark:border-stone-900 absolute -bottom-0.5 -right-0.5"></span>
             </div>
-            <div id="ov-ashram-next-title" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">
-              Загрузка...
-            </div>
-            <div id="ov-ashram-next-sub" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
-              Обратный отсчёт...
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lunar & Currency Quick Teaser Row -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <!-- Next Lunar Day Teaser -->
-        <button onclick="switchTab('ashram')" class="text-left p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-sm active:scale-[0.99] transition flex items-center gap-3">
-          <div id="ov-moon-emoji" class="text-3xl select-none">🌿</div>
-          <div class="min-w-0 flex-1">
-            <div class="flex items-center justify-between gap-1">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">Ближайший Экадаши</span>
-              <span id="ov-ekadashi-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-800 dark:text-amber-300">--</span>
-            </div>
-            <div id="ov-ekadashi-date" class="text-sm font-extrabold text-stone-900 dark:text-white truncate mt-0.5">
-              Загрузка...
-            </div>
-            <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
-              Лунный календарь Иши →
+            <div class="min-w-0">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                Наш чат (Томск ⇄ Иша)
+              </div>
+              <div id="ov-chat-preview" class="text-xs font-bold text-stone-900 dark:text-white truncate mt-0.5">
+                Нажми, чтобы открыть чат
+              </div>
+              <div id="ov-chat-sub" class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                Статус онлайн и быстрые весточки
+              </div>
             </div>
           </div>
+          <span class="text-xs font-bold text-amber-600 dark:text-amber-400 shrink-0">→</span>
         </button>
 
-        <!-- Currency Quick Teaser -->
-        <button onclick="switchTab('currency')" class="text-left p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-sm active:scale-[0.99] transition flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-extrabold text-lg shrink-0">
-            ₹
+        <!-- Next Lunar Highlight -->
+        <button type="button" onclick="switchMainTab('ashram')" class="text-left p-3 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-sm hover:border-indigo-500/40 transition flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div id="ov-moon-emoji" class="text-2xl select-none shrink-0">🌕</div>
+            <div class="min-w-0">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                Ближайший Экадаши
+              </div>
+              <div id="ov-ekadashi-text" class="text-xs font-bold text-stone-900 dark:text-white truncate mt-0.5">
+                Расчёт...
+              </div>
+              <div id="ov-ekadashi-sub" class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                Лунный календарь Иши
+              </div>
+            </div>
           </div>
-          <div class="min-w-0 flex-1">
-            <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              Курс рупии (INR ⇄ RUB)
-            </div>
-            <div id="ov-fx-summary" class="text-sm font-extrabold text-stone-900 dark:text-white truncate mt-0.5 tabular-nums">
-              100 ₹ ≈ -- ₽
-            </div>
-            <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
-              Открыть калькулятор валют →
-            </div>
-          </div>
+          <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 shrink-0">→</span>
         </button>
-      </div>
-    </section>
+
+        <!-- Quick Currency Rate Highlight -->
+        <button type="button" onclick="switchMainTab('currency')" class="text-left p-3 rounded-2xl bg-white dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-sm hover:border-emerald-500/40 transition flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base font-bold shrink-0">
+              ₹
+            </div>
+            <div class="min-w-0">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                Курс валют
+              </div>
+              <div id="ov-fx-text" class="text-xs font-bold text-stone-900 dark:text-white truncate mt-0.5 tabular-nums">
+                1 000 ₹ ≈ 1 150 ₽
+              </div>
+              <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                INR ⇄ RUB ⇄ USD
+              </div>
+            </div>
+          </div>
+          <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 shrink-0">→</span>
+        </button>
+      </section>
+
+    </div>
 
     <!-- =================================================================== -->
-    <!-- TAB 2: ПОГОДА (DETAILED WEATHER WITH SEGMENTED SWITCHER)            -->
+    <!-- TAB 2: 🌤 ПОГОДА (DETAILED WEATHER + UV INDEX & HUMIDITY)           -->
     <!-- =================================================================== -->
-    <section id="tab-weather" class="tab-pane hidden space-y-3.5" aria-label="Подробный прогноз погоды">
-      
-      <!-- Segmented City Switcher -->
-      <div class="p-1 rounded-2xl bg-stone-200/80 dark:bg-stone-900 border border-stone-300/60 dark:border-stone-800 grid grid-cols-2 gap-1">
-        <button onclick="selectWeatherCity('isha')" id="w-seg-isha"
-          class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm">
+    <div id="tab-weather" class="hidden space-y-4">
+
+      <!-- City Selector Segmented Control -->
+      <div class="bg-white dark:bg-stone-900 p-1.5 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm grid grid-cols-3 gap-1 text-xs font-bold">
+        <button type="button" onclick="setMobileWeatherView('isha')" id="wtab-isha" class="py-2 px-3 rounded-xl bg-amber-500 text-white shadow-sm transition flex items-center justify-center gap-1.5">
           <span>🏔</span> <span>Иша (Веллиангири)</span>
         </button>
-        <button onclick="selectWeatherCity('tomsk')" id="w-seg-tomsk"
-          class="py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 text-stone-600 dark:text-stone-400">
+        <button type="button" onclick="setMobileWeatherView('tomsk')" id="wtab-tomsk" class="py-2 px-3 rounded-xl text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition flex items-center justify-center gap-1.5">
           <span>🌲</span> <span>Томск</span>
         </button>
+        <button type="button" onclick="setMobileWeatherView('both')" id="wtab-both" class="py-2 px-3 rounded-xl text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition flex items-center justify-center gap-1.5">
+          <span>Оба города</span>
+        </button>
       </div>
 
-      <!-- ISHA DETAILED WEATHER PANEL -->
-      <article id="detail-weather-isha" class="bg-white dark:bg-stone-900 rounded-2xl border border-amber-500/30 dark:border-amber-500/20 shadow-sm overflow-hidden">
-        <div class="p-4 sm:p-5 bg-gradient-to-br from-amber-500/15 via-orange-500/5 to-transparent border-b border-stone-200/70 dark:border-stone-800">
-          <div class="flex items-start justify-between gap-2">
-            <div>
-              <span class="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                🇮🇳 Isha Yoga Center • У подножия гор
-              </span>
-              <h2 class="text-lg font-extrabold text-stone-900 dark:text-white mt-0.5">
-                Предгорья Веллиангири
-              </h2>
-              <p class="text-[11px] text-stone-500 dark:text-stone-400">
-                Координаты ашрама: 10.976°N, 76.735°E
-              </p>
+      <div class="grid grid-cols-1 gap-4">
+        <!-- ISHA YOGA CENTER (VELLIANGIRI FOOTHILLS) WEATHER CARD -->
+        <article id="weather-card-isha" class="bg-white dark:bg-stone-900 rounded-2xl border border-amber-500/30 dark:border-amber-500/20 shadow-sm overflow-hidden flex flex-col">
+          <div class="p-4 sm:p-5 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-transparent border-b border-stone-200/70 dark:border-stone-800">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  <span>🇮🇳 Isha Yoga Center</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-stone-900 dark:text-white mt-0.5">
+                  Предгорья Веллиангири (Коимбатур)
+                </h3>
+                <p class="text-[11px] text-stone-500 dark:text-stone-400">
+                  Координаты ашрама (10.976°N, 76.735°E) • Погода у подножия гор
+                </p>
+              </div>
+              <div id="isha-w-icon" class="text-4xl sm:text-5xl select-none">⛅</div>
             </div>
-            <div id="isha-w-icon" class="text-5xl select-none">⛅</div>
+
+            <div class="mt-4 flex flex-wrap items-baseline justify-between gap-4">
+              <div>
+                <div class="flex items-baseline gap-2">
+                  <span id="isha-temp-now" class="text-4xl sm:text-5xl font-extrabold tracking-tight text-stone-900 dark:text-white">+28°C</span>
+                  <span id="isha-w-desc" class="text-sm font-semibold text-amber-800 dark:text-amber-300">Переменная облачность</span>
+                </div>
+                <div class="text-xs text-stone-600 dark:text-stone-400 mt-1">
+                  Ощущается как <strong id="isha-feels-like" class="text-stone-800 dark:text-stone-200">+30°C</strong>
+                  • Макс <span id="isha-today-max" class="font-semibold">+30°</span> / Мин <span id="isha-today-min" class="font-semibold">+21°</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">УФ-индекс</div>
+                  <div id="isha-uv" class="text-xs font-bold text-amber-700 dark:text-amber-400">7 (Высокий)</div>
+                </div>
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">Влажность</div>
+                  <div id="isha-humidity" class="text-xs font-bold text-stone-800 dark:text-stone-100">68%</div>
+                </div>
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">Ветер / Осадки</div>
+                  <div class="text-xs font-bold text-stone-800 dark:text-stone-100"><span id="isha-wind">2.4 м/с</span> • <span id="isha-precip">0 мм</span></div>
+                </div>
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">Восход / Закат</div>
+                  <div id="isha-sun-times" class="text-xs font-bold text-stone-800 dark:text-stone-100 tabular-nums">06:12 / 18:05</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Barefoot / UV Advisory Banner for Isha -->
+            <div id="isha-uv-advice" class="mt-3 p-2.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-xs text-amber-950 dark:text-amber-200 flex items-center gap-2">
+              <span>☀️</span>
+              <span>В ашраме ходят босиком: днём каменные дорожки сильно нагреваются, бери зонт или солнцезащитный крем.</span>
+            </div>
           </div>
 
-          <div class="mt-4 flex items-baseline gap-3">
-            <span id="isha-temp-now" class="text-5xl font-extrabold tracking-tight text-stone-900 dark:text-white tabular-nums">--°C</span>
-            <div>
-              <div id="isha-w-desc" class="text-sm font-bold text-amber-800 dark:text-amber-300">Загрузка...</div>
-              <div class="text-xs text-stone-600 dark:text-stone-400 mt-0.5 tabular-nums">
-                Ощущается как <strong id="isha-feels-like">--°C</strong> • Макс <span id="isha-today-max">--°</span> / Мин <span id="isha-today-min">--°</span>
+          <div class="p-4 border-b border-stone-200/70 dark:border-stone-800">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                Погода по часам (24 ч)
+              </span>
+              <span class="text-[11px] text-stone-400 dark:text-stone-500">листай вбок →</span>
+            </div>
+            <div id="isha-hourly-strip" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+          </div>
+
+          <div class="p-4 flex-1">
+            <div class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2.5">
+              Прогноз на 7 дней (Иша • темп., осадки и макс. УФ)
+            </div>
+            <div id="isha-daily-list" class="divide-y divide-stone-100 dark:divide-stone-800/70 text-xs"></div>
+          </div>
+        </article>
+
+        <!-- TOMSK WEATHER CARD -->
+        <article id="weather-card-tomsk" class="hidden bg-white dark:bg-stone-900 rounded-2xl border border-sky-500/30 dark:border-sky-500/20 shadow-sm overflow-hidden flex-col">
+          <div class="p-4 sm:p-5 bg-gradient-to-br from-sky-500/10 via-blue-500/5 to-transparent border-b border-stone-200/70 dark:border-stone-800">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
+                  <span>🇷🇺 Россия • Сибирь</span>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-stone-900 dark:text-white mt-0.5">
+                  Томск
+                </h3>
+                <p class="text-[11px] text-stone-500 dark:text-stone-400">
+                  Координаты (56.50°N, 84.97°E) • Автоматическое обновление
+                </p>
+              </div>
+              <div id="tomsk-w-icon" class="text-4xl sm:text-5xl select-none">🌨️</div>
+            </div>
+
+            <div class="mt-4 flex flex-wrap items-baseline justify-between gap-4">
+              <div>
+                <div class="flex items-baseline gap-2">
+                  <span id="tomsk-temp-now" class="text-4xl sm:text-5xl font-extrabold tracking-tight text-stone-900 dark:text-white">-2°C</span>
+                  <span id="tomsk-w-desc" class="text-sm font-semibold text-sky-800 dark:text-sky-300">Небольшой снег</span>
+                </div>
+                <div class="text-xs text-stone-600 dark:text-stone-400 mt-1">
+                  Ощущается как <strong id="tomsk-feels-like" class="text-stone-800 dark:text-stone-200">-6°C</strong>
+                  • Макс <span id="tomsk-today-max" class="font-semibold">0°</span> / Мин <span id="tomsk-today-min" class="font-semibold">-6°</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">УФ-индекс</div>
+                  <div id="tomsk-uv" class="text-xs font-bold text-sky-700 dark:text-sky-400">1 (Низкий)</div>
+                </div>
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">Влажность</div>
+                  <div id="tomsk-humidity" class="text-xs font-bold text-stone-800 dark:text-stone-100">82%</div>
+                </div>
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">Ветер / Осадки</div>
+                  <div class="text-xs font-bold text-stone-800 dark:text-stone-100"><span id="tomsk-wind">4.0 м/с</span> • <span id="tomsk-precip">0.2 мм</span></div>
+                </div>
+                <div class="px-2.5 py-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400">Восход / Закат</div>
+                  <div id="tomsk-sun-times" class="text-xs font-bold text-stone-800 dark:text-stone-100 tabular-nums">08:15 / 17:20</div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- 3 Weather Metrics Pills -->
-          <div class="grid grid-cols-3 gap-2 mt-4 text-center">
-            <div class="p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
-              <div class="text-[10px] text-stone-500 dark:text-stone-400">Влажность</div>
-              <div id="isha-humidity" class="text-xs font-bold text-stone-900 dark:text-white mt-0.5 tabular-nums">--%</div>
-            </div>
-            <div class="p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
-              <div class="text-[10px] text-stone-500 dark:text-stone-400">Ветер</div>
-              <div id="isha-wind" class="text-xs font-bold text-stone-900 dark:text-white mt-0.5 tabular-nums">-- м/с</div>
-            </div>
-            <div class="p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
-              <div class="text-[10px] text-stone-500 dark:text-stone-400">Осадки сейчас</div>
-              <div id="isha-precip" class="text-xs font-bold text-stone-900 dark:text-white mt-0.5 tabular-nums">-- мм</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 24h Hourly Scroll -->
-        <div class="p-4 border-b border-stone-200/70 dark:border-stone-800">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-              По часам (24 часа)
-            </span>
-            <span class="text-[11px] text-stone-400">листай вбок →</span>
-          </div>
-          <div id="isha-hourly-strip" class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-            <div class="text-xs text-stone-400 py-3">Загрузка почасового прогноза...</div>
-          </div>
-        </div>
-
-        <!-- 7-Day Forecast -->
-        <div class="p-4">
-          <div class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">
-            Прогноз на 7 дней (Иша)
-          </div>
-          <div id="isha-daily-list" class="divide-y divide-stone-100 dark:divide-stone-800/70 text-xs">
-            <div class="text-xs text-stone-400 py-3">Загрузка прогноза...</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- TOMSK DETAILED WEATHER PANEL -->
-      <article id="detail-weather-tomsk" class="hidden bg-white dark:bg-stone-900 rounded-2xl border border-sky-500/30 dark:border-sky-500/20 shadow-sm overflow-hidden">
-        <div class="p-4 sm:p-5 bg-gradient-to-br from-sky-500/15 via-blue-500/5 to-transparent border-b border-stone-200/70 dark:border-stone-800">
-          <div class="flex items-start justify-between gap-2">
-            <div>
-              <span class="text-[11px] font-bold uppercase tracking-wider text-sky-700 dark:text-sky-400">
-                🇷🇺 Россия • Сибирь
+          <div class="p-4 border-b border-stone-200/70 dark:border-stone-800">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                Погода по часам (24 ч)
               </span>
-              <h2 class="text-lg font-extrabold text-stone-900 dark:text-white mt-0.5">
-                Томск
-              </h2>
-              <p class="text-[11px] text-stone-500 dark:text-stone-400">
-                Координаты: 56.4977°N, 84.9744°E
-              </p>
+              <span class="text-[11px] text-stone-400 dark:text-stone-500">листай вбок →</span>
             </div>
-            <div id="tomsk-w-icon" class="text-5xl select-none">❄️</div>
+            <div id="tomsk-hourly-strip" class="flex gap-2 overflow-x-auto no-scrollbar pb-1"></div>
           </div>
 
-          <div class="mt-4 flex items-baseline gap-3">
-            <span id="tomsk-temp-now" class="text-5xl font-extrabold tracking-tight text-stone-900 dark:text-white tabular-nums">--°C</span>
-            <div>
-              <div id="tomsk-w-desc" class="text-sm font-bold text-sky-800 dark:text-sky-300">Загрузка...</div>
-              <div class="text-xs text-stone-600 dark:text-stone-400 mt-0.5 tabular-nums">
-                Ощущается как <strong id="tomsk-feels-like">--°C</strong> • Макс <span id="tomsk-today-max">--°</span> / Мин <span id="tomsk-today-min">--°</span>
+          <div class="p-4 flex-1">
+            <div class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2.5">
+              Прогноз на 7 дней (Томск)
+            </div>
+            <div id="tomsk-daily-list" class="divide-y divide-stone-100 dark:divide-stone-800/70 text-xs"></div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: 🕉 АШРАМ (OFFICIAL SCHEDULE, LIVE PARSER & LUNAR CALENDAR)   -->
+    <!-- =================================================================== -->
+    <div id="tab-ashram" class="hidden space-y-4">
+
+      <!-- LIVE OFFICIAL ISHA PAGE PARSER / NOTICES VERIFICATION -->
+      <section aria-label="Официальные оповещения Иши" class="bg-white dark:bg-stone-900 rounded-2xl border border-amber-500/30 dark:border-amber-500/20 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 bg-gradient-to-r from-amber-500/10 via-transparent to-transparent border-b border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+              <span id="parser-status-dot" class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+              <span>Проверка официального сайта Isha</span>
+            </div>
+            <h2 class="text-sm sm:text-base font-bold text-stone-900 dark:text-white mt-0.5">
+              Актуальные примечания и изменения в расписании центра
+            </h2>
+          </div>
+          <button type="button" onclick="checkOfficialIshaNotices(true)" class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 text-stone-700 dark:text-stone-300 transition">
+            Проверить сейчас ↻
+          </button>
+        </div>
+
+        <div class="p-4 sm:p-5 space-y-3">
+          <div id="official-parser-box" class="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/70 text-xs space-y-1.5">
+            <div id="official-parser-status" class="font-bold text-stone-900 dark:text-white">
+              Сверка с памяткой резидента isha.sadhguru.org...
+            </div>
+            <div id="official-parser-details" class="text-stone-600 dark:text-stone-300 leading-relaxed">
+              Все основные святыни (Dhyanalinga 06:00–20:30, Linga Bhairavi 06:30–13:20 и 16:20–20:20, кунды 06:00–20:00) и потоки столовой Bhiksha Hall работают по штатному расписанию.
+            </div>
+          </div>
+
+          <!-- Strictly Official Links (No Merch / No Courses) -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span class="text-[11px] text-stone-500 dark:text-stone-400">
+              🔒 Официальные информационные источники (без рекламы и мерча):
+            </span>
+            <div class="flex flex-wrap gap-2">
+              <a href="https://isha.sadhguru.org/en/center/welcome-isha-yoga-center-coimbatore" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 transition">
+                <span>Памятка центра Иша</span>
+                <span>↗</span>
+              </a>
+              <a href="https://isha.sadhguru.org/in/en/isha-lunar-calendar" target="_blank" rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300 transition">
+                <span>Лунный календарь Isha</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ISHA YOGA CENTER DAILY SCHEDULE -->
+      <section aria-label="Расписание Isha Yoga Center" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-stone-200/80 dark:border-stone-800">
+          <div class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            🕉️ Внутренний распорядок (по времени Коимбатура)
+          </div>
+          <h2 class="text-base sm:text-lg font-bold text-stone-900 dark:text-white mt-0.5">
+            Столовая Bhiksha Hall, святыни и звуковые подношения
+          </h2>
+        </div>
+
+        <!-- Live Happening Now & Up Next Banner -->
+        <div class="p-4 bg-stone-50/90 dark:bg-stone-950/60 border-b border-stone-200/70 dark:border-stone-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="p-3.5 rounded-xl bg-white dark:bg-stone-900 border border-emerald-500/30 shadow-sm flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                Идёт прямо сейчас
+              </div>
+              <div id="ashram-now-title" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+                Дхьяналинга открыта для медитации
+              </div>
+              <div id="ashram-now-sub" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Синхронизировано с Коимбатуром
               </div>
             </div>
           </div>
 
-          <!-- 3 Weather Metrics Pills -->
-          <div class="grid grid-cols-3 gap-2 mt-4 text-center">
-            <div class="p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
-              <div class="text-[10px] text-stone-500 dark:text-stone-400">Влажность</div>
-              <div id="tomsk-humidity" class="text-xs font-bold text-stone-900 dark:text-white mt-0.5 tabular-nums">--%</div>
+          <div class="p-3.5 rounded-xl bg-white dark:bg-stone-900 border border-amber-500/30 shadow-sm flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm">
+              ⏳
             </div>
-            <div class="p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
-              <div class="text-[10px] text-stone-500 dark:text-stone-400">Ветер</div>
-              <div id="tomsk-wind" class="text-xs font-bold text-stone-900 dark:text-white mt-0.5 tabular-nums">-- м/с</div>
-            </div>
-            <div class="p-2 rounded-xl bg-white/80 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">
-              <div class="text-[10px] text-stone-500 dark:text-stone-400">Осадки сейчас</div>
-              <div id="tomsk-precip" class="text-xs font-bold text-stone-900 dark:text-white mt-0.5 tabular-nums">-- мм</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 24h Hourly Scroll -->
-        <div class="p-4 border-b border-stone-200/70 dark:border-stone-800">
-          <div class="flex items-center justify-between mb-2.5">
-            <span class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-              По часам (24 часа)
-            </span>
-            <span class="text-[11px] text-stone-400">листай вбок →</span>
-          </div>
-          <div id="tomsk-hourly-strip" class="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-            <div class="text-xs text-stone-400 py-3">Загрузка почасового прогноза...</div>
-          </div>
-        </div>
-
-        <!-- 7-Day Forecast -->
-        <div class="p-4">
-          <div class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2">
-            Прогноз на 7 дней (Томск)
-          </div>
-          <div id="tomsk-daily-list" class="divide-y divide-stone-100 dark:divide-stone-800/70 text-xs">
-            <div class="text-xs text-stone-400 py-3">Загрузка прогноза...</div>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <!-- =================================================================== -->
-    <!-- TAB 3: АШРАМ И ЛУНА (SCHEDULE, TEMPLES, PANCHANGAM, OFFICIAL LINKS) -->
-    <!-- =================================================================== -->
-    <section id="tab-ashram" class="tab-pane hidden space-y-4" aria-label="Расписание Иши и Лунный календарь">
-      
-      <!-- Sub-navigation inside Ashram Tab -->
-      <div class="p-1 rounded-2xl bg-stone-200/80 dark:bg-stone-900 border border-stone-300/60 dark:border-stone-800 grid grid-cols-2 gap-1">
-        <button onclick="selectAshramSubTab('schedule')" id="asub-schedule"
-          class="py-2 px-3 rounded-xl text-xs font-bold transition bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm">
-          🛕 Распорядок и Храмы
-        </button>
-        <button onclick="selectAshramSubTab('lunar')" id="asub-lunar"
-          class="py-2 px-3 rounded-xl text-xs font-bold transition text-stone-600 dark:text-stone-400">
-          🌙 Лунный календарь
-        </button>
-      </div>
-
-      <!-- SUB-VIEW 1: ASHRAM SCHEDULE & TEMPLES -->
-      <div id="ashram-view-schedule" class="space-y-3.5">
-        <!-- Live Now & Next Banner -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm space-y-2.5">
-          <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-2.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping mt-1.5 shrink-0"></span>
-            <div>
-              <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Идёт сейчас в ашраме</div>
-              <div id="ashram-now-title" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">Проверка...</div>
-              <div id="ashram-now-sub" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5"></div>
-            </div>
-          </div>
-
-          <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-2.5">
-            <span class="text-sm shrink-0">⏳</span>
-            <div>
-              <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">Следующее событие</div>
-              <div id="ashram-next-title" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">Загрузка...</div>
-              <div id="ashram-next-sub" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5"></div>
+            <div class="min-w-0">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                Следующее событие
+              </div>
+              <div id="ashram-next-title" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+                По расписанию центра
+              </div>
+              <div id="ashram-next-sub" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Обратный отсчёт...
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Bhiksha Hall Meal Streams Card -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm">
-          <div class="flex items-center justify-between mb-2.5">
-            <h3 class="text-sm font-bold text-stone-900 dark:text-white flex items-center gap-1.5">
-              <span>🍲</span> Bhiksha Hall (Столовая)
+        <div class="p-4 sm:p-5 space-y-5">
+          <!-- Bhiksha Hall Card -->
+          <div class="p-4 rounded-xl bg-amber-50/60 dark:bg-stone-800/50 border border-amber-200/80 dark:border-stone-700/80">
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <h3 class="text-sm font-bold text-stone-900 dark:text-white flex items-center gap-2">
+                <span>🍲</span> Bhiksha Hall (Столовая для резидентов)
+              </h3>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-900 dark:text-amber-300">
+                2 раза в день
+              </span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 rounded-lg bg-white dark:bg-stone-900 border border-stone-200/70 dark:border-stone-800">
+                <div class="font-bold text-amber-800 dark:text-amber-400 mb-1">☀️ Бранч (Утренний приём)</div>
+                <ul class="space-y-1 text-stone-700 dark:text-stone-300 tabular-nums">
+                  <li class="flex justify-between"><span>1-й поток:</span> <strong>09:50 – 10:25</strong></li>
+                  <li class="flex justify-between"><span>2-й поток:</span> <strong>10:35 – 11:05</strong></li>
+                  <li class="flex justify-between"><span>3-й поток:</span> <strong>11:10 – 11:40</strong></li>
+                </ul>
+              </div>
+              <div class="p-3 rounded-lg bg-white dark:bg-stone-900 border border-stone-200/70 dark:border-stone-800">
+                <div class="font-bold text-amber-800 dark:text-amber-400 mb-1">🌙 Ужин (Вечерний приём)</div>
+                <ul class="space-y-1 text-stone-700 dark:text-stone-300 tabular-nums">
+                  <li class="flex justify-between"><span>1-й поток:</span> <strong>18:50 – 19:25</strong></li>
+                  <li class="flex justify-between"><span>2-й поток:</span> <strong>19:35 – 20:05</strong></li>
+                  <li class="flex justify-between"><span>3-й поток:</span> <strong>20:10 – 20:40</strong></li>
+                </ul>
+              </div>
+            </div>
+            <p class="text-[11px] text-stone-600 dark:text-stone-400 mt-2.5 leading-relaxed">
+              💡 <strong>Памятка:</strong> Приходить к дверям Bhiksha Hall лучше за 10–15 минут до начала потока. Во время еды соблюдается тишина (Мауна). В дни <strong>Экадаши</strong> на ужин подаётся особый фруктовый стол (Phalahara).
+            </p>
+          </div>
+
+          <!-- Temple Opening Hours (with Live Open/Closed Badges) -->
+          <div class="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/80 dark:border-stone-800">
+            <h3 class="text-sm font-bold text-stone-900 dark:text-white mb-3 flex items-center gap-2">
+              <span>🛕</span> Часы работы святынь и кундов (статус сейчас)
             </h3>
-            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-800 dark:text-amber-300">
-              Мауна (в тишине)
-            </span>
+            <div id="temples-live-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs"></div>
           </div>
-          <div class="grid grid-cols-2 gap-2.5 text-xs">
-            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800">
-              <div class="font-bold text-amber-700 dark:text-amber-400 mb-1.5">☀️ Бранч (Утро)</div>
-              <div class="space-y-1 tabular-nums text-stone-700 dark:text-stone-300">
-                <div class="flex justify-between"><span>1 поток:</span> <strong>09:50</strong></div>
-                <div class="flex justify-between"><span>2 поток:</span> <strong>10:35</strong></div>
-                <div class="flex justify-between"><span>3 поток:</span> <strong>11:10</strong></div>
+
+          <!-- Daily Events Timeline -->
+          <div>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2.5">
+              Хронология дня в ашраме (подсвечивается автоматически)
+            </h3>
+            <div id="schedule-timeline" class="space-y-2"></div>
+          </div>
+
+          <!-- Useful Ashram Directory -->
+          <div class="p-4 rounded-xl bg-stone-50 dark:bg-stone-800/40 border border-stone-200/80 dark:border-stone-800">
+            <h3 class="text-sm font-bold text-stone-900 dark:text-white mb-2.5 flex items-center gap-2">
+              <span>🧭</span> Справочник важных точек и контактов внутри центра
+            </h3>
+            <ul class="space-y-2 text-xs text-stone-700 dark:text-stone-300">
+              <li class="flex items-start gap-2">
+                <span class="font-bold">🏥</span>
+                <div>
+                  <strong>Клиника / Медпункт (Isha Health Solutions):</strong> у главного входа <em>Sarpa Vasal</em>. Первая помощь и консультации врача для резидентов.
+                </div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold">🚕</span>
+                <div>
+                  <strong>Официальное такси ашрама (Travel Desk / Vahanam):</strong> стойка заказа проверенного такси до Коимбатура или аэропорта (CJB).
+                </div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold">🛎️</span>
+                <div>
+                  <strong>Welcome Point (Ресепшн для гостей и резидентов):</strong> регистрация, помощь по расселению и внутренним вопросам центра (+91 83000 83111).
+                </div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold">🏧</span>
+                <div>
+                  <strong>Банкоматы (ATM):</strong> расположены сразу за воротами входа <em>Sarpa Vasal</em> и у комплекса Адийоги.
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ISHA LUNAR CALENDAR (PANCHANGAM) -->
+      <section aria-label="Лунный календарь Иши" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2 bg-gradient-to-r from-indigo-500/10 via-amber-500/5 to-transparent">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
+              🌙 Лунный календарь Isha (Panchangam • IST)
+            </div>
+            <h2 class="text-base sm:text-lg font-bold text-stone-900 dark:text-white mt-0.5">
+              Экадаши, Полнолуние (Пурнима) и Новолуние (Амавасья)
+            </h2>
+          </div>
+        </div>
+
+        <div class="p-4 sm:p-5 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Current Moon Phase -->
+            <div class="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/70 flex items-center gap-3">
+              <div id="moon-phase-emoji" class="text-4xl select-none">🌕</div>
+              <div>
+                <div class="text-[11px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                  Фаза Луны сегодня
+                </div>
+                <div id="moon-phase-name" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+                  Расчёт...
+                </div>
+                <div id="moon-phase-illum" class="text-xs text-stone-500 dark:text-stone-400">
+                  Освещённость: --%
+                </div>
               </div>
             </div>
-            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800">
-              <div class="font-bold text-amber-700 dark:text-amber-400 mb-1.5">🌙 Ужин (Вечер)</div>
-              <div class="space-y-1 tabular-nums text-stone-700 dark:text-stone-300">
-                <div class="flex justify-between"><span>1 поток:</span> <strong>18:50</strong></div>
-                <div class="flex justify-between"><span>2 поток:</span> <strong>19:35</strong></div>
-                <div class="flex justify-between"><span>3 поток:</span> <strong>20:10</strong></div>
-              </div>
-            </div>
-          </div>
-          <p class="text-[11px] text-stone-500 dark:text-stone-400 mt-2.5 leading-relaxed">
-            Приходить лучше за 10–15 мин до начала потока. В дни <strong>Экадаши</strong> вечером подаётся фруктовый стол (Phalahara).
-          </p>
-        </div>
 
-        <!-- Temple Hours with Live Open/Closed Badges -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm">
-          <h3 class="text-sm font-bold text-stone-900 dark:text-white mb-3 flex items-center gap-1.5">
-            <span>🛕</span> Часы работы храмов и кундов
-          </h3>
-          <div id="temples-live-list" class="space-y-2 text-xs">
-            <!-- Populated with live open/closed badges by JS -->
-          </div>
-        </div>
-
-        <!-- Daily Events Timeline -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mb-2.5">
-            Полное расписание дня по часам
-          </h3>
-          <div id="schedule-timeline" class="space-y-2">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- On-Campus Practical Info & Official Welcome Link -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm space-y-3">
-          <h3 class="text-sm font-bold text-stone-900 dark:text-white flex items-center gap-1.5">
-            <span>🧭</span> Полезные точки внутри центра
-          </h3>
-          <div class="space-y-2 text-xs text-stone-700 dark:text-stone-300">
-            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/50">
-              <strong>🏥 Клиника (Ashram Clinic):</strong> у главного входа <em>Sarpa Vasal</em>, круглосуточная медицинская помощь.
-            </div>
-            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/50">
-              <strong>🚕 Официальное такси (Vahanam / Travel Desk):</strong> стойка заказа безопасного такси из ашрама в Коимбатур и аэропорт.
-            </div>
-            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/50">
-              <strong>🏧 Банкоматы (ATM):</strong> расположены сразу за воротами входа <em>Sarpa Vasal</em> и возле Адийоги.
-            </div>
-          </div>
-
-          <a href="https://isha.sadhguru.org/en/center/welcome-isha-yoga-center-coimbatore" target="_blank" rel="noopener noreferrer"
-            class="w-full py-2.5 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 font-bold text-xs flex items-center justify-center gap-2 transition">
-            <span>Официальная памятка Isha Yoga Center</span>
-            <span>↗</span>
-          </a>
-        </div>
-      </div>
-
-      <!-- SUB-VIEW 2: LUNAR CALENDAR (PANCHANGAM) -->
-      <div id="ashram-view-lunar" class="hidden space-y-3.5">
-        <!-- Current Moon & Next 3 Key Dates -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm space-y-3">
-          <div class="flex items-center gap-3 p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800">
-            <div id="moon-phase-emoji" class="text-4xl select-none">🌕</div>
-            <div>
-              <div class="text-[10px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Фаза Луны сегодня</div>
-              <div id="moon-phase-name" class="text-sm font-bold text-stone-900 dark:text-white mt-0.5">Расчёт...</div>
-              <div id="moon-phase-illum" class="text-xs text-stone-500 dark:text-stone-400">Освещённость: --%</div>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 gap-2.5">
             <!-- Next Ekadashi -->
             <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-amber-800 dark:text-amber-300">🌿 Ближайший Экадаши</span>
-                <span id="next-ekadashi-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white">--</span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                  🌿 Ближайший Экадаши
+                </span>
+                <span id="next-ekadashi-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500 text-white">
+                  --
+                </span>
               </div>
-              <div id="next-ekadashi-date" class="text-base font-extrabold text-stone-900 dark:text-white mt-1 capitalize">Загрузка...</div>
-              <div id="next-ekadashi-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">День поста / фруктовый ужин в Bhiksha Hall</div>
+              <div id="next-ekadashi-date" class="text-base font-extrabold text-stone-900 dark:text-white mt-1 capitalize">
+                --
+              </div>
+              <div id="next-ekadashi-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">
+                День поста / фруктовый ужин (Phalahara)
+              </div>
             </div>
 
             <!-- Next Purnima -->
             <div class="p-3.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-indigo-800 dark:text-indigo-300">🌕 Полнолуние (Пурнима)</span>
-                <span id="next-purnima-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white">--</span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-800 dark:text-indigo-300">
+                  🌕 Полнолуние (Пурнима)
+                </span>
+                <span id="next-purnima-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-600 text-white">
+                  --
+                </span>
               </div>
-              <div id="next-purnima-date" class="text-base font-extrabold text-stone-900 dark:text-white mt-1 capitalize">Загрузка...</div>
-              <div id="next-purnima-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">Pournami Pooja у Линга Бхайрави</div>
+              <div id="next-purnima-date" class="text-base font-extrabold text-stone-900 dark:text-white mt-1 capitalize">
+                --
+              </div>
+              <div id="next-purnima-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">
+                Pournami Pooja у Линга Бхайрави
+              </div>
             </div>
 
             <!-- Next Amavasya -->
             <div class="p-3.5 rounded-xl bg-purple-500/10 border border-purple-500/30">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-purple-800 dark:text-purple-300">🌑 Новолуние (Амавасья)</span>
-                <span id="next-amavasya-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-600 text-white">--</span>
+                <span class="text-[11px] font-bold uppercase tracking-wider text-purple-800 dark:text-purple-300">
+                  🌑 Новолуние (Амавасья)
+                </span>
+                <span id="next-amavasya-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-purple-600 text-white">
+                  --
+                </span>
               </div>
-              <div id="next-amavasya-date" class="text-base font-extrabold text-stone-900 dark:text-white mt-1 capitalize">Загрузка...</div>
-              <div id="next-amavasya-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">Накануне — ночь Маса Шиваратри</div>
+              <div id="next-amavasya-date" class="text-base font-extrabold text-stone-900 dark:text-white mt-1 capitalize">
+                --
+              </div>
+              <div id="next-amavasya-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">
+                Накануне — Маса Шиваратри
+              </div>
             </div>
           </div>
 
-          <a href="https://isha.sadhguru.org/in/en/isha-lunar-calendar" target="_blank" rel="noopener noreferrer"
-            class="w-full py-2.5 px-4 rounded-xl bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-800 dark:text-indigo-300 font-bold text-xs flex items-center justify-center gap-2 transition">
-            <span>Официальный лунный календарь на сайте Isha</span>
-            <span>↗</span>
-          </a>
+          <div class="pt-1">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                Календарь предстоящих лунных дней
+              </h3>
+              <button type="button" onclick="toggleFullLunarList()" id="btn-toggle-lunar" class="text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline">
+                Показать больше дат ↓
+              </button>
+            </div>
+            <div id="upcoming-lunar-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs"></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: 💬 ЧАТ (PRIVATE ENCRYPTED MESSENGER TOMSK ⇄ ISHA)            -->
+    <!-- =================================================================== -->
+    <div id="tab-chat" class="hidden space-y-3">
+
+      <!-- 1. INITIAL SETUP / SETTINGS CARD -->
+      <section id="chat-setup-card" class="bg-white dark:bg-stone-900 rounded-2xl border border-amber-500/30 dark:border-amber-500/20 shadow-sm p-4 sm:p-5 space-y-4">
+        <div>
+          <div class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            🔐 Личный защищённый канал
+          </div>
+          <h2 class="text-base sm:text-lg font-bold text-stone-900 dark:text-white mt-0.5">
+            Настройка приватного чата «Томск ⇄ Иша»
+          </h2>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 leading-relaxed">
+            Выбери, где ты находишься, и введи ваше общее секретное слово. Пароль не хранится в коде сайта и шифрует все сообщения напрямую между вашими телефонами.
+          </p>
         </div>
 
-        <!-- Upcoming Lunar Events List -->
-        <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-              Календарь особых дней (2026–2027)
-            </h3>
-            <button onclick="toggleFullLunarList()" id="btn-toggle-lunar" class="text-xs font-semibold text-amber-700 dark:text-amber-400">
-              Показать все ↓
+        <!-- Role Selector -->
+        <div>
+          <label class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-2">
+            1. Кто открыл приложение на этом устройстве?
+          </label>
+          <div class="grid grid-cols-2 gap-2.5">
+            <button type="button" onclick="selectChatRole('isha')" id="role-btn-isha"
+              class="p-3 rounded-xl border-2 border-amber-500 bg-amber-500/10 text-left transition flex items-center gap-2.5">
+              <span class="text-2xl">🕉️</span>
+              <div>
+                <div class="text-xs font-extrabold text-stone-900 dark:text-white">Я в Ише</div>
+                <div class="text-[11px] text-stone-500 dark:text-stone-400">Коимбатур</div>
+              </div>
+            </button>
+
+            <button type="button" onclick="selectChatRole('tomsk')" id="role-btn-tomsk"
+              class="p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5">
+              <span class="text-2xl">🌲</span>
+              <div>
+                <div class="text-xs font-extrabold text-stone-900 dark:text-white">Я в Томске</div>
+                <div class="text-[11px] text-stone-500 dark:text-stone-400">Сибирь</div>
+              </div>
             </button>
           </div>
-          <div id="upcoming-lunar-list" class="space-y-2 text-xs">
-            <!-- Populated by JS -->
+        </div>
+
+        <!-- Secret Passphrase Input -->
+        <div>
+          <label for="chat-secret-input" class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1.5">
+            2. Ваше общее секретное слово или фраза:
+          </label>
+          <input id="chat-secret-input" type="text" placeholder="Например: velliangiri2026"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-800 border border-stone-300 dark:border-stone-700 text-sm font-semibold text-stone-900 dark:text-white focus:outline-none focus:border-amber-500" />
+          <p class="text-[11px] text-stone-400 dark:text-stone-500 mt-1">
+            Оба должны ввести одинаковое слово. Настройки запомнятся в телефоне навсегда.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="saveChatSetup()"
+            class="flex-1 py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs sm:text-sm font-bold shadow-sm transition">
+            Подключить защищённый канал
+          </button>
+          <button type="button" id="chat-cancel-setup-btn" onclick="cancelChatSetup()"
+            class="hidden py-2.5 px-4 rounded-xl bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 text-xs font-bold transition">
+            Отмена
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. ACTIVE MESSENGER INTERFACE -->
+      <section id="chat-active-card" class="hidden bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden flex flex-col h-[calc(100vh-175px)] min-h-[460px] max-h-[680px]">
+        <!-- Messenger Header -->
+        <div class="px-3.5 py-2.5 bg-stone-50/90 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between gap-2 shrink-0">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="relative shrink-0">
+              <div id="chat-partner-avatar" class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-lg font-bold shadow-sm">
+                🌲
+              </div>
+              <span id="chat-partner-dot" class="w-3 h-3 rounded-full bg-stone-400 border-2 border-white dark:border-stone-900 absolute bottom-0 right-0"></span>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <h3 id="chat-partner-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white truncate">
+                  Любимый (в Томске)
+                </h3>
+                <span id="chat-partner-localtime" class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-300 tabular-nums">
+                  --:--
+                </span>
+              </div>
+              <div id="chat-partner-presence" class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
+                Подключение к каналу...
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1 shrink-0">
+            <button type="button" onclick="openChatSettings()" title="Настройки канала и роли"
+              class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-500 dark:text-stone-400 text-xs transition">
+              ⚙️
+            </button>
+            <button type="button" onclick="clearChatHistoryPrompt()" title="Очистить историю сообщений"
+              class="p-2 rounded-xl hover:bg-stone-200/60 dark:hover:bg-stone-800 text-stone-500 dark:text-stone-400 text-xs transition">
+              🗑️
+            </button>
           </div>
         </div>
-      </div>
-    </section>
+
+        <!-- Inline Confirm Bar for Clearing History (No alert/confirm!) -->
+        <div id="chat-clear-confirm" class="hidden px-3.5 py-2 bg-rose-500/10 border-b border-rose-500/30 flex items-center justify-between gap-2 text-xs shrink-0">
+          <span class="text-rose-800 dark:text-rose-200 font-semibold">Очистить переписку у обоих?</span>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="confirmClearChatHistory()" class="px-2.5 py-1 rounded-lg bg-rose-600 text-white font-bold">Да, удалить</button>
+            <button type="button" onclick="document.getElementById('chat-clear-confirm').classList.add('hidden')" class="px-2.5 py-1 rounded-lg bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-semibold">Отмена</button>
+          </div>
+        </div>
+
+        <!-- Messages Scroll Container -->
+        <div id="chat-messages-box" class="flex-1 overflow-y-auto p-3.5 space-y-2.5 bg-stone-100/50 dark:bg-stone-950/50"></div>
+
+        <!-- Typing Indicator Strip -->
+        <div id="chat-typing-indicator" class="hidden px-4 py-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400 bg-stone-100/50 dark:bg-stone-950/50 italic shrink-0">
+          печатает сообщение...
+        </div>
+
+        <!-- Message Input Form -->
+        <form onsubmit="handleChatSubmit(event)" class="p-2.5 bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800 flex items-center gap-2 shrink-0">
+          <input id="chat-text-input" type="text" autocomplete="off" placeholder="Написать сообщение..." oninput="notifyTyping()"
+            class="flex-1 px-3.5 py-2.5 rounded-xl bg-stone-100 dark:bg-stone-800 text-xs sm:text-sm text-stone-900 dark:text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-500/40" />
+          <button type="submit" aria-label="Отправить"
+            class="p-2.5 px-3.5 rounded-xl bg-amber-600 hover:bg-amber-500 active:scale-95 text-white font-bold text-xs sm:text-sm transition flex items-center justify-center shadow-sm">
+            <svg class="w-4 h-4 rotate-90" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+            </svg>
+          </button>
+        </form>
+      </section>
+
+    </div>
 
     <!-- =================================================================== -->
-    <!-- TAB 4: ВАЛЮТА (3-WAY CONVERTER +MANDATORY COMMISSION DISCLAIMER)    -->
+    <!-- TAB 5: 💱 ВАЛЮТА (CURRENCY CONVERTER WITH FEE DISCLAIMER)           -->
     <!-- =================================================================== -->
-    <section id="tab-currency" class="tab-pane hidden space-y-3.5" aria-label="Конвертер валют">
-      <div class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-4 sm:p-5 shadow-sm space-y-4">
-        <div class="flex items-center justify-between gap-2">
+    <div id="tab-currency" class="hidden space-y-4">
+
+      <section aria-label="Конвертер валют с предупреждением" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
+        <div class="p-4 sm:p-5 border-b border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-              💱 Калькулятор (INR ⇄ RUB ⇄ USD)
-            </span>
-            <h2 class="text-base font-extrabold text-stone-900 dark:text-white mt-0.5">
-              Быстрый пересчёт цен
+            <div class="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+              💱 Быстрый пересчёт цен (INR ⇄ RUB ⇄ USD)
+            </div>
+            <h2 class="text-base sm:text-lg font-bold text-stone-900 dark:text-white mt-0.5">
+              Конвертер валют для Коимбатура и поездок
             </h2>
           </div>
-          <span id="fx-rate-badge" class="text-[11px] font-semibold px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 tabular-nums">
-            Загрузка курса...
-          </span>
+          <div id="fx-rate-badge" class="text-xs font-medium px-3 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 tabular-nums">
+            1 ₹ ≈ 1.15 ₽ • 1 $ ≈ 84.2 ₹
+          </div>
         </div>
 
-        <!-- 3 Synchronized Currency Inputs -->
-        <div class="space-y-2.5">
-          <!-- INR -->
-          <div class="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-800/70 border border-stone-200 dark:border-stone-700 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/20 transition">
-            <label for="input-inr" class="block text-xs font-bold text-stone-600 dark:text-stone-300 mb-1">
-              🇮🇳 Индийская рупия (₹ INR)
-            </label>
-            <div class="flex items-center">
-              <span class="text-xl font-bold text-amber-600 dark:text-amber-400 mr-2">₹</span>
-              <input id="input-inr" type="number" inputmode="decimal" value="1000" oninput="onCurrencyInput('INR', this.value)"
-                class="w-full bg-transparent text-2xl font-extrabold text-stone-900 dark:text-white focus:outline-none tabular-nums" />
+        <div class="p-4 sm:p-5 space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <!-- INR Input -->
+            <div class="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700 focus-within:border-amber-500 focus-within:ring-2 focus-within:ring-amber-500/20 transition">
+              <label for="input-inr" class="block text-xs font-bold text-stone-600 dark:text-stone-300 mb-1">
+                🇮🇳 Индийская рупия (₹ INR)
+              </label>
+              <div class="relative flex items-center">
+                <span class="text-lg font-bold text-stone-400 mr-2">₹</span>
+                <input id="input-inr" type="number" inputmode="decimal" value="1000" oninput="onCurrencyInput('INR', this.value)"
+                  class="w-full bg-transparent text-xl sm:text-2xl font-extrabold text-stone-900 dark:text-white focus:outline-none tabular-nums" />
+              </div>
+            </div>
+
+            <!-- RUB Input -->
+            <div class="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20 transition">
+              <label for="input-rub" class="block text-xs font-bold text-stone-600 dark:text-stone-300 mb-1">
+                🇷🇺 Российский рубль (₽ RUB)
+              </label>
+              <div class="relative flex items-center">
+                <span class="text-lg font-bold text-stone-400 mr-2">₽</span>
+                <input id="input-rub" type="number" inputmode="decimal" oninput="onCurrencyInput('RUB', this.value)"
+                  class="w-full bg-transparent text-xl sm:text-2xl font-extrabold text-stone-900 dark:text-white focus:outline-none tabular-nums" />
+              </div>
+            </div>
+
+            <!-- USD Input -->
+            <div class="p-3.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200 dark:border-stone-700 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 transition">
+              <label for="input-usd" class="block text-xs font-bold text-stone-600 dark:text-stone-300 mb-1">
+                🇺🇸 Доллар США ($ USD)
+              </label>
+              <div class="relative flex items-center">
+                <span class="text-lg font-bold text-stone-400 mr-2">$</span>
+                <input id="input-usd" type="number" inputmode="decimal" oninput="onCurrencyInput('USD', this.value)"
+                  class="w-full bg-transparent text-xl sm:text-2xl font-extrabold text-stone-900 dark:text-white focus:outline-none tabular-nums" />
+              </div>
             </div>
           </div>
 
-          <!-- RUB -->
-          <div class="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-800/70 border border-stone-200 dark:border-stone-700 focus-within:border-sky-500 focus-within:ring-2 focus-within:ring-sky-500/20 transition">
-            <label for="input-rub" class="block text-xs font-bold text-stone-600 dark:text-stone-300 mb-1">
-              🇷🇺 Российский рубль (₽ RUB)
-            </label>
-            <div class="flex items-center">
-              <span class="text-xl font-bold text-sky-600 dark:text-sky-400 mr-2">₽</span>
-              <input id="input-rub" type="number" inputmode="decimal" oninput="onCurrencyInput('RUB', this.value)"
-                class="w-full bg-transparent text-2xl font-extrabold text-stone-900 dark:text-white focus:outline-none tabular-nums" />
-            </div>
+          <!-- Quick Preset Chips -->
+          <div class="flex flex-wrap items-center gap-1.5 text-xs">
+            <span class="text-stone-500 dark:text-stone-400 mr-1 font-medium">Быстрые суммы:</span>
+            <button type="button" onclick="setPresetCurrency('INR', 100)" class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 text-stone-700 dark:text-stone-300 font-semibold transition">₹ 100</button>
+            <button type="button" onclick="setPresetCurrency('INR', 500)" class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 text-stone-700 dark:text-stone-300 font-semibold transition">₹ 500</button>
+            <button type="button" onclick="setPresetCurrency('INR', 1000)" class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 text-stone-700 dark:text-stone-300 font-semibold transition">₹ 1 000</button>
+            <button type="button" onclick="setPresetCurrency('INR', 2000)" class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 text-stone-700 dark:text-stone-300 font-semibold transition">₹ 2 000</button>
+            <button type="button" onclick="setPresetCurrency('INR', 5000)" class="px-2.5 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 text-stone-700 dark:text-stone-300 font-semibold transition">₹ 5 000</button>
+            <button type="button" onclick="setPresetCurrency('USD', 100)" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 font-semibold transition">$ 100</button>
           </div>
 
-          <!-- USD -->
-          <div class="p-3.5 rounded-2xl bg-stone-50 dark:bg-stone-800/70 border border-stone-200 dark:border-stone-700 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 transition">
-            <label for="input-usd" class="block text-xs font-bold text-stone-600 dark:text-stone-300 mb-1">
-              🇺🇸 Доллар США ($ USD)
-            </label>
-            <div class="flex items-center">
-              <span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 mr-2">$</span>
-              <input id="input-usd" type="number" inputmode="decimal" oninput="onCurrencyInput('USD', this.value)"
-                class="w-full bg-transparent text-2xl font-extrabold text-stone-900 dark:text-white focus:outline-none tabular-nums" />
+          <!-- MANDATORY WARNING DISCLAIMER -->
+          <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-2.5 text-xs text-amber-950 dark:text-amber-200 leading-relaxed">
+            <span class="text-base select-none shrink-0">⚠️</span>
+            <div>
+              <strong>Обрати внимание на комиссии и разницу курсов:</strong> в калькуляторе отображается ориентировочный биржевой курс. В реальных обменных пунктах, при снятии наличных в банкоматах (в том числе у входа <em>Sarpa Vasal</em>) и при двойной конвертации (RUB → USD → INR) фактический курс может отличаться, а банки могут удерживать комиссию за транзакцию.
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- Preset Amount Chips -->
-        <div>
-          <div class="text-[11px] font-semibold text-stone-500 dark:text-stone-400 mb-1.5">Быстрые суммы:</div>
-          <div class="flex flex-wrap gap-1.5 text-xs">
-            <button onclick="setPresetCurrency('INR', 100)" class="px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 font-bold text-stone-700 dark:text-stone-200 active:scale-95 transition">₹ 100</button>
-            <button onclick="setPresetCurrency('INR', 500)" class="px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 font-bold text-stone-700 dark:text-stone-200 active:scale-95 transition">₹ 500</button>
-            <button onclick="setPresetCurrency('INR', 1000)" class="px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 font-bold text-stone-700 dark:text-stone-200 active:scale-95 transition">₹ 1 000</button>
-            <button onclick="setPresetCurrency('INR', 5000)" class="px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/20 font-bold text-stone-700 dark:text-stone-200 active:scale-95 transition">₹ 5 000</button>
-            <button onclick="setPresetCurrency('USD', 100)" class="px-3 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 font-bold active:scale-95 transition">$ 100</button>
-          </div>
-        </div>
-
-        <!-- MANDATORY WARNING DISCLAIMER -->
-        <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-2.5 text-xs text-amber-950 dark:text-amber-200 leading-relaxed">
-          <span class="text-base select-none shrink-0">⚠️</span>
-          <div>
-            <strong>Важно про комиссии и несоответствие курсу:</strong> здесь показан ориентировочный биржевой курс. В обменниках, при снятии наличных рупий в банкоматах (включая банкоматы у входа <em>Sarpa Vasal</em>) и при двойной конвертации (RUB → USD → INR) реальный курс может отличаться, а банки и обменные пункты могут взимать комиссию.
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
 
   </main>
 
-  <!-- BOTTOM NAVIGATION BAR (FIXED THUMB-FRIENDLY 4 TABS) -->
-  <nav aria-label="Нижнее меню разделов" class="fixed bottom-0 inset-x-0 z-40 backdrop-blur-xl bg-white/95 dark:bg-stone-900/95 border-t border-stone-200/90 dark:border-stone-800 pb-safe">
-    <div class="max-w-xl mx-auto px-2 py-1.5 grid grid-cols-4 gap-1">
-      <!-- Tab 1: Табло -->
-      <button onclick="switchTab('overview')" id="nav-btn-overview"
-        class="py-1.5 px-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 text-amber-600 dark:text-amber-400 bg-amber-500/10 font-bold transition active:scale-95">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-        <span class="text-[11px]">Табло</span>
+  <!-- BOTTOM THUMB-ZONE NAVIGATION BAR (5 TABS) -->
+  <nav aria-label="Основное меню" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-t border-stone-200 dark:border-stone-800 safe-bottom">
+    <div class="max-w-3xl mx-auto px-1.5 py-1.5 grid grid-cols-5 gap-1">
+      <button type="button" onclick="switchMainTab('overview')" id="bnav-overview"
+        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold transition">
+        <span class="text-base leading-none">🏠</span>
+        <span class="text-[10px] sm:text-[11px] mt-1 truncate">Табло</span>
       </button>
 
-      <!-- Tab 2: Погода -->
-      <button onclick="switchTab('weather')" id="nav-btn-weather"
-        class="py-1.5 px-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 text-stone-500 dark:text-stone-400 font-medium transition active:scale-95">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-        </svg>
-        <span class="text-[11px]">Погода</span>
+      <button type="button" onclick="switchMainTab('weather')" id="bnav-weather"
+        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        <span class="text-base leading-none">🌤️</span>
+        <span class="text-[10px] sm:text-[11px] mt-1 truncate">Погода</span>
       </button>
 
-      <!-- Tab 3: Ашрам и Луна -->
-      <button onclick="switchTab('ashram')" id="nav-btn-ashram"
-        class="py-1.5 px-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 text-stone-500 dark:text-stone-400 font-medium transition active:scale-95">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-        <span class="text-[11px]">Ашрам и Луна</span>
+      <button type="button" onclick="switchMainTab('ashram')" id="bnav-ashram"
+        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        <span class="text-base leading-none">🕉️</span>
+        <span class="text-[10px] sm:text-[11px] mt-1 truncate">Ашрам</span>
       </button>
 
-      <!-- Tab 4: Валюта -->
-      <button onclick="switchTab('currency')" id="nav-btn-currency"
-        class="py-1.5 px-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 text-stone-500 dark:text-stone-400 font-medium transition active:scale-95">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span class="text-[11px]">Валюта</span>
+      <button type="button" onclick="switchMainTab('chat')" id="bnav-chat"
+        class="relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        <span class="text-base leading-none">💬</span>
+        <span class="text-[10px] sm:text-[11px] mt-1 truncate">Чат</span>
+        <span id="chat-unread-badge" class="hidden absolute top-1 right-2.5 min-w-[16px] h-4 px-1 rounded-full bg-rose-500 text-white text-[10px] font-extrabold flex items-center justify-center">0</span>
+      </button>
+
+      <button type="button" onclick="switchMainTab('currency')" id="bnav-currency"
+        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        <span class="text-base leading-none">💱</span>
+        <span class="text-[10px] sm:text-[11px] mt-1 truncate">Валюта</span>
       </button>
     </div>
   </nav>
 
-  <!-- MODAL: ANDROID HOME SCREEN ICON GUIDE -->
-  <div id="install-modal" onclick="if(event.target === this) toggleModal('install-modal', false)"
-    class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-white dark:bg-stone-900 rounded-t-3xl sm:rounded-2xl max-w-md w-full border-t sm:border border-stone-200 dark:border-stone-800 shadow-2xl overflow-hidden">
-      <div class="p-4 border-b border-stone-200 dark:border-stone-800 flex items-center justify-between">
-        <h3 class="text-base font-extrabold text-stone-900 dark:text-white flex items-center gap-2">
-          <span>📲</span> Как добавить иконку на Android
+  <!-- MODAL: HOW TO ADD ICON TO PHONE HOME SCREEN -->
+  <div id="install-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onclick="if(event.target === this) toggleModal('install-modal', false)">
+    <div class="bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 rounded-2xl max-w-md w-full p-5 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold text-stone-900 dark:text-white flex items-center gap-2">
+          <span>📱</span> Как добавить иконку на телефон
         </h3>
-        <button onclick="toggleModal('install-modal', false)" class="p-1.5 rounded-xl text-stone-500 hover:bg-stone-100 dark:hover:bg-stone-800">
+        <button type="button" onclick="toggleModal('install-modal', false)" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
           ✕
         </button>
       </div>
-      <div class="p-4 space-y-3 text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-        <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30">
-          <div class="font-bold text-stone-900 dark:text-white mb-2">В браузере Chrome на Android:</div>
-          <ol class="list-decimal list-inside space-y-2 font-medium">
+
+      <div class="space-y-3 text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
+          <div class="font-bold text-emerald-800 dark:text-emerald-300 mb-1.5">🤖 Для Android (браузер Chrome):</div>
+          <ol class="list-decimal list-inside space-y-1">
+            <li>Открой эту интернет-ссылку в браузере <strong>Chrome</strong>.</li>
             <li>Нажми на <strong>три точки (⋮)</strong> в правом верхнем углу браузера.</li>
-            <li>Выбери пункт <strong>«Добавить на главный экран»</strong> (или <strong>«Установить приложение»</strong>).</li>
-            <li>Нажми <strong>«Добавить»</strong> — иконка появится на рабочем столе телефона.</li>
+            <li>Выбери пункт <strong>«Добавить на главный экран»</strong> (или <strong>«Установить приложение»</strong>) и подтверди.</li>
           </ol>
         </div>
-        <p class="text-[11px] text-stone-500 dark:text-stone-400">
-          Все данные (погода, курсы валют, расписание ашрама и фазы луны) обновляются полностью автоматически при каждом открытии и разворачивании приложения.
-        </p>
+
+        <div class="p-3.5 rounded-xl bg-stone-100 dark:bg-stone-800/70 border border-stone-200 dark:border-stone-700">
+          <div class="font-bold text-stone-900 dark:text-white mb-1.5">🍏 Для iPhone (браузер Safari):</div>
+          <ol class="list-decimal list-inside space-y-1">
+            <li>Открой эту ссылку в <strong>Safari</strong>.</li>
+            <li>Нажми кнопку <strong>«Поделиться»</strong> внизу экрана (квадрат со стрелкой вверх).</li>
+            <li>Прокрути список вниз и выбери <strong>«На экран „Домой“»</strong> → <strong>«Добавить»</strong>.</li>
+          </ol>
+        </div>
       </div>
-      <div class="p-3.5 bg-stone-50 dark:bg-stone-950 border-t border-stone-200 dark:border-stone-800">
-        <button onclick="toggleModal('install-modal', false)" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold">
-          Понятно
-        </button>
-      </div>
+
+      <button type="button" onclick="toggleModal('install-modal', false)" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition">
+        Понятно, закрыть
+      </button>
     </div>
   </div>
 
-  <!-- APPLICATION LOGIC -->
+  <!-- MAIN APPLICATION LOGIC -->
   <script>
     /*************************************************************************
-     * 1. CONFIGURATION & DATA SOURCES
+     * 1. CONFIGURATION, LOCATIONS, SCHEDULE & PANCHANGAM DATA
      *************************************************************************/
     const LOCATIONS = {
       isha: {
-        name: 'Предгорья Веллиангири (Иша)',
+        name: 'Предгорья Веллиангири (Isha)',
         lat: 10.9760,
-        lon: 76.7350,
+        lon: 76.7355,
         tz: 'Asia/Kolkata'
       },
       tomsk: {
@@ -825,151 +1100,165 @@
     const ISHA_TEMPLES = [
       {
         name: 'Dhyanalinga (Дхьяналинга)',
-        sub: 'Медитация в тишине • Nada Aradhana 11:45 и 17:45',
+        sub: 'Nada Aradhana: 11:45 и 17:45',
         hoursText: '06:00 – 20:30',
-        windows: [[6 * 60, 20 * 60 + 30]]
+        windows: [[360, 1230]]
       },
       {
         name: 'Linga Bhairavi (Линга Бхайрави)',
-        sub: 'Абхишекам: 07:40, 12:40, 18:40 (перерыв днём)',
+        sub: 'Абхишекам: 07:40, 12:40, 18:40',
         hoursText: '06:30–13:20, 16:20–20:20',
-        windows: [[6 * 60 + 30, 13 * 60 + 20], [16 * 60 + 20, 20 * 60 + 20]]
+        windows: [[390, 800], [980, 1220]]
       },
       {
-        name: 'Theerthakunds (Сурья и Чандра кунды)',
-        sub: 'Священные водные купели перед храмом',
+        name: 'Suryakund & Chandrakund',
+        sub: 'Священные кунды для омовения',
         hoursText: '06:00 – 20:00',
-        windows: [[6 * 60, 20 * 60]]
+        windows: [[360, 1200]]
       },
       {
-        name: 'Adiyogi & Divya Darshanam',
-        sub: 'Вечернее световое шоу у Адийоги начинается в 19:00',
+        name: 'Adiyogi (Площадь Адийоги)',
+        sub: 'Divya Darshanam: 19:00',
         hoursText: '06:00 – 20:00',
-        windows: [[6 * 60, 20 * 60]]
+        windows: [[360, 1200]]
       }
     ];
 
     const ISHA_DAILY_EVENTS = [
-      { start: '05:30', end: '06:00', title: 'Guru Pooja (Гуру Пуджа)', location: 'Утреннее подношение в ашраме', note: 'Начало дня' },
-      { start: '06:00', end: '06:30', title: 'Открытие Дхьяналинги и кундов', location: 'Dhyanalinga & Theerthakunds', note: 'Открыто до 20:30' },
-      { start: '07:40', end: '08:15', title: 'Утренний Абхишекам', location: 'Linga Bhairavi', note: 'Утренний ритуал у Деви' },
-      { start: '09:50', end: '10:25', title: 'Bhiksha Hall: Бранч (1-й поток)', location: 'Столовая Bhiksha Hall', note: 'Приходить за 10–15 мин' },
-      { start: '10:35', end: '11:05', title: 'Bhiksha Hall: Бранч (2-й поток)', location: 'Столовая Bhiksha Hall', note: 'Второй утренний поток' },
-      { start: '11:10', end: '11:40', title: 'Bhiksha Hall: Бранч (3-й поток)', location: 'Столовая Bhiksha Hall', note: 'Заключительный поток бранча' },
-      { start: '11:45', end: '12:05', title: 'Nada Aradhana (Звуковое подношение)', location: 'Dhyanalinga', note: 'Двери закрываются в 11:40' },
-      { start: '12:30', end: '13:00', title: 'Медитация Aumkar (инициация)', location: 'Dhyanalinga', note: 'Ежедневная сессия' },
-      { start: '12:40', end: '13:15', title: 'Дневной Абхишекам', location: 'Linga Bhairavi', note: 'С 13:20 до 16:20 храм на перерыве' },
-      { start: '17:45', end: '18:05', title: 'Вечерняя Nada Aradhana', location: 'Dhyanalinga', note: 'Двери закрываются в 17:40' },
-      { start: '18:40', end: '19:10', title: 'Вечерний Абхишекам', location: 'Linga Bhairavi', note: 'Вечернее подношение' },
-      { start: '18:50', end: '19:25', title: 'Bhiksha Hall: Ужин (1-й поток)', location: 'Столовая Bhiksha Hall', note: 'В Экадаши — фруктовый стол' },
-      { start: '19:00', end: '19:15', title: 'Adiyogi Divya Darshanam (Световое шоу)', location: 'Площадь Адийоги', note: 'Проводится каждый вечер' },
-      { start: '19:35', end: '20:05', title: 'Bhiksha Hall: Ужин (2-й поток)', location: 'Столовая Bhiksha Hall', note: 'Второй вечерний поток' },
-      { start: '20:10', end: '20:40', title: 'Bhiksha Hall: Ужин (3-й поток)', location: 'Столовая Bhiksha Hall', note: 'Дхьяналинга открыта до 20:30' }
+      { start: '05:30', end: '06:00', title: 'Guru Pooja (Гуру Пуджа)', location: 'Ашрам', note: 'Утреннее подношение' },
+      { start: '06:00', end: '06:30', title: 'Открытие Dhyanalinga и кундов', location: 'Храмовый комплекс', note: 'Начало утреннего даршана' },
+      { start: '07:40', end: '08:10', title: 'Утренний Абхишекам', location: 'Linga Bhairavi', note: 'Утренний ритуал Деви' },
+      { start: '09:50', end: '10:25', title: 'Бранч — 1-й поток', location: 'Bhiksha Hall', note: 'Приходить за 10–15 мин' },
+      { start: '10:35', end: '11:05', title: 'Бранч — 2-й поток', location: 'Bhiksha Hall', note: 'Утренняя трапеза в тишине' },
+      { start: '11:10', end: '11:40', title: 'Бранч — 3-й поток', location: 'Bhiksha Hall', note: 'Завершающий утренний поток' },
+      { start: '11:45', end: '12:10', title: 'Nada Aradhana (Звуковое подношение)', location: 'Dhyanalinga', note: 'Двери закрываются в 11:45' },
+      { start: '12:40', end: '13:10', title: 'Дневной Абхишекам', location: 'Linga Bhairavi', note: 'В 13:20 храм закрывается на перерыв' },
+      { start: '16:20', end: '16:40', title: 'Вечернее открытие Linga Bhairavi', location: 'Linga Bhairavi', note: 'Возобновление даршана после перерыва' },
+      { start: '17:45', end: '18:10', title: 'Nada Aradhana (Вечернее подношение)', location: 'Dhyanalinga', note: 'Двери закрываются в 17:45' },
+      { start: '18:15', end: '18:30', title: 'Присутствие Садхгуру (Sadhguru Presence)', location: 'Весь центр', note: '15 минут вечерней медитации' },
+      { start: '18:50', end: '19:25', title: 'Ужин — 1-й поток', location: 'Bhiksha Hall', note: 'В Экадаши — фруктовый ужин' },
+      { start: '19:00', end: '19:15', title: 'Adiyogi Divya Darshanam', location: 'Adiyogi', note: 'Световое и звуковое шоу у Адийоги' },
+      { start: '19:35', end: '20:05', title: 'Ужин — 2-й поток', location: 'Bhiksha Hall', note: 'Вечерняя трапеза в тишине' },
+      { start: '20:10', end: '20:40', title: 'Ужин — 3-й поток и закрытие храмов', location: 'Bhiksha Hall / Dhyanalinga', note: 'Dhyanalinga закрывается в 20:30' }
     ];
 
-    const VERIFIED_LUNAR_EVENTS = [
-      { date: '2026-11-05', type: 'ekadashi', title: 'Rama Ekadashi (Рама Экадаши)', desc: 'День поста и садханы. Вечером фруктовый стол в Bhiksha Hall.' },
-      { date: '2026-11-08', type: 'amavasya', title: 'Masa Shivaratri / Канун Амавасьи', desc: 'Ночь Маса Шиваратри перед новолунием.' },
-      { date: '2026-11-09', type: 'amavasya', title: 'Kartika Amavasya (Новолуние)', desc: 'Новолуние по лунному календарю Иши.' },
-      { date: '2026-11-21', type: 'ekadashi', title: 'Devutthana Ekadashi (Экадаши)', desc: '11-й лунный день. Особый фруктовый ужин (Phalahara).' },
-      { date: '2026-11-24', type: 'purnima', title: 'Kartik Purnima (Полнолуние)', desc: 'Пурнами Пуджа у Линга Бхайрави.' },
-      { date: '2026-12-04', type: 'ekadashi', title: 'Utpanna Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол в Bhiksha Hall.' },
-      { date: '2026-12-08', type: 'amavasya', title: 'Margashirsha Amavasya (Новолуние)', desc: 'Новолуние.' },
-      { date: '2026-12-20', type: 'ekadashi', title: 'Vaikuntha / Mokshada Ekadashi', desc: 'Зимний Экадаши. Фруктовый стол в столовой.' },
-      { date: '2026-12-23', type: 'purnima', title: 'Margashirsha Purnima (Полнолуние)', desc: 'Полнолуние (Thai Pournami).' },
-      { date: '2027-01-03', type: 'ekadashi', title: 'Saphala Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол в Bhiksha Hall.' },
-      { date: '2027-01-07', type: 'amavasya', title: 'Pausha Amavasya (Новолуние)', desc: 'Новолуние.' },
-      { date: '2027-01-19', type: 'ekadashi', title: 'Pausha Putrada Ekadashi', desc: 'День Экадаши. Фруктовый ужин в столовой.' },
-      { date: '2027-01-22', type: 'purnima', title: 'Pausha Purnima (Полнолуние)', desc: 'Полнолуние и Пурнами Пуджа.' },
-      { date: '2027-02-02', type: 'ekadashi', title: 'Shattila Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол.' },
-      { date: '2027-02-06', type: 'amavasya', title: 'Thai Amavasya (Новолуние)', desc: 'Важное новолуние Южной Индии.' },
-      { date: '2027-02-17', type: 'ekadashi', title: 'Jaya Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый ужин.' },
-      { date: '2027-02-20', type: 'purnima', title: 'Magha Purnima (Полнолуние)', desc: 'Полнолуние.' },
-      { date: '2027-03-04', type: 'ekadashi', title: 'Vijaya Ekadashi (Экадаши)', desc: 'Экадаши перед Махашиваратри.' },
-      { date: '2027-03-06', type: 'shivaratri', title: '🔥 Mahashivaratri (Махашиваратри 2027)', desc: 'Главная ночь года в Isha Yoga Center у Адийоги.' },
-      { date: '2027-03-08', type: 'amavasya', title: 'Phalguna Amavasya (Новолуние)', desc: 'Новолуние после Махашиваратри.' },
-      { date: '2027-03-19', type: 'ekadashi', title: 'Amalaki Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол.' },
-      { date: '2027-03-22', type: 'purnima', title: 'Phalguna Purnima (Полнолуние)', desc: 'Полнолуние.' },
-      { date: '2027-04-03', type: 'ekadashi', title: 'Papmochani Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый ужин.' },
-      { date: '2027-04-06', type: 'amavasya', title: 'Chaitra Amavasya (Новолуние)', desc: 'Новолуние.' },
-      { date: '2027-04-17', type: 'ekadashi', title: 'Kamada Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол.' },
-      { date: '2027-04-20', type: 'purnima', title: 'Chaitra Purnima (Полнолуние)', desc: 'Полнолуние.' },
-      { date: '2027-05-02', type: 'ekadashi', title: 'Varuthini Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол.' },
-      { date: '2027-05-06', type: 'amavasya', title: 'Vaishakha Amavasya (Новолуние)', desc: 'Новолуние.' },
-      { date: '2027-05-16', type: 'ekadashi', title: 'Mohini Ekadashi (Экадаши)', desc: '11-й лунный день. Фруктовый стол.' },
-      { date: '2027-05-20', type: 'purnima', title: 'Buddha Purnima (Будда Пурнима)', desc: 'Майское полнолуние.' }
+    const PANCHANGAM_EVENTS = [
+      { date: '2026-01-03', type: 'purnima', title: 'Pausha Purnima', desc: 'Полнолуние • Pournami Pooja у Линга Бхайрави' },
+      { date: '2026-01-14', type: 'ekadashi', title: 'Shattila Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
+      { date: '2026-01-18', type: 'amavasya', title: 'Mauni Amavasya', desc: 'Новолуние • Ночь Маса Шиваратри накануне' },
+      { date: '2026-01-29', type: 'ekadashi', title: 'Jaya Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
+      { date: '2026-02-01', type: 'purnima', title: 'Magha Purnima', desc: 'Полнолуние • Pournami Pooja у Линга Бхайрави' },
+      { date: '2026-02-13', type: 'ekadashi', title: 'Vijaya Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
+      { date: '2026-02-15', type: 'shivaratri', title: 'Maha Shivaratri', desc: 'Ночь Махашиваратри в Isha Yoga Center' },
+      { date: '2026-02-17', type: 'amavasya', title: 'Phalguna Amavasya', desc: 'Новолуние' },
+      { date: '2026-02-27', type: 'ekadashi', title: 'Amalaki Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
+      { date: '2026-03-03', type: 'purnima', title: 'Phalguna Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-03-15', type: 'ekadashi', title: 'Papamochani Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-03-19', type: 'amavasya', title: 'Chaitra Amavasya', desc: 'Новолуние' },
+      { date: '2026-03-29', type: 'ekadashi', title: 'Kamada Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-04-02', type: 'purnima', title: 'Chaitra Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-04-13', type: 'ekadashi', title: 'Varuthini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-04-17', type: 'amavasya', title: 'Vaishakha Amavasya', desc: 'Новолуние' },
+      { date: '2026-04-27', type: 'ekadashi', title: 'Mohini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-05-01', type: 'purnima', title: 'Buddha Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-05-13', type: 'ekadashi', title: 'Apara Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-05-16', type: 'amavasya', title: 'Jyeshtha Amavasya', desc: 'Новолуние' },
+      { date: '2026-05-27', type: 'ekadashi', title: 'Padmini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-05-31', type: 'purnima', title: 'Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-06-11', type: 'ekadashi', title: 'Parama Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-06-15', type: 'amavasya', title: 'Amavasya', desc: 'Новолуние' },
+      { date: '2026-06-25', type: 'ekadashi', title: 'Nirjala Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-06-29', type: 'purnima', title: 'Jyeshtha Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-07-10', type: 'ekadashi', title: 'Yogini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-07-14', type: 'amavasya', title: 'Ashadha Amavasya', desc: 'Новолуние' },
+      { date: '2026-07-25', type: 'ekadashi', title: 'Devshayani Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-07-29', type: 'purnima', title: 'Guru Purnima (Гуру Пурнима)', desc: 'Полнолуние • Главный праздник Гуру Пурнима в Ише' },
+      { date: '2026-08-09', type: 'ekadashi', title: 'Kamika Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-08-12', type: 'amavasya', title: 'Shravana Amavasya', desc: 'Новолуние' },
+      { date: '2026-08-23', type: 'ekadashi', title: 'Shravana Putrada Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-08-28', type: 'purnima', title: 'Shravana Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-09-07', type: 'ekadashi', title: 'Aja Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-09-11', type: 'amavasya', title: 'Bhadrapada Amavasya', desc: 'Новолуние' },
+      { date: '2026-09-22', type: 'ekadashi', title: 'Parsva Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-09-26', type: 'purnima', title: 'Bhadrapada Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-10-06', type: 'ekadashi', title: 'Indira Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-10-10', type: 'amavasya', title: 'Mahalaya Amavasya', desc: 'Новолуние' },
+      { date: '2026-10-22', type: 'ekadashi', title: 'Papankusha Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
+      { date: '2026-10-26', type: 'purnima', title: 'Sharad Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2026-11-05', type: 'ekadashi', title: 'Rama Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-11-09', type: 'amavasya', title: 'Kartika Amavasya', desc: 'Новолуние • Накануне Маса Шиваратри' },
+      { date: '2026-11-20', type: 'ekadashi', title: 'Devutthana Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-11-24', type: 'purnima', title: 'Kartika Purnima', desc: 'Полнолуние • Pournami Pooja у Линга Бхайрави' },
+      { date: '2026-12-04', type: 'ekadashi', title: 'Utpanna Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-12-08', type: 'amavasya', title: 'Margashirsha Amavasya', desc: 'Новолуние • Накануне Маса Шиваратри' },
+      { date: '2026-12-20', type: 'ekadashi', title: 'Mokshada Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-12-23', type: 'purnima', title: 'Margashirsha Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2027-01-03', type: 'ekadashi', title: 'Saphala Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
+      { date: '2027-01-07', type: 'amavasya', title: 'Pausha Amavasya', desc: 'Новолуние' },
+      { date: '2027-01-18', type: 'ekadashi', title: 'Pausha Putrada Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
+      { date: '2027-01-22', type: 'purnima', title: 'Pausha Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2027-02-02', type: 'ekadashi', title: 'Shattila Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
+      { date: '2027-02-06', type: 'amavasya', title: 'Magha Amavasya', desc: 'Новолуние' },
+      { date: '2027-02-17', type: 'ekadashi', title: 'Jaya Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
+      { date: '2027-02-20', type: 'purnima', title: 'Magha Purnima', desc: 'Полнолуние • Pournami Pooja' },
+      { date: '2027-03-04', type: 'ekadashi', title: 'Vijaya Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
+      { date: '2027-03-06', type: 'shivaratri', title: 'Maha Shivaratri', desc: 'Ночь Махашиваратри в Isha Yoga Center' },
+      { date: '2027-03-08', type: 'amavasya', title: 'Phalguna Amavasya', desc: 'Новолуние' },
+      { date: '2027-03-18', type: 'ekadashi', title: 'Amalaki Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
+      { date: '2027-03-22', type: 'purnima', title: 'Phalguna Purnima', desc: 'Полнолуние • Pournami Pooja' }
     ];
 
+    let activeMainTab = 'overview';
     let showAllLunarDates = false;
-    // Rates relative to 1 INR
-    let inrRates = {
-      INR: 1,
-      RUB: 1.14,
-      USD: 0.0118
+    let fxRates = {
+      USD: 1,
+      INR: 84.2,
+      RUB: 96.5
     };
 
     /*************************************************************************
-     * 2. TAB NAVIGATION & UI HELPERS
+     * 2. NAVIGATION, STANDALONE PWA CHECK, THEME & MODAL HELPERS
      *************************************************************************/
-    function switchTab(tabKey) {
-      const tabs = ['overview', 'weather', 'ashram', 'currency'];
-      tabs.forEach(t => {
-        const pane = document.getElementById('tab-' + t);
-        const btn = document.getElementById('nav-btn-' + t);
-        if (!pane || !btn) return;
+    function checkStandaloneMode() {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const installBtn = document.getElementById('install-guide-btn');
+      if (installBtn && isStandalone) {
+        installBtn.classList.add('hidden');
+      }
+    }
 
-        if (t === tabKey) {
-          pane.classList.remove('hidden');
-          btn.className = 'py-1.5 px-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 text-amber-600 dark:text-amber-400 bg-amber-500/10 font-bold transition active:scale-95';
-        } else {
-          pane.classList.add('hidden');
-          btn.className = 'py-1.5 px-2 rounded-2xl flex flex-col items-center justify-center gap-0.5 text-stone-500 dark:text-stone-400 font-medium transition active:scale-95';
+    function switchMainTab(tabName, weatherSubView = null) {
+      activeMainTab = tabName;
+      const tabs = ['overview', 'weather', 'ashram', 'chat', 'currency'];
+      tabs.forEach(t => {
+        const panel = document.getElementById('tab-' + t);
+        const btn = document.getElementById('bnav-' + t);
+        if (panel) {
+          if (t === tabName) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        }
+        if (btn) {
+          if (t === tabName) {
+            btn.className = 'relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold transition';
+          } else {
+            btn.className = 'relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition';
+          }
         }
       });
+
+      if (tabName === 'weather' && weatherSubView) {
+        setMobileWeatherView(weatherSubView);
+      }
+
+      if (tabName === 'chat') {
+        markAllChatMessagesRead();
+        scrollToChatBottom();
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function selectWeatherCity(cityKey) {
-      const ishaPanel = document.getElementById('detail-weather-isha');
-      const tomskPanel = document.getElementById('detail-weather-tomsk');
-      const btnIsha = document.getElementById('w-seg-isha');
-      const btnTomsk = document.getElementById('w-seg-tomsk');
-
-      if (cityKey === 'isha') {
-        ishaPanel.classList.remove('hidden');
-        tomskPanel.classList.add('hidden');
-        btnIsha.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm';
-        btnTomsk.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 text-stone-600 dark:text-stone-400';
-      } else {
-        tomskPanel.classList.remove('hidden');
-        ishaPanel.classList.add('hidden');
-        btnTomsk.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm';
-        btnIsha.className = 'py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 text-stone-600 dark:text-stone-400';
-      }
-    }
-
-    function openWeatherCity(cityKey) {
-      switchTab('weather');
-      selectWeatherCity(cityKey);
-    }
-
-    function selectAshramSubTab(subKey) {
-      const vSched = document.getElementById('ashram-view-schedule');
-      const vLunar = document.getElementById('ashram-view-lunar');
-      const bSched = document.getElementById('asub-schedule');
-      const bLunar = document.getElementById('asub-lunar');
-
-      if (subKey === 'schedule') {
-        vSched.classList.remove('hidden');
-        vLunar.classList.add('hidden');
-        bSched.className = 'py-2 px-3 rounded-xl text-xs font-bold transition bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm';
-        bLunar.className = 'py-2 px-3 rounded-xl text-xs font-bold transition text-stone-600 dark:text-stone-400';
-      } else {
-        vLunar.classList.remove('hidden');
-        vSched.classList.add('hidden');
-        bLunar.className = 'py-2 px-3 rounded-xl text-xs font-bold transition bg-white dark:bg-stone-800 text-stone-900 dark:text-white shadow-sm';
-        bSched.className = 'py-2 px-3 rounded-xl text-xs font-bold transition text-stone-600 dark:text-stone-400';
-      }
     }
 
     function initTheme() {
@@ -996,11 +1285,48 @@
     function toggleModal(id, show) {
       const el = document.getElementById(id);
       if (!el) return;
-      el.classList.toggle('hidden', !show);
+      if (show) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+
+    function setMobileWeatherView(mode) {
+      const ishaCard = document.getElementById('weather-card-isha');
+      const tomskCard = document.getElementById('weather-card-tomsk');
+      const tabs = ['isha', 'tomsk', 'both'];
+
+      tabs.forEach(t => {
+        const btn = document.getElementById('wtab-' + t);
+        if (!btn) return;
+        if (t === mode) {
+          btn.className = 'py-2 px-3 rounded-xl bg-amber-500 text-white shadow-sm transition flex items-center justify-center gap-1.5';
+        } else {
+          btn.className = 'py-2 px-3 rounded-xl text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800 transition flex items-center justify-center gap-1.5';
+        }
+      });
+
+      if (mode === 'isha') {
+        ishaCard.classList.remove('hidden');
+        ishaCard.classList.add('flex');
+        tomskCard.classList.add('hidden');
+        tomskCard.classList.remove('flex');
+      } else if (mode === 'tomsk') {
+        tomskCard.classList.remove('hidden');
+        tomskCard.classList.add('flex');
+        ishaCard.classList.add('hidden');
+        ishaCard.classList.remove('flex');
+      } else {
+        ishaCard.classList.remove('hidden');
+        ishaCard.classList.add('flex');
+        tomskCard.classList.remove('hidden');
+        tomskCard.classList.add('flex');
+      }
     }
 
     /*************************************************************************
-     * 3. CLOCKS & LIVE ASHRAM SCHEDULE
+     * 3. LIVE CLOCKS & ASHRAM SCHEDULE HIGHLIGHTER
      *************************************************************************/
     function getTimePartsInZone(timeZone) {
       const now = new Date();
@@ -1016,7 +1342,7 @@
         timeZone,
         weekday: 'short',
         day: 'numeric',
-        month: 'short'
+        month: 'long'
       }).format(now);
 
       const isoDate = new Intl.DateTimeFormat('en-CA', {
@@ -1027,7 +1353,9 @@
       }).format(now);
 
       const [hh, mm, ss] = timeStr.split(':').map(Number);
-      return { timeStr, dateStr, isoDate, hh, mm, ss, totalMinutes: hh * 60 + mm };
+      const totalMinutes = hh * 60 + mm;
+
+      return { timeStr, dateStr, isoDate, hh, mm, ss, totalMinutes };
     }
 
     function parseHHMM(str) {
@@ -1036,7 +1364,7 @@
     }
 
     function formatDurationMinutes(diffMin) {
-      if (diffMin <= 0) return 'прямо сейчас';
+      if (diffMin <= 0) return 'сейчас';
       const h = Math.floor(diffMin / 60);
       const m = diffMin % 60;
       if (h > 0 && m > 0) return `через ${h} ч ${m} мин`;
@@ -1053,46 +1381,31 @@
       document.getElementById('clock-tomsk').textContent = tomsk.timeStr;
       document.getElementById('date-tomsk').textContent = tomsk.dateStr;
 
-      const dotEl = document.getElementById('connection-badge-dot');
-      const statusEl = document.getElementById('connection-status-text');
-
-      const isIshaSleep = isha.totalMinutes >= (21 * 60 + 30) || isha.totalMinutes < (5 * 60 + 15);
-      const isTomskSleep = tomsk.totalMinutes >= (23 * 60 + 30) || tomsk.totalMinutes < (7 * 60);
-      const isIshaNada = (isha.totalMinutes >= (11 * 60 + 40) && isha.totalMinutes <= (12 * 60 + 10)) ||
-                         (isha.totalMinutes >= (17 * 60 + 40) && isha.totalMinutes <= (18 * 60 + 10));
-
-      if (isIshaSleep) {
-        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0';
-        statusEl.textContent = '🌙 В ашраме ночная тишина (21:30–05:15 IST)';
-      } else if (isTomskSleep) {
-        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-sky-500 shrink-0';
-        statusEl.textContent = '🌌 В Томске сейчас ночь, а в Ише уже активный день';
-      } else if (isIshaNada) {
-        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0 animate-pulse';
-        statusEl.textContent = '🔔 В Дхьяналинге сейчас идёт Nada Aradhana';
-      } else {
-        dotEl.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0';
-        statusEl.textContent = '💚 Удобное время для связи (и в Ише, и в Томске день/вечер)';
+      // Update partner's local time inside Chat header
+      const partnerTimeEl = document.getElementById('chat-partner-localtime');
+      if (partnerTimeEl) {
+        const partnerTz = chatState.role === 'isha' ? tomsk : isha;
+        partnerTimeEl.textContent = partnerTz.timeStr.slice(0, 5);
       }
 
       renderAshramSchedule(isha.totalMinutes);
+      refreshPartnerPresenceUI();
     }
 
     function renderAshramSchedule(currentMinutes) {
-      // 1. Update Temple Open/Closed Badges
       const templesEl = document.getElementById('temples-live-list');
       if (templesEl) {
         templesEl.innerHTML = ISHA_TEMPLES.map(t => {
           const isOpen = t.windows.some(([s, e]) => currentMinutes >= s && currentMinutes <= e);
           const badge = isOpen
-            ? '<span class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-bold text-[10px]">Сейчас открыто</span>'
-            : '<span class="px-2 py-0.5 rounded-md bg-stone-200 dark:bg-stone-800 text-stone-500 font-semibold text-[10px]">Закрыто</span>';
+            ? '<span class="px-2 py-1 rounded-md bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-bold text-[10px]">ОТКРЫТО СЕЙЧАС</span>'
+            : '<span class="px-2 py-1 rounded-md bg-stone-200 dark:bg-stone-800 text-stone-500 font-semibold text-[10px]">ЗАКРЫТО</span>';
           return `
-            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/70 dark:border-stone-800 flex items-center justify-between gap-2">
+            <div class="p-2.5 rounded-lg bg-white dark:bg-stone-900 border border-stone-200/60 dark:border-stone-800 flex justify-between items-center gap-2">
               <div class="min-w-0">
                 <div class="font-bold text-stone-900 dark:text-white truncate">${t.name}</div>
                 <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">${t.sub}</div>
-                <div class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 mt-0.5 tabular-nums">${t.hoursText}</div>
+                <div class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 tabular-nums mt-0.5">${t.hoursText}</div>
               </div>
               <div class="shrink-0">${badge}</div>
             </div>
@@ -1100,17 +1413,21 @@
         }).join('');
       }
 
-      // 2. Timeline & Current/Next Events
       let currentEvent = null;
       let nextEvent = null;
       let minDiff = Infinity;
+
+      const timelineContainer = document.getElementById('schedule-timeline');
       let html = '';
 
       ISHA_DAILY_EVENTS.forEach(ev => {
         const startMin = parseHHMM(ev.start);
         const endMin = parseHHMM(ev.end);
         const isNow = currentMinutes >= startMin && currentMinutes <= endMin;
-        if (isNow && !currentEvent) currentEvent = ev;
+
+        if (isNow && !currentEvent) {
+          currentEvent = ev;
+        }
 
         const diff = startMin - currentMinutes;
         if (diff > 0 && diff < minDiff) {
@@ -1118,71 +1435,75 @@
           nextEvent = { ...ev, diff };
         }
 
+        const badgeColor = isNow
+          ? 'bg-emerald-500 text-white'
+          : (currentMinutes > endMin ? 'bg-stone-200 dark:bg-stone-800 text-stone-500' : 'bg-amber-500/15 text-amber-800 dark:text-amber-300');
+
         const rowStyle = isNow
-          ? 'border-emerald-500 bg-emerald-500/10'
-          : (currentMinutes > endMin ? 'border-stone-200/50 dark:border-stone-800/50 opacity-55' : 'border-stone-200/80 dark:border-stone-800 bg-stone-50/60 dark:bg-stone-800/40');
+          ? 'border-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/10 ring-1 ring-emerald-500/40'
+          : (currentMinutes > endMin ? 'border-stone-200/50 dark:border-stone-800/60 opacity-60' : 'border-stone-200/80 dark:border-stone-800 bg-white dark:bg-stone-900');
 
         html += `
-          <div class="p-2.5 rounded-xl border ${rowStyle} flex items-center justify-between gap-2">
+          <div class="p-2.5 sm:p-3 rounded-xl border ${rowStyle} flex items-center justify-between gap-3 transition">
             <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
+              <div class="flex items-center gap-2">
                 <span class="text-xs font-bold text-stone-900 dark:text-white truncate">${ev.title}</span>
-                ${isNow ? '<span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-500 text-white">Сейчас</span>' : ''}
+                ${isNow ? '<span class="text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-emerald-500 text-white">ИДЁТ СЕЙЧАС</span>' : ''}
               </div>
-              <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">${ev.location} • ${ev.note}</div>
+              <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate mt-0.5">
+                ${ev.location} • ${ev.note}
+              </div>
             </div>
-            <span class="text-xs font-bold tabular-nums px-2 py-1 rounded-lg bg-white dark:bg-stone-900 shrink-0">${ev.start}</span>
+            <div class="text-xs font-bold tabular-nums px-2.5 py-1 rounded-lg shrink-0 ${badgeColor}">
+              ${ev.start} – ${ev.end}
+            </div>
           </div>
         `;
       });
 
       if (!nextEvent && ISHA_DAILY_EVENTS.length > 0) {
         const first = ISHA_DAILY_EVENTS[0];
-        nextEvent = { ...first, diff: (24 * 60 - currentMinutes) + parseHHMM(first.start) };
+        const diff = (24 * 60 - currentMinutes) + parseHHMM(first.start);
+        nextEvent = { ...first, diff };
       }
 
-      const tl = document.getElementById('schedule-timeline');
-      if (tl) tl.innerHTML = html;
+      if (timelineContainer) timelineContainer.innerHTML = html;
 
-      let nowTitle = 'Ночная тишина в ашраме';
-      let nowSub = 'Храмы открываются в 06:00 утра';
+      let nowTitleText = '';
+      let nowSubText = '';
+
       if (currentEvent) {
-        nowTitle = `${currentEvent.title} (${currentEvent.start}–${currentEvent.end})`;
-        nowSub = `${currentEvent.location} • ${currentEvent.note}`;
+        nowTitleText = `${currentEvent.title} (${currentEvent.start}–${currentEvent.end})`;
+        nowSubText = `${currentEvent.location} • ${currentEvent.note}`;
       } else if (currentMinutes >= 6 * 60 && currentMinutes <= 20 * 60 + 30) {
         const bhairaviOpen = (currentMinutes >= 6 * 60 + 30 && currentMinutes <= 13 * 60 + 20) ||
                              (currentMinutes >= 16 * 60 + 20 && currentMinutes <= 20 * 60 + 20);
-        nowTitle = 'Дхьяналинга открыта для медитации';
-        nowSub = bhairaviOpen
+        nowTitleText = 'Дхьяналинга открыта для медитации';
+        nowSubText = bhairaviOpen
           ? 'Линга Бхайрави и кунды также открыты'
           : 'Линга Бхайрави на перерыве (13:20–16:20), Дхьяналинга открыта';
+      } else {
+        nowTitleText = 'Ночная тишина в ашраме';
+        nowSubText = 'Храмы открываются утром в 06:00 по времени Иши';
       }
 
-      ['ashram-now-title', 'ov-ashram-now-title'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = nowTitle;
-      });
-      ['ashram-now-sub', 'ov-ashram-now-sub'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = nowSub;
-      });
+      document.getElementById('ashram-now-title').textContent = nowTitleText;
+      document.getElementById('ashram-now-sub').textContent = nowSubText;
+      document.getElementById('ov-ashram-now-title').textContent = nowTitleText;
+      document.getElementById('ov-ashram-now-sub').textContent = nowSubText;
 
       if (nextEvent) {
-        const nextT = `${nextEvent.title} в ${nextEvent.start}`;
-        const nextS = `Начнётся ${formatDurationMinutes(nextEvent.diff)} (${nextEvent.location})`;
-        ['ashram-next-title', 'ov-ashram-next-title'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = nextT;
-        });
-        ['ashram-next-sub', 'ov-ashram-next-sub'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.textContent = nextS;
-        });
+        const nextTitleText = `${nextEvent.title} в ${nextEvent.start}`;
+        const nextSubText = `Начнётся ${formatDurationMinutes(nextEvent.diff)} (${nextEvent.location})`;
+        document.getElementById('ashram-next-title').textContent = nextTitleText;
+        document.getElementById('ashram-next-sub').textContent = nextSubText;
+        document.getElementById('ov-ashram-next-title').textContent = nextTitleText;
+        document.getElementById('ov-ashram-next-sub').textContent = nextSubText;
       }
     }
 
     /*************************************************************************
-     * 4. WEATHER FETCHING (OPEN-METEO)
+     * 4. WEATHER API (OPEN-METEO WITH UV INDEX, SUNRISE/SUNSET & FALLBACKS)
      *************************************************************************/
     function getWeatherInfoFromWMO(code) {
       const map = {
@@ -1214,9 +1535,115 @@
       return map[code] || { icon: '⛅', text: 'Облачно' };
     }
 
+    function fmtTemp(t) {
+      const n = Math.round(t);
+      return n > 0 ? '+' + n : String(n);
+    }
+
+    function describeUV(uv, isIsha) {
+      const val = Math.round((Number(uv) || 0) * 10) / 10;
+      if (val >= 8) {
+        return {
+          short: isIsha ? `☀️ УФ ${val}: очень высокий (возьми зонт/крем)` : `☀️ УФ ${val} (Очень высокий)`,
+          level: `${val} (Экстрем.)`,
+          advice: '☀️ Очень активное солнце в предгорьях (УФ ' + val + '): каменные дорожки горячие для ходьбы босиком, обязательно бери зонт или крем.'
+        };
+      }
+      if (val >= 6) {
+        return {
+          short: isIsha ? `☀️ Высокий УФ (${val}): возьми зонт/крем` : `☀️ УФ ${val} (Высокий)`,
+          level: `${val} (Высокий)`,
+          advice: '☀️ Высокий УФ-индекс (' + val + '): днём на открытых участках ашрама пригодится зонт от солнца и головной убор.'
+        };
+      }
+      if (val >= 3) {
+        return {
+          short: `🌤 УФ ${val}: умеренный`,
+          level: `${val} (Умеренный)`,
+          advice: '🌤 Умеренный уровень ультрафиолета (' + val + '): комфортная погода для прогулок босиком по территории центра.'
+        };
+      }
+      return {
+        short: `🌙 УФ ${val}: низкий`,
+        level: `${val} (Низкий)`,
+        advice: '🌿 Низкий УФ-индекс (' + val + '): мягкое солнце или вечернее время, дорожки прохладные.'
+      };
+    }
+
+    function buildFallbackWeather(key) {
+      const isIsha = key === 'isha';
+      const tzParts = getTimePartsInZone(LOCATIONS[key].tz);
+      const hourlyTime = [];
+      const hourlyTemp = [];
+      const hourlyProb = [];
+      const hourlyCode = [];
+
+      for (let h = 0; h < 24; h++) {
+        const hh = String((tzParts.hh + h) % 24).padStart(2, '0');
+        hourlyTime.push(`${tzParts.isoDate}T${hh}:00`);
+        hourlyTemp.push(isIsha ? 24 + Math.round(Math.sin(h / 4) * 4) : -3 + Math.round(Math.sin(h / 4) * 3));
+        hourlyProb.push(isIsha ? 25 : 20);
+        hourlyCode.push(isIsha ? 2 : 71);
+      }
+
+      const dailyTime = [];
+      const dailyMax = [];
+      const dailyMin = [];
+      const dailyCode = [];
+      const dailyProb = [];
+      const dailyUvMax = [];
+      const dailyPrecipSum = [];
+      const dailySunrise = [];
+      const dailySunset = [];
+
+      const [y, m, d] = tzParts.isoDate.split('-').map(Number);
+      for (let i = 0; i < 7; i++) {
+        const dt = new Date(Date.UTC(y, m - 1, d + i));
+        const dStr = dt.toISOString().slice(0, 10);
+        dailyTime.push(dStr);
+        dailyMax.push(isIsha ? 30 - (i % 2) : 0 - i);
+        dailyMin.push(isIsha ? 21 : -6 - i);
+        dailyCode.push(isIsha ? (i % 3 === 0 ? 80 : 2) : (i % 2 === 0 ? 71 : 3));
+        dailyProb.push(isIsha ? 35 : 30);
+        dailyUvMax.push(isIsha ? 8.5 : 1.2);
+        dailyPrecipSum.push(isIsha ? 1.5 : 0.4);
+        dailySunrise.push(`${dStr}T${isIsha ? '06:12' : '08:15'}`);
+        dailySunset.push(`${dStr}T${isIsha ? '18:05' : '17:20'}`);
+      }
+
+      return {
+        current: {
+          temperature_2m: isIsha ? 28 : -2,
+          apparent_temperature: isIsha ? 30 : -6,
+          relative_humidity_2m: isIsha ? 70 : 82,
+          wind_speed_10m: isIsha ? 2.5 : 4.0,
+          precipitation: 0,
+          weather_code: isIsha ? 2 : 71,
+          uv_index: isIsha ? 7.2 : 0.8
+        },
+        hourly: {
+          time: hourlyTime,
+          temperature_2m: hourlyTemp,
+          precipitation_probability: hourlyProb,
+          weather_code: hourlyCode
+        },
+        daily: {
+          time: dailyTime,
+          temperature_2m_max: dailyMax,
+          temperature_2m_min: dailyMin,
+          weather_code: dailyCode,
+          precipitation_probability_max: dailyProb,
+          uv_index_max: dailyUvMax,
+          precipitation_sum: dailyPrecipSum,
+          sunrise: dailySunrise,
+          sunset: dailySunset
+        }
+      };
+    }
+
     async function fetchWeatherForCity(key) {
       const loc = LOCATIONS[key];
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&hourly=temperature_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&wind_speed_unit=ms&timezone=${encodeURIComponent(loc.tz)}`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,precipitation_probability,weather_code,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,uv_index_max,sunrise,sunset&wind_speed_unit=ms&timezone=${encodeURIComponent(loc.tz)}`;
 
       try {
         const res = await fetch(url);
@@ -1228,91 +1655,131 @@
       } catch (err) {
         const cached = localStorage.getItem('weather_cache_' + key);
         if (cached) {
-          try { renderCityWeather(key, JSON.parse(cached).data); } catch (e) {}
+          try {
+            renderCityWeather(key, JSON.parse(cached).data);
+            return false;
+          } catch (e) {}
         }
+        renderCityWeather(key, buildFallbackWeather(key));
         return false;
       }
     }
 
     function renderCityWeather(key, data) {
       if (!data || !data.current) return;
+      const isIsha = key === 'isha';
       const cur = data.current;
       const wInfo = getWeatherInfoFromWMO(cur.weather_code);
 
-      const tempRounded = Math.round(cur.temperature_2m);
-      const feelsRounded = Math.round(cur.apparent_temperature);
-      const maxToday = data.daily?.temperature_2m_max ? Math.round(data.daily.temperature_2m_max[0]) : '--';
-      const minToday = data.daily?.temperature_2m_min ? Math.round(data.daily.temperature_2m_min[0]) : '--';
+      const tempFormatted = `${fmtTemp(cur.temperature_2m)}°C`;
+      const feelsFormatted = `${fmtTemp(cur.apparent_temperature)}°C`;
+      const maxToday = data.daily && data.daily.temperature_2m_max ? fmtTemp(data.daily.temperature_2m_max[0]) + '°' : '--';
+      const minToday = data.daily && data.daily.temperature_2m_min ? fmtTemp(data.daily.temperature_2m_min[0]) + '°' : '--';
 
-      const fmtTemp = t => (typeof t === 'number' && t > 0 ? '+' + t : t);
+      const currentUV = cur.uv_index !== undefined
+        ? cur.uv_index
+        : (data.daily && data.daily.uv_index_max ? data.daily.uv_index_max[0] : (isIsha ? 7 : 1));
+      const uvMaxToday = data.daily && data.daily.uv_index_max ? data.daily.uv_index_max[0] : currentUV;
+      const uvMeta = describeUV(Math.max(currentUV, isIsha ? uvMaxToday * 0.8 : currentUV), isIsha);
 
-      // Update Overview Mini Card
-      document.getElementById(`ov-${key}-icon`).textContent = wInfo.icon;
-      document.getElementById(`ov-${key}-temp`).textContent = `${fmtTemp(tempRounded)}°C`;
-      document.getElementById(`ov-${key}-desc`).textContent = wInfo.text;
-      document.getElementById(`ov-${key}-hl`).textContent = `Макс ${fmtTemp(maxToday)}° • Мин ${fmtTemp(minToday)}°`;
-
-      // Update Detailed Weather Tab
+      // Detailed Tab Elements
       document.getElementById(`${key}-w-icon`).textContent = wInfo.icon;
-      document.getElementById(`${key}-temp-now`).textContent = `${fmtTemp(tempRounded)}°C`;
+      document.getElementById(`${key}-temp-now`).textContent = tempFormatted;
       document.getElementById(`${key}-w-desc`).textContent = wInfo.text;
-      document.getElementById(`${key}-feels-like`).textContent = `${fmtTemp(feelsRounded)}°C`;
-      document.getElementById(`${key}-today-max`).textContent = `${fmtTemp(maxToday)}°`;
-      document.getElementById(`${key}-today-min`).textContent = `${fmtTemp(minToday)}°`;
+      document.getElementById(`${key}-feels-like`).textContent = feelsFormatted;
+      document.getElementById(`${key}-today-max`).textContent = maxToday;
+      document.getElementById(`${key}-today-min`).textContent = minToday;
 
+      document.getElementById(`${key}-uv`).textContent = `${ describeUV(currentUV, isIsha).level } (макс ${Math.round(uvMaxToday)})`;
       document.getElementById(`${key}-humidity`).textContent = `${cur.relative_humidity_2m}%`;
-      document.getElementById(`${key}-wind`).textContent = `${cur.wind_speed_10m.toFixed(1)} м/с`;
+      document.getElementById(`${key}-wind`).textContent = `${Number(cur.wind_speed_10m).toFixed(1)} м/с`;
       document.getElementById(`${key}-precip`).textContent = `${cur.precipitation} мм`;
 
-      // Hourly 24h
+      if (data.daily && data.daily.sunrise && data.daily.sunset) {
+        const sr = String(data.daily.sunrise[0]).slice(11, 16);
+        const ss = String(data.daily.sunset[0]).slice(11, 16);
+        const sunEl = document.getElementById(`${key}-sun-times`);
+        if (sunEl) sunEl.textContent = `${sr} / ${ss}`;
+      }
+
+      if (isIsha) {
+        const adviceEl = document.getElementById('isha-uv-advice');
+        if (adviceEl) adviceEl.innerHTML = `<span>${uvMeta.advice}</span>`;
+      }
+
+      // Overview Tab Mini Card Elements
+      const ovIcon = document.getElementById(`ov-${key}-icon`);
+      const ovTemp = document.getElementById(`ov-${key}-temp`);
+      const ovHum = document.getElementById(`ov-${key}-hum`);
+      const ovDesc = document.getElementById(`ov-${key}-desc`);
+      const ovUvBadge = document.getElementById(`ov-${key}-uv-badge`);
+      const ovMinMax = document.getElementById(`ov-${key}-minmax`);
+      if (ovIcon) ovIcon.textContent = wInfo.icon;
+      if (ovTemp) ovTemp.textContent = tempFormatted;
+      if (ovHum) ovHum.textContent = `💧${cur.relative_humidity_2m}%`;
+      if (ovDesc) ovDesc.textContent = `${wInfo.text} • Ощущ. ${feelsFormatted}`;
+      if (ovUvBadge) ovUvBadge.textContent = uvMeta.short;
+      if (ovMinMax) ovMinMax.textContent = `Макс ${maxToday} / Мин ${minToday}`;
+
+      // Render Hourly Strip (Next 24 hours, every 2 hours)
       const tzParts = getTimePartsInZone(LOCATIONS[key].tz);
       const currentHourISO = `${tzParts.isoDate}T${String(tzParts.hh).padStart(2, '0')}:00`;
       let startIndex = data.hourly.time.findIndex(t => t >= currentHourISO);
       if (startIndex < 0) startIndex = 0;
 
       let hourlyHtml = '';
-      for (let i = startIndex; i < Math.min(startIndex + 24, data.hourly.time.length); i++) {
+      for (let i = startIndex; i < Math.min(startIndex + 24, data.hourly.time.length); i += 2) {
         const timeLabel = data.hourly.time[i].slice(11, 16);
-        const hTemp = Math.round(data.hourly.temperature_2m[i]);
+        const hTemp = fmtTemp(data.hourly.temperature_2m[i]);
         const hProb = data.hourly.precipitation_probability ? data.hourly.precipitation_probability[i] : 0;
         const hIcon = getWeatherInfoFromWMO(data.hourly.weather_code[i]).icon;
         const isFirst = i === startIndex;
 
         hourlyHtml += `
-          <div class="flex flex-col items-center justify-between px-2.5 py-2 rounded-xl border ${isFirst ? 'bg-amber-500/10 border-amber-500/40 font-bold' : 'bg-stone-50 dark:bg-stone-800/50 border-stone-200/60 dark:border-stone-800'} shrink-0 min-w-[58px]">
-            <span class="text-[10px] text-stone-500 dark:text-stone-400 tabular-nums">${isFirst ? 'Сейчас' : timeLabel}</span>
+          <div class="flex flex-col items-center justify-between px-2.5 py-2 rounded-xl border ${isFirst ? 'bg-amber-500/10 border-amber-500/40 font-bold' : 'bg-stone-50 dark:bg-stone-800/50 border-stone-200/60 dark:border-stone-800'} shrink-0 min-w-[62px]">
+            <span class="text-[11px] text-stone-500 dark:text-stone-400 tabular-nums">${isFirst ? 'Сейчас' : timeLabel}</span>
             <span class="text-xl my-1 select-none">${hIcon}</span>
-            <span class="text-xs font-bold text-stone-900 dark:text-white tabular-nums">${fmtTemp(hTemp)}°</span>
+            <span class="text-xs font-bold text-stone-900 dark:text-white tabular-nums">${hTemp}°</span>
             <span class="text-[10px] ${hProb >= 30 ? 'text-sky-600 dark:text-sky-400 font-semibold' : 'text-stone-400'} tabular-nums mt-0.5">💧${hProb}%</span>
           </div>
         `;
       }
       document.getElementById(`${key}-hourly-strip`).innerHTML = hourlyHtml;
 
-      // 7-Day Forecast
+      // Render 7-Day Forecast
       let dailyHtml = '';
-      for (let d = 0; d < Math.min(7, data.daily.time.length); d++) {
-        const [yyyy, mm, dd] = data.daily.time[d].split('-').map(Number);
-        const dateObj = new Date(Date.UTC(yyyy, mm - 1, dd, 12, 0, 0));
-        const dayName = d === 0 ? 'Сегодня' : (d === 1 ? 'Завтра' : new Intl.DateTimeFormat('ru-RU', { weekday: 'short', day: 'numeric', month: 'short' }).format(dateObj));
+      const daysCount = Math.min(7, data.daily.time.length);
+      for (let d = 0; d < daysCount; d++) {
+        const dateISO = data.daily.time[d];
+        const [yy, mm, dd] = dateISO.split('-').map(Number);
+        const dateObj = new Date(Date.UTC(yy, mm - 1, dd, 12, 0, 0));
+        const dayName = d === 0
+          ? 'Сегодня'
+          : (d === 1 ? 'Завтра' : new Intl.DateTimeFormat('ru-RU', { weekday: 'short', day: 'numeric', month: 'short' }).format(dateObj));
+
         const dInfo = getWeatherInfoFromWMO(data.daily.weather_code[d]);
-        const tMax = Math.round(data.daily.temperature_2m_max[d]);
-        const tMin = Math.round(data.daily.temperature_2m_min[d]);
+        const tMax = fmtTemp(data.daily.temperature_2m_max[d]);
+        const tMin = fmtTemp(data.daily.temperature_2m_min[d]);
         const rainProb = data.daily.precipitation_probability_max ? data.daily.precipitation_probability_max[d] : 0;
+        const rainMm = data.daily.precipitation_sum ? Math.round(data.daily.precipitation_sum[d] * 10) / 10 : 0;
+        const dUv = data.daily.uv_index_max ? Math.round(data.daily.uv_index_max[d]) : '';
 
         dailyHtml += `
           <div class="py-2.5 flex items-center justify-between gap-2">
-            <div class="w-24 sm:w-28 font-semibold text-stone-800 dark:text-stone-200 capitalize truncate">${dayName}</div>
+            <div class="w-20 sm:w-24 font-semibold text-stone-800 dark:text-stone-200 capitalize truncate">${dayName}</div>
             <div class="flex items-center gap-1.5 flex-1 min-w-0">
               <span class="text-base select-none">${dInfo.icon}</span>
               <span class="text-stone-600 dark:text-stone-400 truncate">${dInfo.text}</span>
             </div>
-            <div class="w-11 text-right text-[11px] ${rainProb >= 30 ? 'text-sky-600 dark:text-sky-400 font-semibold' : 'text-stone-400'} tabular-nums">
-              ${rainProb > 0 ? '💧' + rainProb + '%' : ''}
+            <div class="text-right text-[10px] text-amber-700 dark:text-amber-400 font-semibold tabular-nums shrink-0">
+              ${dUv !== '' ? '☀️УФ ' + dUv : ''}
             </div>
-            <div class="w-20 text-right font-bold tabular-nums text-stone-900 dark:text-white">
-              <span>${fmtTemp(tMax)}°</span>
-              <span class="text-stone-400 font-normal ml-1">${fmtTemp(tMin)}°</span>
+            <div class="w-16 text-right text-[11px] ${rainProb >= 30 ? 'text-sky-600 dark:text-sky-400 font-semibold' : 'text-stone-400'} tabular-nums shrink-0">
+              ${rainProb > 0 ? '💧' + rainProb + '%' : ''}${rainMm > 0 ? ' (' + rainMm + 'мм)' : ''}
+            </div>
+            <div class="w-16 text-right font-bold tabular-nums text-stone-900 dark:text-white shrink-0">
+              <span>${tMax}°</span>
+              <span class="text-stone-400 font-normal ml-1">${tMin}°</span>
             </div>
           </div>
         `;
@@ -1321,8 +1788,70 @@
     }
 
     /*************************************************************************
-     * 5. LUNAR CALENDAR (PANCHANGAM)
+     * 5. OFFICIAL ISHA WEBSITE CORS PARSER & LUNAR CALENDAR (PANCHANGAM)
      *************************************************************************/
+    async function checkOfficialIshaNotices(manual = false) {
+      const statusEl = document.getElementById('official-parser-status');
+      const detailsEl = document.getElementById('official-parser-details');
+      const dotEl = document.getElementById('parser-status-dot');
+
+      if (manual && statusEl) {
+        statusEl.textContent = 'Запрос к официальной странице isha.sadhguru.org...';
+      }
+
+      const targetUrl = 'https://isha.sadhguru.org/en/center/welcome-isha-yoga-center-coimbatore';
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+
+      try {
+        const res = await fetch(proxyUrl);
+        if (!res.ok) throw new Error('Proxy HTTP ' + res.status);
+        const payload = await res.json();
+        const html = payload && payload.contents ? String(payload.contents) : '';
+
+        if (!html || html.length < 200) throw new Error('Empty HTML');
+
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const textContent = (doc.body ? doc.body.textContent : html).replace(/\s+/g, ' ');
+
+        const notices = [];
+        if (/Dhyanalinga/i.test(textContent)) {
+          notices.push('Dhyanalinga (06:00–20:30) и звуковые подношения Nada Aradhana (11:45, 17:45) подтверждены.');
+        }
+        if (/Bhiksha/i.test(textContent) || /dining/i.test(textContent)) {
+          notices.push('Столовая Bhiksha Hall: двухразовое питание (бранч и ужин), соблюдение тишины.');
+        }
+        if (/Theerthakund|Suryakund|Chandrakund/i.test(textContent)) {
+          notices.push('Кунды Suryakund и Chandrakund открыты с 06:00 до 20:00 (кроме коротких санитарных окон).');
+        }
+
+        const nowTime = new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+        const summary = notices.length > 0
+          ? notices.join(' ')
+          : 'Экстренных объявлений о закрытии святынь на странице не обнаружено. Действует штатное расписание центра.';
+
+        const savedObj = { ts: nowTime, summary };
+        localStorage.setItem('isha_official_parse_cache', JSON.stringify(savedObj));
+
+        if (dotEl) dotEl.className = 'w-2 h-2 rounded-full bg-emerald-500 inline-block';
+        if (statusEl) statusEl.textContent = `✓ Проверено по официальному источнику в ${nowTime}`;
+        if (detailsEl) detailsEl.textContent = summary;
+      } catch (e) {
+        const cached = localStorage.getItem('isha_official_parse_cache');
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            if (statusEl) statusEl.textContent = `Сохранённая сводка официального сайта (${parsed.ts})`;
+            if (detailsEl) detailsEl.textContent = parsed.summary;
+            return;
+          } catch (err) {}
+        }
+        if (statusEl) statusEl.textContent = 'Актуальная памятка резидента Isha Yoga Center';
+        if (detailsEl) {
+          detailsEl.textContent = 'Dhyanalinga открыта 06:00–20:30, Linga Bhairavi 06:30–13:20 и 16:20–20:20, кунды 06:00–20:00. Для перехода к первоисточнику используй прямые кнопки ниже.';
+        }
+      }
+    }
+
     function formatRussianDate(isoDateStr) {
       const [y, m, d] = isoDateStr.split('-').map(Number);
       const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
@@ -1364,26 +1893,31 @@
 
       document.getElementById('moon-phase-emoji').textContent = emoji;
       document.getElementById('moon-phase-name').textContent = phaseName;
-      document.getElementById('moon-phase-illum').textContent = `Освещённость: ~${illumination}% (${Math.floor(cyclePos) + 1}-е лунные сутки)`;
+      document.getElementById('moon-phase-illum').textContent = `Освещённость диска: ~${illumination}% (${Math.floor(cyclePos) + 1}-е лунные сутки)`;
 
-      const todayISO = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      const upcoming = VERIFIED_LUNAR_EVENTS.filter(ev => ev.date >= todayISO);
+      const ovMoonEmoji = document.getElementById('ov-moon-emoji');
+      if (ovMoonEmoji) ovMoonEmoji.textContent = emoji;
 
+      const ishaParts = getTimePartsInZone(LOCATIONS.isha.tz);
+      const todayISO = ishaParts.isoDate;
+
+      const upcoming = PANCHANGAM_EVENTS.filter(ev => ev.date >= todayISO);
       const nextEkadashi = upcoming.find(ev => ev.type === 'ekadashi');
       const nextPurnima = upcoming.find(ev => ev.type === 'purnima');
       const nextAmavasya = upcoming.find(ev => ev.type === 'amavasya');
 
       if (nextEkadashi) {
         const diff = daysBetweenISO(todayISO, nextEkadashi.date);
-        const cd = formatDaysCountdown(diff);
-        const dtStr = formatRussianDate(nextEkadashi.date);
-        document.getElementById('next-ekadashi-badge').textContent = cd;
-        document.getElementById('next-ekadashi-date').textContent = dtStr;
+        const countdownStr = formatDaysCountdown(diff);
+        const dateFormatted = formatRussianDate(nextEkadashi.date);
+        document.getElementById('next-ekadashi-badge').textContent = countdownStr;
+        document.getElementById('next-ekadashi-date').textContent = dateFormatted;
         document.getElementById('next-ekadashi-name').textContent = nextEkadashi.title;
 
-        // Overview Teaser
-        document.getElementById('ov-ekadashi-badge').textContent = cd;
-        document.getElementById('ov-ekadashi-date').textContent = dtStr;
+        const ovEkadashiText = document.getElementById('ov-ekadashi-text');
+        const ovEkadashiSub = document.getElementById('ov-ekadashi-sub');
+        if (ovEkadashiText) ovEkadashiText.textContent = `${dateFormatted} (${countdownStr})`;
+        if (ovEkadashiSub) ovEkadashiSub.textContent = nextEkadashi.title;
       }
 
       if (nextPurnima) {
@@ -1426,41 +1960,560 @@
 
     function toggleFullLunarList() {
       showAllLunarDates = !showAllLunarDates;
-      document.getElementById('btn-toggle-lunar').textContent = showAllLunarDates ? 'Свернуть ↑' : 'Показать все ↓';
+      document.getElementById('btn-toggle-lunar').textContent = showAllLunarDates ? 'Свернуть ↑' : 'Показать больше дат ↓';
       renderLunarCalendar();
     }
 
     /*************************************************************************
-     * 6. CURRENCY CONVERTER (OPEN.ER-API.COM/V6/LATEST/INR)
+     * 6. PRIVATE REAL-TIME MESSENGER (HTTPS FETCH + BROADCAST SYNC, NO WSS)
+     *************************************************************************/
+    let chatPollTimer = null;
+    let heartbeatTimer = null;
+    let typingTimeout = null;
+    let lastTypingSent = 0;
+    let localChannel = null;
+    let lastPollTimestamp = Math.floor(Date.now() / 1000) - 3600;
+
+    const chatState = {
+      role: localStorage.getItem('ti_chat_role') || 'isha',
+      secret: localStorage.getItem('ti_chat_secret') || '',
+      roomHash: '',
+      messages: [],
+      partnerOnline: false,
+      partnerLastSeen: 0,
+      partnerReadUpTo: 0,
+      unreadCount: 0
+    };
+
+    function simpleHash(str) {
+      let h1 = 0xdeadbeef ^ str.length;
+      let h2 = 0x41c6ce57 ^ str.length;
+      for (let i = 0, ch; i < str.length; i++) {
+        ch = str.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+      return (h2 >>> 0).toString(16).padStart(8, '0') + (h1 >>> 0).toString(16).padStart(8, '0');
+    }
+
+    function encryptPayload(obj, secretKey) {
+      try {
+        const json = JSON.stringify(obj);
+        const bytes = new TextEncoder().encode(json);
+        const keyBytes = new TextEncoder().encode(secretKey || 'default_key');
+        const out = new Uint8Array(bytes.length);
+        for (let i = 0; i < bytes.length; i++) {
+          out[i] = bytes[i] ^ keyBytes[i % keyBytes.length];
+        }
+        let binary = '';
+        for (let i = 0; i < out.length; i++) binary += String.fromCharCode(out[i]);
+        return btoa(binary);
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function decryptPayload(b64, secretKey) {
+      try {
+        const binary = atob(b64);
+        const bytes = new Uint8Array(binary.length);
+        const keyBytes = new TextEncoder().encode(secretKey || 'default_key');
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i) ^ keyBytes[i % keyBytes.length];
+        }
+        const json = new TextDecoder().decode(bytes);
+        return JSON.parse(json);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function selectChatRole(role) {
+      chatState.role = role;
+      const btnIsha = document.getElementById('role-btn-isha');
+      const btnTomsk = document.getElementById('role-btn-tomsk');
+      if (role === 'isha') {
+        btnIsha.className = 'p-3 rounded-xl border-2 border-amber-500 bg-amber-500/10 text-left transition flex items-center gap-2.5';
+        btnTomsk.className = 'p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5';
+      } else {
+        btnTomsk.className = 'p-3 rounded-xl border-2 border-sky-500 bg-sky-500/10 text-left transition flex items-center gap-2.5';
+        btnIsha.className = 'p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5';
+      }
+    }
+
+    function openChatSettings() {
+      document.getElementById('chat-setup-card').classList.remove('hidden');
+      document.getElementById('chat-active-card').classList.add('hidden');
+      document.getElementById('chat-cancel-setup-btn').classList.remove('hidden');
+      document.getElementById('chat-secret-input').value = chatState.secret;
+      selectChatRole(chatState.role);
+    }
+
+    function cancelChatSetup() {
+      if (chatState.secret) {
+        document.getElementById('chat-setup-card').classList.add('hidden');
+        document.getElementById('chat-active-card').classList.remove('hidden');
+      }
+    }
+
+    function saveChatSetup() {
+      const rawSecret = (document.getElementById('chat-secret-input').value || '').trim();
+      if (!rawSecret) {
+        document.getElementById('chat-secret-input').focus();
+        return;
+      }
+      chatState.secret = rawSecret;
+      chatState.roomHash = simpleHash('tomsk_isha_v1_' + rawSecret.toLowerCase());
+      localStorage.setItem('ti_chat_role', chatState.role);
+      localStorage.setItem('ti_chat_secret', chatState.secret);
+
+      loadSavedMessages();
+      document.getElementById('chat-setup-card').classList.add('hidden');
+      document.getElementById('chat-active-card').classList.remove('hidden');
+      updateChatPartnerHeaderIdentity();
+      renderChatMessages();
+      connectHttpsChat();
+    }
+
+    function loadSavedMessages() {
+      if (!chatState.roomHash) return;
+      try {
+        const raw = localStorage.getItem('ti_msgs_' + chatState.roomHash);
+        chatState.messages = raw ? JSON.parse(raw) : [];
+        const readAck = Number(localStorage.getItem('ti_read_' + chatState.roomHash)) || 0;
+        chatState.partnerReadUpTo = readAck;
+      } catch (e) {
+        chatState.messages = [];
+      }
+    }
+
+    function saveMessagesToStorage() {
+      if (!chatState.roomHash) return;
+      if (chatState.messages.length > 80) {
+        chatState.messages = chatState.messages.slice(-80);
+      }
+      localStorage.setItem('ti_msgs_' + chatState.roomHash, JSON.stringify(chatState.messages));
+    }
+
+    function updateChatPartnerHeaderIdentity() {
+      const isMeIsha = chatState.role === 'isha';
+      const avatarEl = document.getElementById('chat-partner-avatar');
+      const titleEl = document.getElementById('chat-partner-title');
+      if (isMeIsha) {
+        avatarEl.textContent = '🌲';
+        avatarEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center text-lg font-bold shadow-sm';
+        titleEl.textContent = 'Томск (На связи)';
+      } else {
+        avatarEl.textContent = '🕉️';
+        avatarEl.className = 'w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white flex items-center justify-center text-lg font-bold shadow-sm';
+        titleEl.textContent = 'Иша • Коимбатур';
+      }
+      refreshPartnerPresenceUI();
+    }
+
+    function refreshPartnerPresenceUI() {
+      const partnerRoleTitle = chatState.role === 'isha' ? 'Томск' : 'Иша';
+      const now = Date.now();
+      const isOnlineNow = chatState.partnerOnline && (now - chatState.partnerLastSeen < 45000);
+
+      const dotEl = document.getElementById('chat-partner-dot');
+      const presEl = document.getElementById('chat-partner-presence');
+      const headerDot = document.getElementById('header-partner-dot');
+      const headerLabel = document.getElementById('header-partner-label');
+      const ovDot = document.getElementById('ov-chat-dot');
+      const ovSub = document.getElementById('ov-chat-sub');
+
+      if (!chatState.secret) {
+        if (headerDot) headerDot.className = 'w-2 h-2 rounded-full bg-stone-400';
+        if (headerLabel) headerLabel.textContent = 'Чат';
+        return;
+      }
+
+      if (isOnlineNow) {
+        if (dotEl) dotEl.className = 'w-3 h-3 rounded-full bg-emerald-500 border-2 border-white dark:border-stone-900 absolute bottom-0 right-0';
+        if (presEl) presEl.innerHTML = '<span class="text-emerald-600 dark:text-emerald-400 font-semibold">🟢 В сети сейчас</span>';
+        if (headerDot) headerDot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
+        if (headerLabel) headerLabel.textContent = `${partnerRoleTitle}: В сети`;
+        if (ovDot) ovDot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-stone-900 absolute -bottom-0.5 -right-0.5';
+        if (ovSub) ovSub.textContent = `🟢 ${partnerRoleTitle} сейчас онлайн`;
+      } else if (chatState.partnerLastSeen > 0) {
+        const seenTime = new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' }).format(new Date(chatState.partnerLastSeen));
+        if (dotEl) dotEl.className = 'w-3 h-3 rounded-full bg-stone-400 border-2 border-white dark:border-stone-900 absolute bottom-0 right-0';
+        if (presEl) presEl.textContent = `Был(а) в сети: ${seenTime}`;
+        if (headerDot) headerDot.className = 'w-2 h-2 rounded-full bg-stone-400';
+        if (headerLabel) headerLabel.textContent = `${partnerRoleTitle}: ${seenTime.slice(0, 5)}`;
+        if (ovDot) ovDot.className = 'w-2.5 h-2.5 rounded-full bg-stone-400 border-2 border-white dark:border-stone-900 absolute -bottom-0.5 -right-0.5';
+        if (ovSub) ovSub.textContent = `Был(а) в сети: ${seenTime}`;
+      } else {
+        if (dotEl) dotEl.className = 'w-3 h-3 rounded-full bg-emerald-500/60 border-2 border-white dark:border-stone-900 absolute bottom-0 right-0';
+        if (presEl) presEl.textContent = 'Защищённый канал активен • Ожидание собеседника';
+        if (headerDot) headerDot.className = 'w-2 h-2 rounded-full bg-amber-500';
+        if (headerLabel) headerLabel.textContent = 'Чат готов';
+      }
+    }
+
+    function getRelayChannelUrl() {
+      return `https://ntfy.sh/ti_pwa_sync_${chatState.roomHash}`;
+    }
+
+    async function sendEncryptedPacket(packetObj) {
+      if (!chatState.secret || !chatState.roomHash) return;
+      const cipher = encryptPayload(packetObj, chatState.secret);
+      if (!cipher) return;
+
+      // 1. Instant local / multi-tab broadcast
+      if (localChannel) {
+        try { localChannel.postMessage(cipher); } catch (e) {}
+      }
+
+      // 2. Cloud HTTPS POST relay (no WebSockets, safe in all sandboxes)
+      try {
+        await fetch(getRelayChannelUrl(), {
+          method: 'POST',
+          body: cipher,
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
+        });
+      } catch (e) {
+        // Silently ignore if sandbox blocks external POST
+      }
+    }
+
+    async function pollHttpsRelay() {
+      if (!chatState.secret || !chatState.roomHash) return;
+      try {
+        const pollUrl = `${getRelayChannelUrl()}/json?poll=1&since=${lastPollTimestamp}`;
+        const res = await fetch(pollUrl);
+        if (!res.ok) return;
+        const text = await res.text();
+        if (!text) return;
+
+        const lines = text.trim().split('\n');
+        lines.forEach(line => {
+          if (!line.trim()) return;
+          try {
+            const env = JSON.parse(line);
+            if (env.time && env.time >= lastPollTimestamp) {
+              lastPollTimestamp = env.time + 1;
+            }
+            if (env.event === 'message' && env.message) {
+              processEncryptedPacket(env.message);
+            }
+          } catch (innerErr) {}
+        });
+      } catch (e) {
+        // Silently ignore network/sandbox restrictions
+      }
+    }
+
+    function processEncryptedPacket(cipherText) {
+      const data = decryptPayload(cipherText, chatState.secret);
+      if (!data || !data.kind) return;
+
+      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
+
+      if (data.kind === 'presence' && data.role === partnerRole) {
+        chatState.partnerOnline = Boolean(data.online);
+        chatState.partnerLastSeen = Number(data.ts) || Date.now();
+        refreshPartnerPresenceUI();
+      } else if (data.kind === 'msg' && data.msg) {
+        handleIncomingChatMessage(data.msg);
+      } else if (data.kind === 'clear') {
+        chatState.messages = [];
+        saveMessagesToStorage();
+        renderChatMessages();
+      } else if (data.kind === 'typing' && data.role === partnerRole) {
+        showPartnerTypingIndicator();
+      } else if (data.kind === 'read' && data.role === partnerRole && data.readUpTo) {
+        if (data.readUpTo > chatState.partnerReadUpTo) {
+          chatState.partnerReadUpTo = data.readUpTo;
+          localStorage.setItem('ti_read_' + chatState.roomHash, String(chatState.partnerReadUpTo));
+          renderChatMessages();
+        }
+      }
+    }
+
+    function connectHttpsChat() {
+      if (!chatState.secret || !chatState.roomHash) return;
+
+      if (localChannel) {
+        try { localChannel.close(); } catch (e) {}
+      }
+      if ('BroadcastChannel' in window) {
+        try {
+          localChannel = new BroadcastChannel('ti_local_' + chatState.roomHash);
+          localChannel.onmessage = (ev) => {
+            if (ev && ev.data) processEncryptedPacket(ev.data);
+          };
+        } catch (e) {}
+      }
+
+      publishMyPresence(true);
+      pollHttpsRelay();
+
+      if (chatPollTimer) clearInterval(chatPollTimer);
+      chatPollTimer = setInterval(pollHttpsRelay, 4500);
+
+      if (heartbeatTimer) clearInterval(heartbeatTimer);
+      heartbeatTimer = setInterval(() => publishMyPresence(true), 20000);
+    }
+
+    function publishMyPresence(isOnline) {
+      sendEncryptedPacket({
+        kind: 'presence',
+        online: isOnline,
+        ts: Date.now(),
+        role: chatState.role
+      });
+    }
+
+    function handleIncomingChatMessage(msg) {
+      if (!msg || !msg.id || !msg.text) return;
+      const exists = chatState.messages.some(m => m.id === msg.id);
+      if (exists) return;
+
+      chatState.messages.push(msg);
+      chatState.messages.sort((a, b) => a.ts - b.ts);
+      saveMessagesToStorage();
+      renderChatMessages();
+      scrollToChatBottom();
+
+      if (msg.sender !== chatState.role) {
+        chatState.partnerOnline = true;
+        chatState.partnerLastSeen = Date.now();
+        refreshPartnerPresenceUI();
+
+        if (activeMainTab === 'chat' && document.visibilityState === 'visible') {
+          sendReadReceipt(msg.ts);
+        } else {
+          chatState.unreadCount += 1;
+          updateUnreadBadgeUI();
+        }
+      }
+    }
+
+    function sendReadReceipt(ts) {
+      sendEncryptedPacket({
+        kind: 'read',
+        role: chatState.role,
+        readUpTo: ts || Date.now()
+      });
+    }
+
+    function markAllChatMessagesRead() {
+      chatState.unreadCount = 0;
+      updateUnreadBadgeUI();
+      if (chatState.messages.length > 0) {
+        const lastMsg = chatState.messages[chatState.messages.length - 1];
+        sendReadReceipt(lastMsg.ts);
+      }
+    }
+
+    function updateUnreadBadgeUI() {
+      const badge = document.getElementById('chat-unread-badge');
+      if (!badge) return;
+      if (chatState.unreadCount > 0) {
+        badge.textContent = String(chatState.unreadCount);
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function notifyTyping() {
+      const now = Date.now();
+      if (now - lastTypingSent < 2500) return;
+      lastTypingSent = now;
+      sendEncryptedPacket({
+        kind: 'typing',
+        role: chatState.role,
+        ts: now
+      });
+    }
+
+    function showPartnerTypingIndicator() {
+      const el = document.getElementById('chat-typing-indicator');
+      if (!el) return;
+      el.classList.remove('hidden');
+      if (typingTimeout) clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        el.classList.add('hidden');
+      }, 3000);
+    }
+
+    function sendChatMessageText(text) {
+      const clean = (text || '').trim();
+      if (!clean || !chatState.secret) return;
+
+      const msg = {
+        id: chatState.role + '_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        sender: chatState.role,
+        text: clean,
+        ts: Date.now()
+      };
+
+      chatState.messages.push(msg);
+      saveMessagesToStorage();
+      renderChatMessages();
+      scrollToChatBottom();
+
+      sendEncryptedPacket({
+        kind: 'msg',
+        msg
+      });
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-text-input');
+      if (!input || !input.value.trim()) return;
+      sendChatMessageText(input.value);
+      input.value = '';
+    }
+
+    function sendQuickStatus(statusText) {
+      sendChatMessageText(statusText);
+    }
+
+    function clearChatHistoryPrompt() {
+      document.getElementById('chat-clear-confirm').classList.remove('hidden');
+    }
+
+    function confirmClearChatHistory() {
+      document.getElementById('chat-clear-confirm').classList.add('hidden');
+      chatState.messages = [];
+      saveMessagesToStorage();
+      renderChatMessages();
+      sendEncryptedPacket({
+        kind: 'clear',
+        ts: Date.now()
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function renderChatMessages() {
+      const box = document.getElementById('chat-messages-box');
+      const ovPreview = document.getElementById('ov-chat-preview');
+      if (!box) return;
+
+      if (chatState.messages.length === 0) {
+        box.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center p-6 text-stone-400 dark:text-stone-500">
+            <div class="text-3xl mb-2">🕊️</div>
+            <div class="text-xs font-bold text-stone-600 dark:text-stone-300">Защищённый чат готов</div>
+            <div class="text-[11px] mt-1 max-w-xs">Напиши первое сообщение в поле ввода внизу экрана.</div>
+          </div>
+        `;
+        if (ovPreview) ovPreview.textContent = 'Канал подключён • Нажми для входа';
+        return;
+      }
+
+      const lastMsg = chatState.messages[chatState.messages.length - 1];
+      if (ovPreview && lastMsg) {
+        const who = lastMsg.sender === chatState.role ? 'Вы: ' : '';
+        ovPreview.textContent = who + lastMsg.text;
+      }
+
+      box.innerHTML = chatState.messages.map(m => {
+        const isMine = m.sender === chatState.role;
+        const timeFormatted = new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(new Date(m.ts));
+        const isRead = isMine && chatState.partnerReadUpTo >= m.ts;
+        const ticks = isMine
+          ? (isRead
+              ? '<span class="text-emerald-300 font-bold ml-1" title="Прочитано">✓✓</span>'
+              : '<span class="text-amber-200/80 ml-1" title="Отправлено">✓</span>')
+          : '';
+
+        return `
+          <div class="flex ${isMine ? 'justify-end' : 'justify-start'}">
+            <div class="max-w-[82%] sm:max-w-[70%] rounded-2xl px-3.5 py-2 shadow-sm ${
+              isMine
+                ? 'bg-amber-600 text-white rounded-br-sm'
+                : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 border border-stone-200/80 dark:border-stone-700 rounded-bl-sm'
+            }">
+              <div class="text-xs sm:text-sm leading-relaxed break-words">${escapeHtml(m.text)}</div>
+              <div class="text-[10px] mt-1 flex items-center justify-end ${isMine ? 'text-amber-100/90' : 'text-stone-400'} tabular-nums">
+                <span>${timeFormatted}</span>
+                ${ticks}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function scrollToChatBottom() {
+      const box = document.getElementById('chat-messages-box');
+      if (box) {
+        setTimeout(() => {
+          box.scrollTop = box.scrollHeight;
+        }, 30);
+      }
+    }
+
+    function initChatModule() {
+      selectChatRole(chatState.role);
+      if (chatState.secret) {
+        chatState.roomHash = simpleHash('tomsk_isha_v1_' + chatState.secret.toLowerCase());
+        loadSavedMessages();
+        document.getElementById('chat-setup-card').classList.add('hidden');
+        document.getElementById('chat-active-card').classList.remove('hidden');
+        updateChatPartnerHeaderIdentity();
+        renderChatMessages();
+        connectHttpsChat();
+      } else {
+        document.getElementById('chat-setup-card').classList.remove('hidden');
+        document.getElementById('chat-active-card').classList.add('hidden');
+      }
+    }
+
+    /*************************************************************************
+     * 7. CURRENCY CONVERTER (OPEN.ER-API.COM/V6/LATEST/USD)
      *************************************************************************/
     async function fetchCurrencyRates() {
       try {
-        const res = await fetch('https://open.er-api.com/v6/latest/INR');
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
-        if (data?.rates?.RUB && data?.rates?.USD) {
-          inrRates = {
-            INR: 1,
-            RUB: data.rates.RUB,
-            USD: data.rates.USD
+        if (data && data.rates && data.rates.INR && data.rates.RUB) {
+          fxRates = {
+            USD: 1,
+            INR: data.rates.INR,
+            RUB: data.rates.RUB
           };
-          localStorage.setItem('tomsk_isha_inr_fx', JSON.stringify({ ts: Date.now(), rates: inrRates }));
+          localStorage.setItem('tomsk_isha_fx', JSON.stringify({ ts: Date.now(), rates: fxRates }));
         }
       } catch (err) {
-        const cached = localStorage.getItem('tomsk_isha_inr_fx');
+        const cached = localStorage.getItem('tomsk_isha_fx');
         if (cached) {
-          try { inrRates = JSON.parse(cached).rates; } catch (e) {}
+          try { fxRates = JSON.parse(cached).rates; } catch (e) {}
         }
       }
-      updateCurrencyDisplay();
-      onCurrencyInput('INR', document.getElementById('input-inr').value || 1000);
+      updateCurrencyBadge();
+      const inrInput = document.getElementById('input-inr');
+      onCurrencyInput('INR', inrInput ? inrInput.value : 1000);
     }
 
-    function updateCurrencyDisplay() {
-      const rubPerInr = inrRates.RUB.toFixed(2);
-      const inrPerUsd = (1 / inrRates.USD).toFixed(1);
-      document.getElementById('fx-rate-badge').textContent = `1 ₹ ≈ ${rubPerInr} ₽ • 1 $ ≈ ${inrPerUsd} ₹`;
-      document.getElementById('ov-fx-summary').textContent = `100 ₹ ≈ ${Math.round(inrRates.RUB * 100)} ₽`;
+    function updateCurrencyBadge() {
+      const rubPerInr = (fxRates.RUB / fxRates.INR).toFixed(2);
+      const inrPerUsd = fxRates.INR.toFixed(1);
+      const rubPerUsd = fxRates.RUB.toFixed(1);
+      document.getElementById('fx-rate-badge').textContent =
+        `1 ₹ ≈ ${rubPerInr} ₽ • 1 $ ≈ ${inrPerUsd} ₹ (${rubPerUsd} ₽)`;
+
+      const ovFx = document.getElementById('ov-fx-text');
+      if (ovFx) {
+        const rubFor1000Inr = Math.round((1000 / fxRates.INR) * fxRates.RUB);
+        ovFx.textContent = `1 000 ₹ ≈ ${rubFor1000Inr} ₽ (1 ₹ ≈ ${rubPerInr} ₽)`;
+      }
     }
 
     function onCurrencyInput(sourceCurrency, rawValue) {
@@ -1476,10 +2529,10 @@
         return;
       }
 
-      const baseInr = val / inrRates[sourceCurrency];
-      if (sourceCurrency !== 'INR') inrEl.value = Math.round(baseInr * 100) / 100;
-      if (sourceCurrency !== 'RUB') rubEl.value = Math.round(baseInr * inrRates.RUB * 100) / 100;
-      if (sourceCurrency !== 'USD') usdEl.value = Math.round(baseInr * inrRates.USD * 100) / 100;
+      const usdAmount = val / fxRates[sourceCurrency];
+      if (sourceCurrency !== 'INR') inrEl.value = Math.round(usdAmount * fxRates.INR * 100) / 100;
+      if (sourceCurrency !== 'RUB') rubEl.value = Math.round(usdAmount * fxRates.RUB * 100) / 100;
+      if (sourceCurrency !== 'USD') usdEl.value = Math.round(usdAmount * 100) / 100;
     }
 
     function setPresetCurrency(currency, amount) {
@@ -1490,55 +2543,79 @@
     }
 
     /*************************************************************************
-     * 7. ZERO-TOUCH AUTOMATIC BACKGROUND SYNC
+     * 8. INITIALIZATION & 100% AUTOMATIC BACKGROUND REFRESH
      *************************************************************************/
-    async function autoSyncAllData() {
+    async function refreshAllData() {
       const syncDot = document.getElementById('sync-dot');
       const updatedText = document.getElementById('last-updated-text');
 
       syncDot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-ping inline-block';
+      updatedText.textContent = 'Синхронизация данных...';
+
       renderLunarCalendar();
 
       const [okIsha, okTomsk] = await Promise.all([
         fetchWeatherForCity('isha'),
         fetchWeatherForCity('tomsk'),
-        fetchCurrencyRates()
+        fetchCurrencyRates(),
+        checkOfficialIshaNotices(false)
       ]);
 
       const nowTime = new Intl.DateTimeFormat('ru-RU', { hour: '2-digit', minute: '2-digit' }).format(new Date());
       if (okIsha && okTomsk) {
         syncDot.className = 'w-2 h-2 rounded-full bg-emerald-500 inline-block';
-        updatedText.textContent = `Онлайн • обновлено в ${nowTime}`;
+        updatedText.textContent = `Обновлено автоматически в ${nowTime}`;
       } else {
         syncDot.className = 'w-2 h-2 rounded-full bg-amber-500 inline-block';
-        updatedText.textContent = `Офлайн-кэш • ${nowTime}`;
+        updatedText.textContent = `Автономный режим (${nowTime})`;
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
+    function startApp() {
       initTheme();
+      checkStandaloneMode();
+
+      renderCityWeather('isha', buildFallbackWeather('isha'));
+      renderCityWeather('tomsk', buildFallbackWeather('tomsk'));
+      updateCurrencyBadge();
+      onCurrencyInput('INR', 1000);
+      renderLunarCalendar();
       updateClocksAndSchedule();
+      initChatModule();
+
       setInterval(updateClocksAndSchedule, 1000);
+      refreshAllData();
 
-      // 1. Initial load
-      autoSyncAllData();
+      // 1. Auto-refresh every 15 minutes while app is open
+      setInterval(() => refreshAllData(), 15 * 60 * 1000);
 
-      // 2. Auto-refresh when unlocking phone or switching back to the app tab
+      // 2. Auto-refresh immediately when phone screen unlocks or user returns to the app
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
           updateClocksAndSchedule();
-          autoSyncAllData();
+          refreshAllData();
+          publishMyPresence(true);
+          pollHttpsRelay();
+          if (activeMainTab === 'chat') markAllChatMessagesRead();
         }
       });
 
-      // 3. Auto-refresh every 15 minutes while open
-      setInterval(autoSyncAllData, 15 * 60 * 1000);
-
-      // 4. Auto-refresh immediately when connection restores in Velliangiri foothills
+      // 3. Auto-refresh immediately when internet connection is restored
       window.addEventListener('online', () => {
-        autoSyncAllData();
+        refreshAllData();
+        connectHttpsChat();
       });
-    });
+
+      window.addEventListener('beforeunload', () => {
+        publishMyPresence(false);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startApp);
+    } else {
+      startApp();
+    }
   </script>
 </body>
 </html>

@@ -214,6 +214,241 @@
         </button>
       </section>
 
+      <!-- VISA-RUN COUNTER CARD (MAIN DASHBOARD + SYNC + RULES) -->
+      <section aria-label="Счётчик дней пребывания и виза-рана" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
+        <!-- Top Header Bar -->
+        <div class="px-3.5 sm:px-4 py-3 border-b border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="text-base leading-none">🛂</span>
+            <div>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-stone-900 dark:text-white flex items-center gap-1.5">
+                <span>Контроль визы и виза-рана</span>
+                <span id="visa-sync-pill" class="hidden text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 normal-case">
+                  синхронизировано
+                </span>
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="toggleVisaRules()" id="visa-rules-btn"
+              class="px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/15 text-stone-700 dark:text-stone-300 text-[11px] font-semibold transition flex items-center gap-1">
+              <span>📘</span> <span>Правила и нюансы</span>
+            </button>
+            <button type="button" onclick="toggleVisaEditor()" id="visa-edit-btn"
+              class="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-[11px] font-bold transition flex items-center gap-1">
+              <span>⚙️</span> <span id="visa-edit-btn-label">Настроить</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. Empty State (shown if no entry date is set yet) -->
+        <div id="visa-empty-state" class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-amber-500/5 via-transparent to-transparent">
+          <div class="space-y-0.5">
+            <div class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white">
+              Счётчик дней пребывания в Индии ещё не запущен
+            </div>
+            <p class="text-xs text-stone-500 dark:text-stone-400">
+              Укажи дату штампа прилёта и лимит дней (например, 90) — приложение посчитает крайний и безопасный день вылета по времени Индии.
+            </p>
+          </div>
+          <button type="button" onclick="toggleVisaEditor(true)"
+            class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-sm shrink-0 transition">
+            Запустить счётчик →
+          </button>
+        </div>
+
+        <!-- 2. Active Visa Counter Display -->
+        <div id="visa-active-display" class="hidden p-3.5 sm:p-4 space-y-3">
+          <!-- Traffic Light Banner -->
+          <div id="visa-traffic-banner" class="px-3 py-2 rounded-xl border flex items-center justify-between gap-2 text-xs font-semibold">
+            <div class="flex items-center gap-2 min-w-0">
+              <span id="visa-traffic-dot" class="text-sm shrink-0">🟢</span>
+              <span id="visa-traffic-text" class="truncate">Спокойный режим • Запас времени достаточный</span>
+            </div>
+            <span id="visa-day-progress-badge" class="text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-white/70 dark:bg-stone-900/70 shrink-0 tabular-nums">
+              День 1 из 90
+            </span>
+          </div>
+
+          <!-- Main Countdown Row + Progress Bar -->
+          <div class="space-y-2">
+            <div class="flex flex-wrap items-baseline justify-between gap-2">
+              <div>
+                <div class="text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                  До крайнего дня выезда осталось:
+                </div>
+                <div class="flex items-baseline gap-2 mt-0.5">
+                  <span id="visa-days-left-num" class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-stone-900 dark:text-white">
+                    89 дней
+                  </span>
+                  <span id="visa-days-left-sub" class="text-xs text-stone-500 dark:text-stone-400">
+                    (включая сегодня: 90 дн.)
+                  </span>
+                </div>
+              </div>
+
+              <button type="button" onclick="toggleVisaEditor(true)"
+                class="text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline">
+                Новый штамп / Изменить дату →
+              </button>
+            </div>
+
+            <!-- Visual Progress Bar -->
+            <div class="w-full h-2.5 rounded-full bg-stone-200 dark:bg-stone-800 overflow-hidden">
+              <div id="visa-progress-bar" class="h-full rounded-full bg-emerald-500 transition-all duration-500" style="width: 10%"></div>
+            </div>
+          </div>
+
+          <!-- 3 Key Dates Grid (Entry, Safe Departure, Hard Deadline) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <!-- Entry Date -->
+            <div class="p-2.5 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
+                🛬 Дата въезда (1-й день)
+              </div>
+              <div id="visa-entry-date-text" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5 capitalize">
+                --
+              </div>
+              <div id="visa-rule-mode-text" class="text-[11px] text-stone-500 dark:text-stone-400">
+                По штампу прилёта (IST)
+              </div>
+            </div>
+
+            <!-- Recommended Safe Exit (-2 days buffer) -->
+            <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
+                ✈️ Безопасный вылет (запас 2 дня)
+              </div>
+              <div id="visa-safe-date-text" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white mt-0.5 capitalize">
+                --
+              </div>
+              <div class="text-[11px] text-emerald-800/80 dark:text-emerald-300/80">
+                Рекомендуется брать билет до этой даты
+              </div>
+            </div>
+
+            <!-- Hard Legal Deadline -->
+            <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
+              <div class="text-[10px] font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+                🛂 Крайний срок выезда (<span id="visa-total-days-label">90</span>-й день)
+              </div>
+              <div id="visa-final-date-text" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white mt-0.5 capitalize">
+                --
+              </div>
+              <div class="text-[11px] text-amber-900/80 dark:text-amber-300/80">
+                Пройти границу до 23:59 по Индии
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Collapsible Setup / Restart Editor Form -->
+        <div id="visa-editor-box" class="hidden p-4 bg-stone-50/90 dark:bg-stone-950/70 border-t border-stone-200 dark:border-stone-800 space-y-3.5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white">
+              ⚙️ Настройка или перезапуск счётчика визы
+            </h3>
+            <button type="button" onclick="toggleVisaEditor(false)" class="text-xs text-stone-500 hover:text-stone-800 dark:hover:text-stone-200">
+              Закрыть ✕
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Entry Date Picker -->
+            <div>
+              <label for="visa-input-date" class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
+                1. День, месяц и год начала пребывания (штамп въезда):
+              </label>
+              <div class="flex items-center gap-2">
+                <input id="visa-input-date" type="date"
+                  class="flex-1 px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs sm:text-sm font-bold text-stone-900 dark:text-white focus:outline-none focus:border-amber-500" />
+                <button type="button" onclick="setVisaEntryToday()"
+                  class="px-3 py-2 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-xs font-bold shrink-0 transition">
+                  Сегодня
+                </button>
+              </div>
+            </div>
+
+            <!-- Allowed Days Input & Presets -->
+            <div>
+              <label for="visa-input-days" class="block text-xs font-bold text-stone-700 dark:text-stone-300 mb-1">
+                2. Разрешённое количество дней подряд:
+              </label>
+              <div class="flex items-center gap-1.5">
+                <input id="visa-input-days" type="number" min="1" max="3650" value="90"
+                  class="w-24 px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white focus:outline-none focus:border-amber-500 tabular-nums" />
+                <button type="button" onclick="setVisaPresetDays(30)" class="px-2.5 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 hover:border-amber-500 text-xs font-bold text-stone-700 dark:text-stone-300 transition">30 дн.</button>
+                <button type="button" onclick="setVisaPresetDays(90)" class="px-2.5 py-2 rounded-xl bg-amber-500/15 border border-amber-500/40 text-xs font-bold text-amber-800 dark:text-amber-300 transition">90 дн.</button>
+                <button type="button" onclick="setVisaPresetDays(180)" class="px-2.5 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 hover:border-amber-500 text-xs font-bold text-stone-700 dark:text-stone-300 transition">180 дн.</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Border Math Checkbox -->
+          <label class="flex items-start gap-2.5 p-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 cursor-pointer">
+            <input id="visa-input-inclusive" type="checkbox" checked class="mt-0.5 rounded border-stone-300 text-amber-600 focus:ring-amber-500" />
+            <span class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+              <strong>Считать день прилёта как полный 1-й день</strong> (рекомендуется по правилам миграционной службы Индии: и день въезда, и день выезда входят в 90 дней).
+            </span>
+          </label>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <button type="button" onclick="saveVisaSettings()"
+              class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold shadow-sm transition">
+              ✓ Сохранить и обновить счётчик
+            </button>
+            <button type="button" onclick="resetVisaCounter()"
+              class="px-3 py-2 rounded-xl bg-stone-200/80 dark:bg-stone-800 hover:bg-rose-500/15 hover:text-rose-600 text-stone-600 dark:text-stone-400 text-xs font-semibold transition">
+              Сбросить счётчик
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Collapsible Simple & Clear Rules / Border Nuances Guide -->
+        <div id="visa-rules-box" class="hidden p-4 bg-stone-50/90 dark:bg-stone-950/70 border-t border-stone-200 dark:border-stone-800 space-y-3 text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white flex items-center gap-1.5">
+              <span>📘</span> <span>Как работает счётчик и правила подсчёта дней в Индии</span>
+            </h3>
+            <button type="button" onclick="toggleVisaRules(false)" class="text-xs text-stone-500 hover:text-stone-800 dark:hover:text-stone-200">
+              Скрыть ✕
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
+              <div class="font-bold text-amber-800 dark:text-amber-400">1. День прилёта = День №1</div>
+              <p>
+                В Индии дни считаются не по 24 часа, а календарными сутками по индийскому времени (UTC+5:30). Даже если самолёт приземлился в <strong>23:50</strong> и тебе поставили штамп за 10 минут до полуночи — этот день уже считается полным <strong>первым днём</strong>. Поэтому при визе на 90 дней нельзя просто прибавить 90 к дате прилёта: крайним днём будет 90-й день, включая сам день въезда.
+              </p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
+              <div class="font-bold text-amber-800 dark:text-amber-400">2. Ночные рейсы и штамп вылета</div>
+              <p>
+                День выезда фиксируется в тот момент, когда пограничник ставит <strong>выездной штамп</strong> в паспорт, а не по времени приезда в аэропорт. Если твой рейс вылетает в 02:00 ночи, а паспортный контроль ты проходишь после 00:00 — в базе пограничников это уже следующие сутки.
+              </p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
+              <div class="font-bold text-emerald-700 dark:text-emerald-400">3. Зачем нужна «Безопасная дата» (-2 дня)</div>
+              <p>
+                Вылетать ровно в 90-й день рискованно: рейс из Коимбатура могут задержать или перенести за полночь. В Индии даже за 1 лишний день (оверстей) нельзя просто заплатить штраф в аэропорту — пограничники требуют электронное разрешение от <strong>FRRO</strong> (оформляется несколько дней), из-за чего можно не улететь своим рейсом. Бери билеты на «Безопасную дату» с запасом в 2–3 дня.
+              </p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
+              <div class="font-bold text-sky-700 dark:text-sky-400">4. Как пользоваться и перезапускать</div>
+              <p>
+                Нажми <strong>«⚙️ Настроить»</strong>, выбери дату въезда по штампу в паспорте и срок (30, 90 или 180 дней). Когда ты слетаешь на виза-ран и вернёшься обратно в Индию с новым штампом — просто открой настройку, нажми кнопку <strong>«Сегодня»</strong> и <strong>«Сохранить»</strong>. Счётчик сразу перезапустится и автоматически обновится на обоих ваших телефонах.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Live Ashram Status Card (Now & Next) -->
       <section aria-label="Сейчас в ашраме Иша" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm p-3.5 sm:p-4 space-y-2.5">
         <div class="flex items-center justify-between">
@@ -1389,6 +1624,7 @@
       }
 
       renderAshramSchedule(isha.totalMinutes);
+      renderVisaCounter(isha.isoDate);
       refreshPartnerPresenceUI();
     }
 
@@ -2231,6 +2467,8 @@
           localStorage.setItem('ti_read_' + chatState.roomHash, String(chatState.partnerReadUpTo));
           renderChatMessages();
         }
+      } else if (data.kind === 'visa' && data.visa) {
+        handleIncomingVisaSync(data.visa);
       }
     }
 
@@ -2266,6 +2504,278 @@
         ts: Date.now(),
         role: chatState.role
       });
+      if (isOnline && visaState.entryDate && visaState.updatedAt > 0) {
+        sendEncryptedPacket({
+          kind: 'visa',
+          visa: visaState
+        });
+      }
+    }
+
+    /*************************************************************************
+     * 6B. VISA-RUN COUNTER (INDIAN BORDER MATH + TRAFFIC LIGHT + AUTO-SYNC)
+     *************************************************************************/
+    let visaState = {
+      entryDate: '',
+      totalDays: 90,
+      includeEntryDay: true,
+      updatedAt: 0
+    };
+
+    function loadVisaState() {
+      try {
+        const raw = localStorage.getItem('ti_visa_state_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            visaState = {
+              entryDate: parsed.entryDate || '',
+              totalDays: Number(parsed.totalDays) || 90,
+              includeEntryDay: parsed.includeEntryDay !== false,
+              updatedAt: Number(parsed.updatedAt) || 0
+            };
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveVisaStateLocal() {
+      localStorage.setItem('ti_visa_state_v1', JSON.stringify(visaState));
+    }
+
+    function addDaysToISO(isoDateStr, daysToAdd) {
+      const [y, m, d] = isoDateStr.split('-').map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d + daysToAdd, 12, 0, 0));
+      return dt.toISOString().slice(0, 10);
+    }
+
+    function formatRussianDateWithYear(isoDateStr) {
+      const [y, m, d] = isoDateStr.split('-').map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+      return new Intl.DateTimeFormat('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        weekday: 'short'
+      }).format(dt);
+    }
+
+    function pluralizeDaysWord(n) {
+      const abs = Math.abs(n);
+      const mod10 = abs % 10;
+      const mod100 = abs % 100;
+      if (mod10 === 1 && mod100 !== 11) return 'день';
+      if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return 'дня';
+      return 'дней';
+    }
+
+    function toggleVisaEditor(forceState) {
+      const box = document.getElementById('visa-editor-box');
+      if (!box) return;
+      const shouldShow = typeof forceState === 'boolean' ? forceState : box.classList.contains('hidden');
+      if (shouldShow) {
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        document.getElementById('visa-input-date').value = visaState.entryDate || ishaToday;
+        document.getElementById('visa-input-days').value = visaState.totalDays || 90;
+        document.getElementById('visa-input-inclusive').checked = visaState.includeEntryDay !== false;
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function toggleVisaRules(forceState) {
+      const box = document.getElementById('visa-rules-box');
+      if (!box) return;
+      const shouldShow = typeof forceState === 'boolean' ? forceState : box.classList.contains('hidden');
+      if (shouldShow) {
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function setVisaEntryToday() {
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      const input = document.getElementById('visa-input-date');
+      if (input) input.value = ishaToday;
+    }
+
+    function setVisaPresetDays(days) {
+      const input = document.getElementById('visa-input-days');
+      if (input) input.value = days;
+    }
+
+    function saveVisaSettings() {
+      const dateVal = (document.getElementById('visa-input-date').value || '').trim();
+      const daysVal = parseInt(document.getElementById('visa-input-days').value, 10);
+      const incVal = document.getElementById('visa-input-inclusive').checked;
+
+      if (!dateVal || isNaN(daysVal) || daysVal < 1) {
+        return;
+      }
+
+      visaState = {
+        entryDate: dateVal,
+        totalDays: Math.min(3650, Math.max(1, daysVal)),
+        includeEntryDay: incVal,
+        updatedAt: Date.now()
+      };
+
+      saveVisaStateLocal();
+      toggleVisaEditor(false);
+      renderVisaCounter();
+
+      // Sync automatically to partner phone if chat secret is set
+      sendEncryptedPacket({
+        kind: 'visa',
+        visa: visaState
+      });
+    }
+
+    function resetVisaCounter() {
+      visaState = {
+        entryDate: '',
+        totalDays: 90,
+        includeEntryDay: true,
+        updatedAt: Date.now()
+      };
+      saveVisaStateLocal();
+      toggleVisaEditor(false);
+      renderVisaCounter();
+
+      sendEncryptedPacket({
+        kind: 'visa',
+        visa: visaState
+      });
+    }
+
+    function handleIncomingVisaSync(remoteVisa) {
+      if (!remoteVisa || typeof remoteVisa.updatedAt !== 'number') return;
+      if (remoteVisa.updatedAt > (visaState.updatedAt || 0)) {
+        visaState = {
+          entryDate: remoteVisa.entryDate || '',
+          totalDays: Number(remoteVisa.totalDays) || 90,
+          includeEntryDay: remoteVisa.includeEntryDay !== false,
+          updatedAt: remoteVisa.updatedAt
+        };
+        saveVisaStateLocal();
+        renderVisaCounter();
+      }
+    }
+
+    function renderVisaCounter(passedIshaISO) {
+      const emptyEl = document.getElementById('visa-empty-state');
+      const activeEl = document.getElementById('visa-active-display');
+      const editBtnLabel = document.getElementById('visa-edit-btn-label');
+      const syncPill = document.getElementById('visa-sync-pill');
+
+      if (!emptyEl || !activeEl) return;
+
+      if (syncPill) {
+        if (chatState.secret && visaState.entryDate) {
+          syncPill.classList.remove('hidden');
+        } else {
+          syncPill.classList.add('hidden');
+        }
+      }
+
+      if (!visaState.entryDate) {
+        emptyEl.classList.remove('hidden');
+        activeEl.classList.add('hidden');
+        if (editBtnLabel) editBtnLabel.textContent = 'Настроить';
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      activeEl.classList.remove('hidden');
+      if (editBtnLabel) editBtnLabel.textContent = 'Изменить';
+
+      const todayISO = passedIshaISO || getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      const totalDays = Math.max(1, Number(visaState.totalDays) || 90);
+      const offsetDays = visaState.includeEntryDay ? (totalDays - 1) : totalDays;
+
+      const finalExitISO = addDaysToISO(visaState.entryDate, offsetDays);
+      const safeExitISO = addDaysToISO(finalExitISO, -2);
+
+      const daysSinceEntry = daysBetweenISO(visaState.entryDate, todayISO);
+      const currentDayNumber = visaState.includeEntryDay ? (daysSinceEntry + 1) : daysSinceEntry;
+      const daysRemainingAfterToday = daysBetweenISO(todayISO, finalExitISO);
+
+      // Update labels
+      document.getElementById('visa-entry-date-text').textContent = formatRussianDateWithYear(visaState.entryDate);
+      document.getElementById('visa-safe-date-text').textContent = formatRussianDateWithYear(safeExitISO);
+      document.getElementById('visa-final-date-text').textContent = formatRussianDateWithYear(finalExitISO);
+      document.getElementById('visa-total-days-label').textContent = String(totalDays);
+      document.getElementById('visa-rule-mode-text').textContent = visaState.includeEntryDay
+        ? 'День прилёта учтён как 1-й день (IST)'
+        : 'Без учёта дня прилёта (IST)';
+
+      const bannerEl = document.getElementById('visa-traffic-banner');
+      const dotEl = document.getElementById('visa-traffic-dot');
+      const textEl = document.getElementById('visa-traffic-text');
+      const dayBadgeEl = document.getElementById('visa-day-progress-badge');
+      const leftNumEl = document.getElementById('visa-days-left-num');
+      const leftSubEl = document.getElementById('visa-days-left-sub');
+      const barEl = document.getElementById('visa-progress-bar');
+
+      if (daysSinceEntry < 0) {
+        // Trip starts in the future
+        const daysUntilStart = Math.abs(daysSinceEntry);
+        dayBadgeEl.textContent = `Старт через ${daysUntilStart} дн.`;
+        leftNumEl.textContent = `${totalDays} ${pluralizeDaysWord(totalDays)}`;
+        leftSubEl.textContent = `(поездка ещё не началась)`;
+        barEl.style.width = '2%';
+        barEl.className = 'h-full rounded-full bg-emerald-500 transition-all duration-500';
+        bannerEl.className = 'px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 flex items-center justify-between gap-2 text-xs font-semibold';
+        dotEl.textContent = '🟢';
+        textEl.textContent = 'Дата будущего заезда сохранена';
+        return;
+      }
+
+      const clampedCurrentDay = Math.min(totalDays, Math.max(1, currentDayNumber));
+      dayBadgeEl.textContent = `День ${ currentDayNumber } из ${ totalDays }`;
+
+      const pct = Math.min(100, Math.max(3, Math.round((clampedCurrentDay / totalDays) * 100)));
+      barEl.style.width = `${pct}%`;
+
+      if (daysRemainingAfterToday < 0) {
+        const overDays = Math.abs(daysRemainingAfterToday);
+        leftNumEl.textContent = `Срок истёк (${overDays} ${pluralizeDaysWord(overDays)} назад)`;
+        leftSubEl.textContent = 'Обнови дату после нового въезда';
+        barEl.className = 'h-full rounded-full bg-rose-600 transition-all duration-500';
+        bannerEl.className = 'px-3 py-2 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-900 dark:text-rose-200 flex items-center justify-between gap-2 text-xs font-semibold';
+        dotEl.textContent = '🔴';
+        textEl.textContent = 'Срок пребывания истёк — нажми «Изменить» для ввода нового штампа';
+      } else if (daysRemainingAfterToday === 0) {
+        leftNumEl.textContent = 'Сегодня крайний день!';
+        leftSubEl.textContent = `(идёт ${currentDayNumber}-й день из ${totalDays})`;
+        barEl.className = 'h-full rounded-full bg-rose-600 transition-all duration-500';
+        bannerEl.className = 'px-3 py-2 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-900 dark:text-rose-200 flex items-center justify-between gap-2 text-xs font-semibold';
+        dotEl.textContent = '🔴';
+        textEl.textContent = 'Внимание: сегодня крайний день прохождения границы (до 23:59 IST)';
+      } else {
+        const inclToday = daysRemainingAfterToday + 1;
+        leftNumEl.textContent = `${daysRemainingAfterToday} ${pluralizeDaysWord(daysRemainingAfterToday)}`;
+        leftSubEl.textContent = `(включая сегодня: ${inclToday} дн. • идёт ${currentDayNumber}-й день)`;
+
+        if (daysRemainingAfterToday > 15) {
+          barEl.className = 'h-full rounded-full bg-emerald-500 transition-all duration-500';
+          bannerEl.className = 'px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 flex items-center justify-between gap-2 text-xs font-semibold';
+          dotEl.textContent = '🟢';
+          textEl.textContent = 'Спокойный режим • До виза-рана достаточно времени';
+        } else if (daysRemainingAfterToday >= 7) {
+          barEl.className = 'h-full rounded-full bg-amber-500 transition-all duration-500';
+          bannerEl.className = 'px-3 py-2 rounded-xl border border-amber-500/40 bg-amber-500/15 text-amber-950 dark:text-amber-200 flex items-center justify-between gap-2 text-xs font-semibold';
+          dotEl.textContent = '🟡';
+          textEl.textContent = 'Пора брать билеты на виза-ран (рекомендуемый вылет ' + formatRussianDate(safeExitISO) + ')';
+        } else {
+          barEl.className = 'h-full rounded-full bg-rose-500 transition-all duration-500';
+          bannerEl.className = 'px-3 py-2 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-900 dark:text-rose-200 flex items-center justify-between gap-2 text-xs font-semibold';
+          dotEl.textContent = '🔴';
+          textEl.textContent = 'Скоро выезд! Не откладывай вылет на последний день';
+        }
+      }
     }
 
     function handleIncomingChatMessage(msg) {
@@ -2574,6 +3084,7 @@
     function startApp() {
       initTheme();
       checkStandaloneMode();
+      loadVisaState();
 
       renderCityWeather('isha', buildFallbackWeather('isha'));
       renderCityWeather('tomsk', buildFallbackWeather('tomsk'));
@@ -2581,6 +3092,7 @@
       onCurrencyInput('INR', 1000);
       renderLunarCalendar();
       updateClocksAndSchedule();
+      renderVisaCounter();
       initChatModule();
 
       setInterval(updateClocksAndSchedule, 1000);

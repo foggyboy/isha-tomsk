@@ -2596,9 +2596,16 @@
      * 10. PRIVATE ENCRYPTED MESSENGER (HTTPS SYNC + LOCAL BROADCAST)
      *************************************************************************/
     const CHAT_STORAGE_KEY = 'tomsk_isha_chat_v2';
+    const LEGACY_CHAT_KEYS = [
+      'tomsk_isha_chat_v1',
+      'tomsk_isha_chat',
+      'isha_tomsk_chat',
+      'tomsk_isha_messenger'
+    ];
     let chatState = {
       role: 'isha',
       secret: '',
+      clearedAt: 0,
       messages: [],
       presence: {
         isha: { lastSeen: 0, typingUntil: 0 },
@@ -2607,17 +2614,53 @@
     };
     let localChannel = null;
 
+    function readCookieBackup(name) {
+      try {
+        const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[1]) : '';
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function writeCookieBackup(name, val) {
+      try {
+        document.cookie = `${name}=${encodeURIComponent(val)}; path=/; max-age=31536000; SameSite=Lax`;
+      } catch (e) {}
+    }
+
     function loadChatState() {
       try {
-        const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+        let raw = localStorage.getItem(CHAT_STORAGE_KEY);
+
+        // Migrate from any previous storage key if needed
+        if (!raw) {
+          for (const k of LEGACY_CHAT_KEYS) {
+            const legacyRaw = localStorage.getItem(k);
+            if (legacyRaw) {
+              raw = legacyRaw;
+              break;
+            }
+          }
+        }
+
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && typeof parsed === 'object') {
             chatState.role = parsed.role || 'isha';
-            chatState.secret = parsed.secret || '';
+            chatState.secret = parsed.secret || parsed.passphrase || '';
+            chatState.clearedAt = Number(parsed.clearedAt) || 0;
             chatState.messages = Array.isArray(parsed.messages) ? parsed.messages : [];
             if (parsed.presence) chatState.presence = parsed.presence;
           }
+        }
+
+        // Fallback to cookie backup if localStorage was reset
+        if (!chatState.secret) {
+          const cookieSecret = readCookieBackup('ti_chat_secret');
+          const cookieRole = readCookieBackup('ti_chat_role');
+          if (cookieSecret) chatState.secret = cookieSecret;
+          if (cookieRole === 'tomsk' || cookieRole === 'isha') chatState.role = cookieRole;
         }
       } catch (e) {}
 
@@ -2626,6 +2669,7 @@
       if (secInput && chatState.secret) secInput.value = chatState.secret;
 
       if (chatState.secret) {
+        saveChatStateToStorage();
         showActiveChatUI();
         initLocalBroadcastChannel();
         pullRoomSyncPayload();
@@ -2636,7 +2680,13 @@
 
     function saveChatStateToStorage() {
       try {
-        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatState));
+        const serialized = JSON.stringify(chatState);
+        localStorage.setItem(CHAT_STORAGE_KEY, serialized);
+        localStorage.setItem('tomsk_isha_chat_v1', serialized);
+        if (chatState.secret) {
+          writeCookieBackup('ti_chat_secret', chatState.secret);
+          writeCookieBackup('ti_chat_role', chatState.role);
+        }
       } catch (e) {}
     }
 
@@ -2655,7 +2705,7 @@
       }
     }
 
-    function saveChatSetup() {
+    async function saveChatSetup() {
       const secInput = document.getElementById('chat-secret-input');
       const secret = (secInput ? secInput.value : '').trim();
       if (!secret) {
@@ -2670,7 +2720,10 @@
       saveChatStateToStorage();
       showActiveChatUI();
       initLocalBroadcastChannel();
-      pushRoomSyncPayload();
+
+      // IMPORTANT: Pull existing history from the cloud FIRST before pushing our state
+      await pullRoomSyncPayload();
+      await pushRoomSyncPayload();
     }
 
     function openChatSettings() {
@@ -2732,6 +2785,12 @@
       if (!incoming || typeof incoming !== 'object') return;
       let changed = false;
 
+      if (incoming.clearedAt && Number(incoming.clearedAt) > (chatState.clearedAt || 0)) {
+        chatState.clearedAt = Number(incoming.clearedAt);
+        chatState.messages = chatState.messages.filter(m => m.ts > chatState.clearedAt);
+        changed = true;
+      }
+
       if (incoming.presence) {
         ['isha', 'tomsk'].forEach(r => {
           if (incoming.presence[r] && incoming.presence[r].lastSeen > (chatState.presence[r]?.lastSeen || 0)) {
@@ -2743,8 +2802,11 @@
 
       if (Array.isArray(incoming.messages)) {
         const map = new Map();
-        chatState.messages.forEach(m => map.set(m.id, m));
+        chatState.messages.forEach(m => {
+          if (m.ts > (chatState.clearedAt || 0)) map.set(m.id, m);
+        });
         incoming.messages.forEach(m => {
+          if (!m || !m.id || m.ts <= (chatState.clearedAt || 0)) return;
           const existing = map.get(m.id);
           if (!existing) {
             map.set(m.id, m);
@@ -2754,7 +2816,7 @@
             changed = true;
           }
         });
-        chatState.messages = Array.from(map.values()).sort((a, b) => a.ts - b.ts).slice(-100);
+        chatState.messages = Array.from(map.values()).sort((a, b) => a.ts - b.ts).slice(-120);
       }
 
       if (incoming.visa && incoming.visa.updatedAt > (visaState.updatedAt || 0)) {
@@ -2785,6 +2847,7 @@
       saveChatStateToStorage();
 
       const payload = {
+        clearedAt: chatState.clearedAt || 0,
         presence: chatState.presence,
         messages: chatState.messages.slice(-80),
         visa: visaState
@@ -2807,7 +2870,7 @@
       if (!chatState.secret) return;
       try {
         const roomKey = deriveRoomId(chatState.secret);
-        const res = await fetch(`https://ntfy.sh/${roomKey}/json?poll=1&since=24h`);
+        const res = await fetch(`https://ntfy.sh/${roomKey}/json?poll=1&since=all`);
         if (!res.ok) return;
         const text = await res.text();
         const lines = text.trim().split('\n');
@@ -2992,6 +3055,7 @@
     }
 
     function confirmClearChatHistory() {
+      chatState.clearedAt = Date.now();
       chatState.messages = [];
       saveChatStateToStorage();
       renderChatMessages();

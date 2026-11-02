@@ -56,7 +56,7 @@
 
 <body class="bg-stone-100 text-stone-900 dark:bg-stone-950 dark:text-stone-100 font-sans antialiased selection:bg-amber-500 selection:text-white transition-colors duration-200 min-h-screen pb-24">
 
-  <!-- TOP NAVIGATION / HEADER (Clean Mobile UI) -->
+  <!-- TOP NAVIGATION / HEADER -->
   <header class="sticky top-0 z-40 backdrop-blur-md bg-stone-100/90 dark:bg-stone-950/90 border-b border-stone-200/80 dark:border-stone-800/80">
     <div class="max-w-3xl mx-auto px-3.5 sm:px-6 py-2.5 flex items-center justify-between gap-2">
       <!-- Brand / Title -->
@@ -80,7 +80,7 @@
 
       <!-- Right Action Buttons -->
       <div class="flex items-center gap-1.5 shrink-0">
-        <!-- Partner Live Presence Pill (clicks through to Chat tab) -->
+        <!-- Partner Live Presence Pill -->
         <button type="button" onclick="switchMainTab('chat')" id="header-partner-pill" title="Открыть наш чат"
           class="p-1.5 px-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-amber-500/50 active:scale-95 transition flex items-center gap-1.5 text-xs font-semibold shadow-sm">
           <span id="header-partner-dot" class="w-2 h-2 rounded-full bg-stone-400"></span>
@@ -116,7 +116,7 @@
     <!-- =================================================================== -->
     <div id="tab-overview" class="space-y-3.5">
 
-      <!-- Dual Live Clocks (Clean, no connection status banner) -->
+      <!-- Dual Live Clocks -->
       <section aria-label="Точное время в Ише и Томске" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden">
         <div class="grid grid-cols-2 divide-x divide-stone-200 dark:divide-stone-800">
           <!-- Isha / Coimbatore Clock -->
@@ -134,7 +134,7 @@
                 --:--:--
               </div>
               <div id="date-isha" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5 capitalize">
-                --
+                Загрузка даты...
               </div>
             </div>
             <div class="text-[11px] font-medium text-stone-500 dark:text-stone-400 flex items-center gap-1">
@@ -157,7 +157,7 @@
                 --:--:--
               </div>
               <div id="date-tomsk" class="text-xs text-stone-500 dark:text-stone-400 mt-0.5 capitalize">
-                --
+                Загрузка даты...
               </div>
             </div>
             <div class="text-[11px] font-medium text-stone-500 dark:text-stone-400 flex items-center gap-1">
@@ -183,7 +183,7 @@
             <div id="ov-isha-desc" class="text-xs font-medium text-stone-600 dark:text-stone-300 truncate mt-0.5">Переменная облачность</div>
           </div>
           <div id="ov-isha-uv-badge" class="mt-1 mb-1.5 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 w-fit max-w-full truncate">
-            ☀️ УФ: расчёт...
+            ☀️ УФ: 7 (Высокий)
           </div>
           <div class="flex items-center justify-between text-[11px] text-stone-400 dark:text-stone-500 pt-1 border-t border-stone-100 dark:border-stone-800/80 w-full">
             <span id="ov-isha-minmax">Макс +30° / Мин +21°</span>
@@ -205,7 +205,7 @@
             <div id="ov-tomsk-desc" class="text-xs font-medium text-stone-600 dark:text-stone-300 truncate mt-0.5">Пасмурно</div>
           </div>
           <div id="ov-tomsk-uv-badge" class="mt-1 mb-1.5 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-lg bg-sky-500/15 text-sky-800 dark:text-sky-300 w-fit max-w-full truncate">
-            ☀️ УФ: низкий
+            ☀️ УФ: 1 (Низкий)
           </div>
           <div class="flex items-center justify-between text-[11px] text-stone-400 dark:text-stone-500 pt-1 border-t border-stone-100 dark:border-stone-800/80 w-full">
             <span id="ov-tomsk-minmax">Макс 0° / Мин -6°</span>
@@ -495,19 +495,24 @@
         </div>
       </section>
 
-      <!-- Maha Shivaratri Compact Countdown & Progress Bar Card -->
-      <section aria-label="Отсчёт до ночи Махашиваратри" class="bg-white dark:bg-stone-900 rounded-2xl border border-indigo-500/30 dark:border-indigo-500/25 shadow-sm overflow-hidden">
-        <div class="p-3.5 sm:p-4 bg-gradient-to-r from-indigo-500/10 via-purple-500/5 to-amber-500/10 space-y-2.5">
+      <!-- Maha Shivaratri Interactive Countdown & Progress Bar Card (Clickable & Expandable) -->
+      <section aria-label="Отсчёт до ночи Махашиваратри" class="bg-white dark:bg-stone-900 rounded-2xl border border-indigo-500/35 dark:border-indigo-500/30 shadow-sm overflow-hidden">
+        <button type="button" onclick="toggleMsrDetails()" class="w-full text-left p-3.5 sm:p-4 bg-gradient-to-r from-indigo-500/10 via-purple-500/5 to-amber-500/10 hover:from-indigo-500/15 transition space-y-2.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2 min-w-0">
-              <div class="w-8 h-8 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-base shrink-0">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-lg shrink-0">
                 🔱
               </div>
               <div class="min-w-0">
-                <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
-                  Главное событие года у Адийоги
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
+                    Главное событие года у Адийоги
+                  </span>
+                  <span id="msr-expand-hint" class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-700 dark:text-indigo-300">
+                    Подробнее ▾
+                  </span>
                 </div>
-                <h2 id="msr-title" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white truncate">
+                <h2 id="msr-title" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white truncate mt-0.5">
                   Великая ночь Махашиваратри • 6 марта 2027
                 </h2>
               </div>
@@ -522,16 +527,43 @@
           </div>
 
           <!-- Progress Bar -->
-          <div class="space-y-1">
-            <div class="w-full h-2 rounded-full bg-stone-200/90 dark:bg-stone-800 overflow-hidden">
-              <div id="msr-progress-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-500 transition-all duration-700" style="width: 70%"></div>
+          <div class="space-y-1.5">
+            <div class="w-full h-2.5 rounded-full bg-stone-200/90 dark:bg-stone-800 overflow-hidden">
+              <div id="msr-progress-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-500 transition-all duration-700" style="width: 72%"></div>
             </div>
-            <div class="flex flex-wrap items-center justify-between gap-1 text-[11px] text-stone-500 dark:text-stone-400">
+            <div class="flex flex-wrap items-center justify-between gap-1 text-[11px] text-stone-600 dark:text-stone-400">
               <span id="msr-sub-note">Ночная медитация с 18:00 до 06:00 утра (IST)</span>
-              <span id="msr-masa-text" class="font-medium text-indigo-700 dark:text-indigo-300">
+              <span id="msr-masa-text" class="font-semibold text-indigo-700 dark:text-indigo-300">
                 🌙 Ближайший Маса Шиваратри: расчёт...
               </span>
             </div>
+          </div>
+        </button>
+
+        <!-- Expandable Details Block inside Mahashivaratri Card -->
+        <div id="msr-details-box" class="hidden p-4 bg-stone-50/90 dark:bg-stone-950/70 border-t border-indigo-500/20 space-y-3 text-xs text-stone-700 dark:text-stone-300">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
+              <div class="font-bold text-indigo-700 dark:text-indigo-300">🔱 Ночь Махашиваратри у Адийоги</div>
+              <p class="leading-relaxed">
+                Проходит раз в году в 14-ю ночь убывающей луны месяца Пхалгуна (<strong>с 18:00 вечера 6 марта до 06:00 утра 7 марта 2027</strong>). Начинается с Panchabhuta Aradhana в Дхьяналинге, включает полуночную медитацию с Садхгуру в 00:00 и медитацию в Брахма Мухурту (03:40).
+              </p>
+            </div>
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
+              <div class="font-bold text-amber-700 dark:text-amber-400">🌙 Ежемесячный Маса Шиваратри</div>
+              <p class="leading-relaxed">
+                Каждый месяц за день до Новолуния (Амавасьи) в ашраме также отмечается малая ночь Шивы — <strong>Маса Шиваратри</strong>.
+              </p>
+              <div id="msr-upcoming-masa-list" class="pt-1 text-[11px] font-semibold text-stone-800 dark:text-stone-200 space-y-0.5"></div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <button type="button" onclick="switchMainTab('ashram')" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+              Перейти к полному лунному календарю Иши →
+            </button>
+            <button type="button" onclick="toggleMsrDetails(false)" class="text-xs text-stone-500 hover:text-stone-800 dark:hover:text-stone-200">
+              Свернуть ▲
+            </button>
           </div>
         </div>
       </section>
@@ -553,7 +585,7 @@
                 Нажми, чтобы открыть чат
               </div>
               <div id="ov-chat-sub" class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
-                Статус онлайн и быстрые весточки
+                Статус онлайн и сообщения
               </div>
             </div>
           </div>
@@ -1146,7 +1178,7 @@
                 </span>
               </div>
               <div id="chat-partner-presence" class="text-[11px] text-stone-500 dark:text-stone-400 truncate">
-                Подключение к каналу...
+                Канал активен
               </div>
             </div>
           </div>
@@ -1163,7 +1195,7 @@
           </div>
         </div>
 
-        <!-- Inline Confirm Bar for Clearing History (No alert/confirm!) -->
+        <!-- Inline Confirm Bar for Clearing History -->
         <div id="chat-clear-confirm" class="hidden px-3.5 py-2 bg-rose-500/10 border-b border-rose-500/30 flex items-center justify-between gap-2 text-xs shrink-0">
           <span class="text-rose-800 dark:text-rose-200 font-semibold">Очистить переписку у обоих?</span>
           <div class="flex items-center gap-1.5">
@@ -1283,19 +1315,19 @@
   <nav aria-label="Основное меню" class="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border-t border-stone-200 dark:border-stone-800 safe-bottom">
     <div class="max-w-3xl mx-auto px-1.5 py-1.5 grid grid-cols-5 gap-1">
       <button type="button" onclick="switchMainTab('overview')" id="bnav-overview"
-        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold transition">
+        class="relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-400 font-bold transition">
         <span class="text-base leading-none">🏠</span>
         <span class="text-[10px] sm:text-[11px] mt-1 truncate">Табло</span>
       </button>
 
       <button type="button" onclick="switchMainTab('weather')" id="bnav-weather"
-        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        class="relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
         <span class="text-base leading-none">🌤️</span>
         <span class="text-[10px] sm:text-[11px] mt-1 truncate">Погода</span>
       </button>
 
       <button type="button" onclick="switchMainTab('ashram')" id="bnav-ashram"
-        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        class="relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
         <span class="text-base leading-none">🕉️</span>
         <span class="text-[10px] sm:text-[11px] mt-1 truncate">Ашрам</span>
       </button>
@@ -1308,7 +1340,7 @@
       </button>
 
       <button type="button" onclick="switchMainTab('currency')" id="bnav-currency"
-        class="flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
+        class="relative flex flex-col items-center justify-center py-1.5 px-1 rounded-xl text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 font-medium transition">
         <span class="text-base leading-none">💱</span>
         <span class="text-[10px] sm:text-[11px] mt-1 truncate">Валюта</span>
       </button>
@@ -1493,7 +1525,53 @@
     };
 
     /*************************************************************************
-     * 2. NAVIGATION, STANDALONE PWA CHECK, THEME & MODAL HELPERS
+     * 2. DATE / PLURALIZATION HELPERS
+     *************************************************************************/
+    function pluralizeDaysWord(n) {
+      const abs = Math.abs(n) % 100;
+      const n1 = abs % 10;
+      if (abs > 10 && abs < 20) return 'дней';
+      if (n1 > 1 && n1 < 5) return 'дня';
+      if (n1 === 1) return 'день';
+      return 'дней';
+    }
+
+    function addDaysToISO(isoStr, daysToAdd) {
+      const [y, m, d] = isoStr.split('-').map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d));
+      dt.setUTCDate(dt.getUTCDate() + daysToAdd);
+      return dt.toISOString().slice(0, 10);
+    }
+
+    function daysBetweenISO(startISO, endISO) {
+      const [y1, m1, d1] = startISO.split('-').map(Number);
+      const [y2, m2, d2] = endISO.split('-').map(Number);
+      const t1 = Date.UTC(y1, m1 - 1, d1);
+      const t2 = Date.UTC(y2, m2 - 1, d2);
+      return Math.round((t2 - t1) / 86400000);
+    }
+
+    function formatRussianDate(isoStr) {
+      if (!isoStr) return '--';
+      const [y, m, d] = isoStr.split('-').map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+      return new Intl.DateTimeFormat('ru-RU', {
+        timeZone: 'UTC',
+        day: 'numeric',
+        month: 'long',
+        weekday: 'short'
+      }).format(dt);
+    }
+
+    function formatDaysCountdown(diffDays) {
+      if (diffDays === 0) return 'Сегодня!';
+      if (diffDays === 1) return 'Завтра';
+      if (diffDays === 2) return 'Послезавтра';
+      return `Через ${diffDays} ${pluralizeDaysWord(diffDays)}`;
+    }
+
+    /*************************************************************************
+     * 3. NAVIGATION, STANDALONE PWA CHECK, THEME & MODAL HELPERS
      *************************************************************************/
     function checkStandaloneMode() {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
@@ -1568,6 +1646,20 @@
       }
     }
 
+    function toggleMsrDetails(forceState = null) {
+      const box = document.getElementById('msr-details-box');
+      const hint = document.getElementById('msr-expand-hint');
+      if (!box) return;
+      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
+      if (willShow) {
+        box.classList.remove('hidden');
+        if (hint) hint.textContent = 'Свернуть ▲';
+      } else {
+        box.classList.add('hidden');
+        if (hint) hint.textContent = 'Подробнее ▾';
+      }
+    }
+
     function setMobileWeatherView(mode) {
       const ishaCard = document.getElementById('weather-card-isha');
       const tomskCard = document.getElementById('weather-card-tomsk');
@@ -1602,7 +1694,7 @@
     }
 
     /*************************************************************************
-     * 3. LIVE CLOCKS & ASHRAM SCHEDULE HIGHLIGHTER
+     * 4. LIVE CLOCKS, MAHASHIVARATRI & ASHRAM SCHEDULE HIGHLIGHTER
      *************************************************************************/
     function getTimePartsInZone(timeZone) {
       const now = new Date();
@@ -1652,10 +1744,15 @@
       const isha = getTimePartsInZone(LOCATIONS.isha.tz);
       const tomsk = getTimePartsInZone(LOCATIONS.tomsk.tz);
 
-      document.getElementById('clock-isha').textContent = isha.timeStr;
-      document.getElementById('date-isha').textContent = isha.dateStr;
-      document.getElementById('clock-tomsk').textContent = tomsk.timeStr;
-      document.getElementById('date-tomsk').textContent = tomsk.dateStr;
+      const clockIshaEl = document.getElementById('clock-isha');
+      const dateIshaEl = document.getElementById('date-isha');
+      const clockTomskEl = document.getElementById('clock-tomsk');
+      const dateTomskEl = document.getElementById('date-tomsk');
+
+      if (clockIshaEl) clockIshaEl.textContent = isha.timeStr;
+      if (dateIshaEl) dateIshaEl.textContent = isha.dateStr;
+      if (clockTomskEl) clockTomskEl.textContent = tomsk.timeStr;
+      if (dateTomskEl) dateTomskEl.textContent = tomsk.dateStr;
 
       // Update partner's local time inside Chat header
       const partnerTimeEl = document.getElementById('chat-partner-localtime');
@@ -1676,9 +1773,9 @@
       const titleEl = document.getElementById('msr-title');
       const subNoteEl = document.getElementById('msr-sub-note');
       const masaEl = document.getElementById('msr-masa-text');
+      const masaListEl = document.getElementById('msr-upcoming-masa-list');
       if (!countdownEl || !barEl) return;
 
-      // Maha Shivaratri cycles (18:00 IST start to 06:00 IST next morning)
       const cycles = [
         {
           prevStart: new Date('2025-02-26T18:00:00+05:30').getTime(),
@@ -1701,7 +1798,7 @@
       ];
 
       const now = Date.now();
-      let activeCycle = cycles.find(c => now <= c.end) || cycles[cycles.length - 1];
+      const activeCycle = cycles.find(c => now <= c.end) || cycles[cycles.length - 1];
 
       if (titleEl) {
         titleEl.textContent = `Великая ночь Махашиваратри • ${activeCycle.label}`;
@@ -1733,20 +1830,1247 @@
         }
       }
 
-      // Calculate next monthly Masa Shivaratri (1 day before upcoming Amavasya)
-      if (masaEl && todayISO) {
-        const upcomingAmavasyas = PANCHANGAM_EVENTS
+      if (todayISO) {
+        const upcomingMasaDates = PANCHANGAM_EVENTS
           .filter(ev => ev.type === 'amavasya')
           .map(ev => addDaysToISO(ev.date, -1))
           .filter(masaDate => masaDate >= todayISO);
 
-        if (upcomingAmavasyas.length > 0) {
-          const nextMasaISO = upcomingAmavasyas[0];
+        if (upcomingMasaDates.length > 0 && masaEl) {
+          const nextMasaISO = upcomingMasaDates[0];
           const diffDays = daysBetweenISO(todayISO, nextMasaISO);
-          masaEl.textContent = `🌙 Ежемесячный Маса Шиваратри: ${formatRussianDate(nextMasaISO)} (${formatDaysCountdown(diffDays).toLowerCase()})`;
+          masaEl.textContent = `🌙 Маса Шиваратри: ${formatRussianDate(nextMasaISO)} (${formatDaysCountdown(diffDays).toLowerCase()})`;
+        }
+
+        if (masaListEl && upcomingMasaDates.length > 0) {
+          masaListEl.innerHTML = upcomingMasaDates.slice(0, 3).map(d => {
+            const diff = daysBetweenISO(todayISO, d);
+            return `<div>• ${formatRussianDate(d)} — <span class="text-indigo-600 dark:text-indigo-400">${formatDaysCountdown(diff)}</span></div>`;
+          }).join('');
         }
       }
     }
 
     function renderAshramSchedule(currentMinutes) {
-// ... existing code ... -->
+      // 1. Render Temples Open/Closed Status
+      const templesContainer = document.getElementById('temples-live-list');
+      if (templesContainer) {
+        templesContainer.innerHTML = ISHA_TEMPLES.map(t => {
+          const isOpen = t.windows.some(([s, e]) => currentMinutes >= s && currentMinutes <= e);
+          const badgeClass = isOpen
+            ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/30'
+            : 'bg-stone-200/70 dark:bg-stone-800 text-stone-600 dark:text-stone-400 border-stone-300 dark:border-stone-700';
+          const badgeText = isOpen ? '🟢 Открыто' : '⚪ Закрыто';
+
+          return `
+            <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="font-bold text-stone-900 dark:text-white truncate">${t.name}</div>
+                <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">${t.sub}</div>
+                <div class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 mt-0.5 tabular-nums">${t.hoursText}</div>
+              </div>
+              <span class="px-2 py-1 rounded-lg border text-[10px] font-bold shrink-0 ${badgeClass}">${badgeText}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 2. Determine Current & Next Event
+      let activeEvent = null;
+      let nextEvent = null;
+      let nextDiff = Infinity;
+
+      ISHA_DAILY_EVENTS.forEach(ev => {
+        const startMin = parseHHMM(ev.start);
+        const endMin = parseHHMM(ev.end);
+        if (currentMinutes >= startMin && currentMinutes <= endMin) {
+          activeEvent = ev;
+        }
+        if (startMin > currentMinutes && (startMin - currentMinutes) < nextDiff) {
+          nextDiff = startMin - currentMinutes;
+          nextEvent = ev;
+        }
+      });
+
+      if (!nextEvent && ISHA_DAILY_EVENTS.length > 0) {
+        nextEvent = ISHA_DAILY_EVENTS[0];
+        nextDiff = (24 * 60 - currentMinutes) + parseHHMM(nextEvent.start);
+      }
+
+      let nowTitle = '';
+      let nowSub = '';
+      if (activeEvent) {
+        nowTitle = `${activeEvent.title} (${activeEvent.location})`;
+        nowSub = `${activeEvent.start} – ${activeEvent.end} • ${activeEvent.note}`;
+      } else if (currentMinutes >= 360 && currentMinutes <= 1230) {
+        nowTitle = 'Dhyanalinga и территория центра открыты';
+        nowSub = 'Спокойное время для практик, даршана и прогулок';
+      } else {
+        nowTitle = 'Ночная тишина в ашраме (20:30 – 05:30)';
+        nowSub = 'Храмы закрыты до утренней Гуру Пуджи';
+      }
+
+      const nextTitle = nextEvent ? `${nextEvent.start} — ${nextEvent.title}` : 'Утренняя программа';
+      const nextSub = nextEvent ? `${nextEvent.location} • ${formatDurationMinutes(nextDiff)}` : '';
+
+      ['ov-ashram-now-title', 'ashram-now-title'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = nowTitle;
+      });
+      ['ov-ashram-now-sub', 'ashram-now-sub'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = nowSub;
+      });
+      ['ov-ashram-next-title', 'ashram-next-title'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = nextTitle;
+      });
+      ['ov-ashram-next-sub', 'ashram-next-sub'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = nextSub;
+      });
+
+      // 3. Render Timeline in Ashram Tab
+      const timelineEl = document.getElementById('schedule-timeline');
+      if (timelineEl) {
+        timelineEl.innerHTML = ISHA_DAILY_EVENTS.map(ev => {
+          const s = parseHHMM(ev.start);
+          const e = parseHHMM(ev.end);
+          const isCurrent = currentMinutes >= s && currentMinutes <= e;
+          const isNext = nextEvent && nextEvent.start === ev.start && !isCurrent;
+
+          let cardCls = 'bg-stone-50 dark:bg-stone-800/40 border-stone-200/80 dark:border-stone-800';
+          let badge = '';
+          if (isCurrent) {
+            cardCls = 'bg-emerald-500/10 border-emerald-500/40 ring-1 ring-emerald-500/30';
+            badge = '<span class="px-2 py-0.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold">Сейчас</span>';
+          } else if (isNext) {
+            cardCls = 'bg-amber-500/10 border-amber-500/40';
+            badge = '<span class="px-2 py-0.5 rounded-full bg-amber-500 text-white text-[10px] font-bold">Далее</span>';
+          }
+
+          return `
+            <div class="p-3 rounded-xl border ${cardCls} flex items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="font-extrabold tabular-nums text-amber-700 dark:text-amber-400 shrink-0 w-24">
+                  ${ev.start} – ${ev.end}
+                </div>
+                <div class="min-w-0">
+                  <div class="font-bold text-stone-900 dark:text-white truncate">${ev.title}</div>
+                  <div class="text-[11px] text-stone-500 dark:text-stone-400 truncate">${ev.location} • ${ev.note}</div>
+                </div>
+              </div>
+              ${badge}
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    /*************************************************************************
+     * 5. VISA-RUN COUNTER LOGIC + CROSS-DEVICE SYNC
+     *************************************************************************/
+    const VISA_STORAGE_KEY = 'tomsk_isha_visa_v1';
+    let visaState = {
+      entryDate: '',
+      totalDays: 90,
+      inclusiveDayOne: true,
+      updatedAt: 0
+    };
+
+    function loadVisaState() {
+      try {
+        const raw = localStorage.getItem(VISA_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            visaState = {
+              entryDate: parsed.entryDate || '',
+              totalDays: Number(parsed.totalDays) || 90,
+              inclusiveDayOne: parsed.inclusiveDayOne !== false,
+              updatedAt: Number(parsed.updatedAt) || 0
+            };
+          }
+        }
+      } catch (e) {
+        // Ignore storage read errors
+      }
+      syncVisaInputsFromState();
+      const isha = getTimePartsInZone(LOCATIONS.isha.tz);
+      renderVisaCounter(isha.isoDate);
+    }
+
+    function syncVisaInputsFromState() {
+      const dateInput = document.getElementById('visa-input-date');
+      const daysInput = document.getElementById('visa-input-days');
+      const incInput = document.getElementById('visa-input-inclusive');
+
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      if (dateInput) dateInput.value = visaState.entryDate || ishaToday;
+      if (daysInput) daysInput.value = visaState.totalDays || 90;
+      if (incInput) incInput.checked = visaState.inclusiveDayOne !== false;
+    }
+
+    function toggleVisaEditor(forceState = null) {
+      const box = document.getElementById('visa-editor-box');
+      if (!box) return;
+      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
+      if (willShow) {
+        syncVisaInputsFromState();
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function toggleVisaRules(forceState = null) {
+      const box = document.getElementById('visa-rules-box');
+      if (!box) return;
+      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
+      if (willShow) {
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function setVisaEntryToday() {
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      const dateInput = document.getElementById('visa-input-date');
+      if (dateInput) dateInput.value = ishaToday;
+    }
+
+    function setVisaPresetDays(days) {
+      const daysInput = document.getElementById('visa-input-days');
+      if (daysInput) daysInput.value = days;
+    }
+
+    function saveVisaSettings() {
+      const dateInput = document.getElementById('visa-input-date');
+      const daysInput = document.getElementById('visa-input-days');
+      const incInput = document.getElementById('visa-input-inclusive');
+
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      const entryDate = (dateInput && dateInput.value) ? dateInput.value : ishaToday;
+      const totalDays = Math.max(1, Math.min(3650, parseInt(daysInput ? daysInput.value : '90', 10) || 90));
+      const inclusiveDayOne = incInput ? incInput.checked : true;
+
+      visaState = {
+        entryDate,
+        totalDays,
+        inclusiveDayOne,
+        updatedAt: Date.now()
+      };
+
+      localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
+      toggleVisaEditor(false);
+      renderVisaCounter(ishaToday);
+      pushRoomSyncPayload();
+    }
+
+    function resetVisaCounter() {
+      visaState = {
+        entryDate: '',
+        totalDays: 90,
+        inclusiveDayOne: true,
+        updatedAt: Date.now()
+      };
+      localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
+      toggleVisaEditor(false);
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      renderVisaCounter(ishaToday);
+      pushRoomSyncPayload();
+    }
+
+    function renderVisaCounter(todayISO) {
+      const emptyEl = document.getElementById('visa-empty-state');
+      const activeEl = document.getElementById('visa-active-display');
+      const editBtnLabel = document.getElementById('visa-edit-btn-label');
+      if (!emptyEl || !activeEl) return;
+
+      if (!visaState.entryDate) {
+        emptyEl.classList.remove('hidden');
+        activeEl.classList.add('hidden');
+        if (editBtnLabel) editBtnLabel.textContent = 'Настроить';
+        return;
+      }
+
+      emptyEl.classList.add('hidden');
+      activeEl.classList.remove('hidden');
+      if (editBtnLabel) editBtnLabel.textContent = 'Изменить';
+
+      const totalDays = Number(visaState.totalDays) || 90;
+      const inclusive = visaState.inclusiveDayOne !== false;
+      const offsetDays = inclusive ? (totalDays - 1) : totalDays;
+
+      const finalExitISO = addDaysToISO(visaState.entryDate, offsetDays);
+      const safeExitISO = addDaysToISO(finalExitISO, -2);
+
+      const daysElapsedRaw = daysBetweenISO(visaState.entryDate, todayISO);
+      const currentDayNumber = Math.max(1, daysElapsedRaw + (inclusive ? 1 : 0));
+      const daysRemainingAfterToday = daysBetweenISO(todayISO, finalExitISO);
+      const daysRemainingInclusive = Math.max(0, daysRemainingAfterToday + 1);
+
+      const totalLabel = document.getElementById('visa-total-days-label');
+      if (totalLabel) totalLabel.textContent = String(totalDays);
+
+      const entryText = document.getElementById('visa-entry-date-text');
+      const safeText = document.getElementById('visa-safe-date-text');
+      const finalText = document.getElementById('visa-final-date-text');
+      const ruleText = document.getElementById('visa-rule-mode-text');
+
+      if (entryText) entryText.textContent = formatRussianDate(visaState.entryDate);
+      if (safeText) safeText.textContent = formatRussianDate(safeExitISO);
+      if (finalText) finalText.textContent = formatRussianDate(finalExitISO);
+      if (ruleText) {
+        ruleText.textContent = inclusive
+          ? 'День прилёта учтён как 1-й день'
+          : 'Без учёта дня прилёта (+сутки)';
+      }
+
+      const numEl = document.getElementById('visa-days-left-num');
+      const subEl = document.getElementById('visa-days-left-sub');
+      const badgeEl = document.getElementById('visa-day-progress-badge');
+      const barEl = document.getElementById('visa-progress-bar');
+      const bannerEl = document.getElementById('visa-traffic-banner');
+      const dotEl = document.getElementById('visa-traffic-dot');
+      const trafficTextEl = document.getElementById('visa-traffic-text');
+
+      if (daysRemainingAfterToday < 0) {
+        const overdue = Math.abs(daysRemainingAfterToday);
+        if (numEl) numEl.textContent = `Срок истёк (${overdue} ${pluralizeDaysWord(overdue)} назад)`;
+        if (subEl) subEl.textContent = 'Обнови дату штампа, если уже сделан виза-ран';
+      } else if (daysRemainingAfterToday === 0) {
+        if (numEl) numEl.textContent = 'Сегодня крайний день!';
+        if (subEl) subEl.textContent = `(${totalDays}-й день пребывания)`;
+      } else {
+        if (numEl) numEl.textContent = `${daysRemainingAfterToday} ${pluralizeDaysWord(daysRemainingAfterToday)}`;
+        if (subEl) subEl.textContent = `(включая сегодня: ${daysRemainingInclusive} дн.)`;
+      }
+
+      if (badgeEl) {
+        if (daysElapsedRaw < 0) {
+          badgeEl.textContent = `Вылет через ${Math.abs(daysElapsedRaw)} дн.`;
+        } else {
+          badgeEl.textContent = `День ${Math.min(currentDayNumber, totalDays)} из ${totalDays}`;
+        }
+      }
+
+      const usedPct = Math.min(100, Math.max(3, Math.round((currentDayNumber / totalDays) * 100)));
+      if (barEl) barEl.style.width = `${usedPct}%`;
+
+      if (daysRemainingAfterToday > 15) {
+        if (bannerEl) bannerEl.className = 'px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 flex items-center justify-between gap-2 text-xs font-semibold';
+        if (dotEl) dotEl.textContent = '🟢';
+        if (trafficTextEl) trafficTextEl.textContent = 'Спокойный режим • Запас времени достаточный';
+        if (barEl) barEl.className = 'h-full rounded-full bg-emerald-500 transition-all duration-500';
+      } else if (daysRemainingAfterToday >= 7) {
+        if (bannerEl) bannerEl.className = 'px-3 py-2 rounded-xl border border-amber-500/40 bg-amber-500/15 text-amber-950 dark:text-amber-200 flex items-center justify-between gap-2 text-xs font-semibold';
+        if (dotEl) dotEl.textContent = '🟡';
+        if (trafficTextEl) trafficTextEl.textContent = 'Пора планировать виза-ран и присматривать билеты';
+        if (barEl) barEl.className = 'h-full rounded-full bg-amber-500 transition-all duration-500';
+      } else {
+        if (bannerEl) bannerEl.className = 'px-3 py-2 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-950 dark:text-rose-200 flex items-center justify-between gap-2 text-xs font-semibold';
+        if (dotEl) dotEl.textContent = '🔴';
+        if (trafficTextEl) trafficTextEl.textContent = 'Внимание: скоро крайний срок выезда из Индии!';
+        if (barEl) barEl.className = 'h-full rounded-full bg-rose-500 transition-all duration-500';
+      }
+    }
+
+    /*************************************************************************
+     * 6. LUNAR CALENDAR (PANCHANGAM) & MOON PHASE MATH
+     *************************************************************************/
+    function calculateMoonPhase(date = new Date()) {
+      const synodicMonth = 29.53058867;
+      const knownNewMoon = Date.UTC(2000, 0, 6, 18, 14, 0);
+      const diffDays = (date.getTime() - knownNewMoon) / 86400000;
+      const phase = ((diffDays % synodicMonth) + synodicMonth) % synodicMonth;
+      const normalized = phase / synodicMonth;
+      const illumination = Math.round((1 - Math.cos(normalized * 2 * Math.PI)) * 50);
+
+      let emoji = '🌕';
+      let name = 'Полнолуние';
+      if (normalized < 0.03 || normalized > 0.97) {
+        emoji = '🌑'; name = 'Новолуние (Амавасья)';
+      } else if (normalized < 0.22) {
+        emoji = '🌒'; name = 'Растущий серп (Шукла Пакша)';
+      } else if (normalized < 0.28) {
+        emoji = '🌓'; name = 'Первая четверть';
+      } else if (normalized < 0.47) {
+        emoji = '🌔'; name = 'Растущая Луна';
+      } else if (normalized < 0.53) {
+        emoji = '🌕'; name = 'Полнолуние (Пурнима)';
+      } else if (normalized < 0.72) {
+        emoji = '🌖'; name = 'Убывающая Луна (Кришна Пакша)';
+      } else if (normalized < 0.78) {
+        emoji = '🌗'; name = 'Последняя четверть';
+      } else {
+        emoji = '🌘'; name = 'Убывающий серп';
+      }
+
+      return { emoji, name, illumination };
+    }
+
+    function renderLunarCalendar() {
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      const moon = calculateMoonPhase(new Date());
+
+      const emojiEl = document.getElementById('moon-phase-emoji');
+      const ovEmojiEl = document.getElementById('ov-moon-emoji');
+      const nameEl = document.getElementById('moon-phase-name');
+      const illumEl = document.getElementById('moon-phase-illum');
+
+      if (emojiEl) emojiEl.textContent = moon.emoji;
+      if (ovEmojiEl) ovEmojiEl.textContent = moon.emoji;
+      if (nameEl) nameEl.textContent = moon.name;
+      if (illumEl) illumEl.textContent = `Освещённость диска: ${moon.illumination}%`;
+
+      const upcoming = PANCHANGAM_EVENTS.filter(ev => ev.date >= ishaToday);
+      const nextEkadashi = upcoming.find(ev => ev.type === 'ekadashi');
+      const nextPurnima = upcoming.find(ev => ev.type === 'purnima');
+      const nextAmavasya = upcoming.find(ev => ev.type === 'amavasya');
+
+      if (nextEkadashi) {
+        const diff = daysBetweenISO(ishaToday, nextEkadashi.date);
+        const badgeText = formatDaysCountdown(diff);
+        const dateFormatted = formatRussianDate(nextEkadashi.date);
+
+        document.getElementById('next-ekadashi-badge').textContent = badgeText;
+        document.getElementById('next-ekadashi-date').textContent = dateFormatted;
+        document.getElementById('next-ekadashi-name').textContent = `${nextEkadashi.title} • Фруктовый стол`;
+
+        const ovEkText = document.getElementById('ov-ekadashi-text');
+        const ovEkSub = document.getElementById('ov-ekadashi-sub');
+        if (ovEkText) ovEkText.textContent = `${dateFormatted} (${badgeText.toLowerCase()})`;
+        if (ovEkSub) ovEkSub.textContent = nextEkadashi.title;
+      }
+
+      if (nextPurnima) {
+        const diff = daysBetweenISO(ishaToday, nextPurnima.date);
+        document.getElementById('next-purnima-badge').textContent = formatDaysCountdown(diff);
+        document.getElementById('next-purnima-date').textContent = formatRussianDate(nextPurnima.date);
+        document.getElementById('next-purnima-name').textContent = nextPurnima.title;
+      }
+
+      if (nextAmavasya) {
+        const diff = daysBetweenISO(ishaToday, nextAmavasya.date);
+        document.getElementById('next-amavasya-badge').textContent = formatDaysCountdown(diff);
+        document.getElementById('next-amavasya-date').textContent = formatRussianDate(nextAmavasya.date);
+        document.getElementById('next-amavasya-name').textContent = `${nextAmavasya.title} • Накануне Маса Шиваратри`;
+      }
+
+      const listEl = document.getElementById('upcoming-lunar-list');
+      if (listEl) {
+        const count = showAllLunarDates ? 14 : 6;
+        const slice = upcoming.slice(0, count);
+        listEl.innerHTML = slice.map(ev => {
+          const diff = daysBetweenISO(ishaToday, ev.date);
+          const icon = ev.type === 'ekadashi' ? '🌿' : ev.type === 'purnima' ? '🌕' : ev.type === 'shivaratri' ? '🔱' : '🌑';
+          return `
+            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="text-lg shrink-0">${icon}</span>
+                <div class="min-w-0">
+                  <div class="font-bold text-stone-900 dark:text-white truncate">${ev.title}</div>
+                  <div class="text-[11px] text-stone-500 dark:text-stone-400 capitalize">${formatRussianDate(ev.date)}</div>
+                </div>
+              </div>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-stone-200/70 dark:bg-stone-700 text-stone-700 dark:text-stone-200 shrink-0">
+                ${formatDaysCountdown(diff)}
+              </span>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function toggleFullLunarList() {
+      showAllLunarDates = !showAllLunarDates;
+      const btn = document.getElementById('btn-toggle-lunar');
+      if (btn) {
+        btn.textContent = showAllLunarDates ? 'Свернуть список ↑' : 'Показать больше дат ↓';
+      }
+      renderLunarCalendar();
+    }
+
+    /*************************************************************************
+     * 7. OPEN-METEO WEATHER FETCHER (ISHA FOOTHILLS & TOMSK)
+     *************************************************************************/
+    function decodeWMO(code, isDay = 1) {
+      const map = {
+        0: { i: isDay ? '☀️' : '🌙', d: 'Ясно' },
+        1: { i: isDay ? '🌤️' : '🌙', d: 'Преимущественно ясно' },
+        2: { i: '⛅', d: 'Переменная облачность' },
+        3: { i: '☁️', d: 'Пасмурно' },
+        45: { i: '🌫️', d: 'Туман' },
+        48: { i: '🌫️', d: 'Изморозь' },
+        51: { i: '🌦️', d: 'Лёгкая морось' },
+        53: { i: '🌦️', d: 'Морось' },
+        55: { i: '🌧️', d: 'Сильная морось' },
+        61: { i: '🌦️', d: 'Небольшой дождь' },
+        63: { i: '🌧️', d: 'Умеренный дождь' },
+        65: { i: '🌧️', d: 'Сильный дождь' },
+        71: { i: '🌨️', d: 'Небольшой снег' },
+        73: { i: '🌨️', d: 'Снегопад' },
+        75: { i: '❄️', d: 'Сильный снег' },
+        77: { i: '❄️', d: 'Снежные зёрна' },
+        80: { i: '🌦️', d: 'Ливневый дождь' },
+        81: { i: '🌧️', d: 'Сильный ливень' },
+        82: { i: '⛈️', d: 'Тропический ливень' },
+        85: { i: '🌨️', d: 'Снежный заряд' },
+        86: { i: '❄️', d: 'Сильный снегопад' },
+        95: { i: '⛈️', d: 'Гроза' },
+        96: { i: '⛈️', d: 'Гроза с градом' },
+        99: { i: '⛈️', d: 'Сильная гроза' }
+      };
+      return map[code] || { i: '⛅', d: 'Переменная облачность' };
+    }
+
+    function formatSignedTemp(val) {
+      const r = Math.round(Number(val) || 0);
+      return r > 0 ? `+${r}°` : `${r}°`;
+    }
+
+    function describeUV(uvVal) {
+      const uv = Math.round(Number(uvVal) || 0);
+      if (uv <= 2) return `${uv} (Низкий)`;
+      if (uv <= 5) return `${uv} (Умеренный)`;
+      if (uv <= 7) return `${uv} (Высокий)`;
+      if (uv <= 10) return `${uv} (Очень высокий)`;
+      return `${uv} (Экстремальный)`;
+    }
+
+    async function fetchSingleCityWeather(key, loc) {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,precipitation_probability,weather_code,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max&wind_speed_unit=ms&timezone=${encodeURIComponent(loc.tz)}`;
+
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Weather API HTTP error');
+      const data = await res.json();
+      renderCityWeather(key, data);
+    }
+
+    function renderCityWeather(key, data) {
+      if (!data || !data.current || !data.daily) return;
+
+      const cur = data.current;
+      const daily = data.daily;
+      const hourly = data.hourly;
+
+      const wInfo = decodeWMO(cur.weather_code, cur.is_day);
+      const tempNow = `${formatSignedTemp(cur.temperature_2m)}C`;
+      const feelsLike = `${formatSignedTemp(cur.apparent_temperature)}C`;
+      const tMax = formatSignedTemp(daily.temperature_2m_max[0]);
+      const tMin = formatSignedTemp(daily.temperature_2m_min[0]);
+      const uvText = describeUV(cur.uv_index);
+      const maxUvToday = Math.round(Number(daily.uv_index_max?.[0] || cur.uv_index || 0));
+
+      // Overview Mini Card
+      const ovIcon = document.getElementById(`ov-${key}-icon`);
+      const ovTemp = document.getElementById(`ov-${key}-temp`);
+      const ovHum = document.getElementById(`ov-${key}-hum`);
+      const ovDesc = document.getElementById(`ov-${key}-desc`);
+      const ovUv = document.getElementById(`ov-${key}-uv-badge`);
+      const ovMinMax = document.getElementById(`ov-${key}-minmax`);
+
+      if (ovIcon) ovIcon.textContent = wInfo.i;
+      if (ovTemp) ovTemp.textContent = tempNow;
+      if (ovHum) ovHum.textContent = `💧${Math.round(cur.relative_humidity_2m)}%`;
+      if (ovDesc) ovDesc.textContent = wInfo.d;
+      if (ovUv) ovUv.textContent = `☀️ УФ сейчас: ${Math.round(cur.uv_index || 0)} (макс ${maxUvToday})`;
+      if (ovMinMax) ovMinMax.textContent = `Макс ${tMax} / Мин ${tMin}`;
+
+      // Detailed Card
+      document.getElementById(`${key}-w-icon`).textContent = wInfo.i;
+      document.getElementById(`${key}-temp-now`).textContent = tempNow;
+      document.getElementById(`${key}-w-desc`).textContent = wInfo.d;
+      document.getElementById(`${key}-feels-like`).textContent = feelsLike;
+      document.getElementById(`${key}-today-max`).textContent = tMax;
+      document.getElementById(`${key}-today-min`).textContent = tMin;
+      document.getElementById(`${key}-uv`).textContent = uvText;
+      document.getElementById(`${key}-humidity`).textContent = `${Math.round(cur.relative_humidity_2m)}%`;
+      document.getElementById(`${key}-wind`).textContent = `${Number(cur.wind_speed_10m).toFixed(1)} м/с`;
+      document.getElementById(`${key}-precip`).textContent = `${cur.precipitation || 0} мм`;
+
+      if (daily.sunrise?.[0] && daily.sunset?.[0]) {
+        const sr = daily.sunrise[0].split('T')[1] || '06:10';
+        const ss = daily.sunset[0].split('T')[1] || '18:10';
+        document.getElementById(`${key}-sun-times`).textContent = `${sr} / ${ss}`;
+      }
+
+      if (key === 'isha') {
+        const adviceEl = document.getElementById('isha-uv-advice');
+        if (adviceEl) {
+          if (cur.uv_index >= 6) {
+            adviceEl.innerHTML = `<span>☀️</span><span><strong>Высокий УФ (${Math.round(cur.uv_index)}):</strong> каменные дорожки в ашраме сейчас горячие для ходьбы босиком — бери зонт или головной убор.</span>`;
+          } else {
+            adviceEl.innerHTML = `<span>🌿</span><span>Комфортный УФ-индекс (${Math.round(cur.uv_index || 0)}). Днём максимум УФ до ${maxUvToday} — для дневных переходов до Адийоги пригодится зонт от солнца/дождя.</span>`;
+          }
+        }
+      }
+
+      // Render 24h Hourly Strip
+      const hourlyStrip = document.getElementById(`${key}-hourly-strip`);
+      if (hourlyStrip && hourly && hourly.time) {
+        const currentHourStr = getTimePartsInZone(LOCATIONS[key].tz).timeStr.slice(0, 2);
+        const todayISO = getTimePartsInZone(LOCATIONS[key].tz).isoDate;
+        let startIdx = hourly.time.findIndex(t => t.startsWith(`${todayISO}T${currentHourStr}`));
+        if (startIdx < 0) startIdx = 0;
+
+        const sliceHours = hourly.time.slice(startIdx, startIdx + 24);
+        hourlyStrip.innerHTML = sliceHours.map((isoTime, idx) => {
+          const i = startIdx + idx;
+          const hh = isoTime.split('T')[1]?.slice(0, 5) || '00:00';
+          const temp = formatSignedTemp(hourly.temperature_2m[i]);
+          const pop = hourly.precipitation_probability?.[i] || 0;
+          const hIcon = decodeWMO(hourly.weather_code[i], 1).i;
+          return `
+            <div class="min-w-[62px] p-2 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800 flex flex-col items-center text-center shrink-0">
+              <span class="text-[10px] font-semibold text-stone-500 dark:text-stone-400 tabular-nums">${idx === 0 ? 'Сейчас' : hh}</span>
+              <span class="text-lg my-1 select-none">${hIcon}</span>
+              <span class="text-xs font-extrabold text-stone-900 dark:text-white tabular-nums">${temp}</span>
+              <span class="text-[10px] font-medium ${pop >= 40 ? 'text-sky-600 dark:text-sky-400' : 'text-stone-400'}">${pop > 0 ? `💧${pop}%` : '—'}</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Render 7-Day Forecast
+      const dailyList = document.getElementById(`${key}-daily-list`);
+      if (dailyList && daily.time) {
+        dailyList.innerHTML = daily.time.slice(0, 7).map((dateStr, idx) => {
+          const dInfo = decodeWMO(daily.weather_code[idx], 1);
+          const maxT = formatSignedTemp(daily.temperature_2m_max[idx]);
+          const minT = formatSignedTemp(daily.temperature_2m_min[idx]);
+          const pop = daily.precipitation_probability_max?.[idx] || 0;
+          const uvMax = Math.round(daily.uv_index_max?.[idx] || 0);
+          const dayLabel = idx === 0 ? 'Сегодня' : idx === 1 ? 'Завтра' : formatRussianDate(dateStr);
+
+          return `
+            <div class="py-2.5 flex items-center justify-between gap-2">
+              <div class="w-32 sm:w-40 font-semibold text-stone-800 dark:text-stone-200 capitalize truncate">
+                ${dayLabel}
+              </div>
+              <div class="flex items-center gap-1.5 min-w-0 flex-1">
+                <span class="text-base select-none">${dInfo.i}</span>
+                <span class="text-stone-600 dark:text-stone-400 truncate hidden sm:inline">${dInfo.d}</span>
+                ${pop > 15 ? `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-700 dark:text-sky-300">💧${pop}%</span>` : ''}
+                ${key === 'isha' ? `<span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300">УФ ${uvMax}</span>` : ''}
+              </div>
+              <div class="font-bold tabular-nums text-right shrink-0">
+                <span class="text-stone-900 dark:text-white">${maxT}</span>
+                <span class="text-stone-400 dark:text-stone-500 ml-1">${minT}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    async function fetchWeather() {
+      try {
+        await Promise.all([
+          fetchSingleCityWeather('isha', LOCATIONS.isha),
+          fetchSingleCityWeather('tomsk', LOCATIONS.tomsk)
+        ]);
+        const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        const updEl = document.getElementById('last-updated-text');
+        if (updEl) updEl.textContent = `Обновлено в ${nowStr}`;
+      } catch (e) {
+        // Fallback already rendered in HTML
+      }
+    }
+
+    /*************************************************************************
+     * 8. OFFICIAL ISHA PAGE CHECKER (CORS PROXY + CACHE FALLBACK)
+     *************************************************************************/
+    async function checkOfficialIshaNotices(manual = false) {
+      const statusEl = document.getElementById('official-parser-status');
+      const detailsEl = document.getElementById('official-parser-details');
+      const dotEl = document.getElementById('parser-status-dot');
+
+      if (manual && statusEl) {
+        statusEl.textContent = 'Запрос к официальной странице isha.sadhguru.org...';
+      }
+
+      try {
+        const targetUrl = 'https://isha.sadhguru.org/en/center/welcome-isha-yoga-center-coimbatore';
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        const res = await fetch(proxyUrl);
+        if (!res.ok) throw new Error('Proxy error');
+        const json = await res.json();
+        const html = (json && json.contents) ? String(json.contents) : '';
+
+        const hasDhyanalinga = /Dhyanalinga/i.test(html);
+        const nowTime = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+
+        if (hasDhyanalinga) {
+          if (dotEl) dotEl.className = 'w-2 h-2 rounded-full bg-emerald-500 inline-block';
+          if (statusEl) statusEl.textContent = `✓ Проверено с официальным сайтом Isha сегодня в ${nowTime}`;
+          if (detailsEl) {
+            detailsEl.textContent = 'Экстренных закрытий на официальном сайте не обнаружено. Все святыни (Dhyanalinga 06:00–20:30, Linga Bhairavi 06:30–13:20 и 16:20–20:20, кунды 06:00–20:00) и столовая Bhiksha Hall работают в штатном режиме.';
+          }
+        }
+      } catch (e) {
+        if (statusEl) {
+          statusEl.textContent = '✓ Активно штатное расписание Isha Yoga Center';
+        }
+      }
+    }
+
+    /*************************************************************************
+     * 9. CURRENCY CONVERTER (INR ⇄ RUB ⇄ USD)
+     *************************************************************************/
+    async function fetchRates() {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/USD');
+        if (!res.ok) throw new Error('FX error');
+        const data = await res.json();
+        if (data && data.rates && data.rates.INR && data.rates.RUB) {
+          fxRates.INR = Number(data.rates.INR);
+          fxRates.RUB = Number(data.rates.RUB);
+          localStorage.setItem('tomsk_isha_fx_cache', JSON.stringify(fxRates));
+        }
+      } catch (e) {
+        try {
+          const cached = JSON.parse(localStorage.getItem('tomsk_isha_fx_cache'));
+          if (cached && cached.INR && cached.RUB) fxRates = cached;
+        } catch (_) {}
+      }
+      updateCurrencyBadgeAndDefault();
+    }
+
+    function updateCurrencyBadgeAndDefault() {
+      const rubPerInr = fxRates.RUB / fxRates.INR;
+      const badge = document.getElementById('fx-rate-badge');
+      const ovFx = document.getElementById('ov-fx-text');
+
+      if (badge) {
+        badge.textContent = `1 ₹ ≈ ${rubPerInr.toFixed(2)} ₽ • 1 $ ≈ ${fxRates.INR.toFixed(1)} ₹`;
+      }
+      if (ovFx) {
+        ovFx.textContent = `1 000 ₹ ≈ ${Math.round(1000 * rubPerInr).toLocaleString('ru-RU')} ₽`;
+      }
+
+      const inrInput = document.getElementById('input-inr');
+      onCurrencyInput('INR', inrInput ? inrInput.value : 1000);
+    }
+
+    function onCurrencyInput(sourceCurrency, rawVal) {
+      const val = parseFloat(rawVal);
+      const inrEl = document.getElementById('input-inr');
+      const rubEl = document.getElementById('input-rub');
+      const usdEl = document.getElementById('input-usd');
+
+      if (isNaN(val) || val < 0) {
+        if (sourceCurrency !== 'INR' && inrEl) inrEl.value = '';
+        if (sourceCurrency !== 'RUB' && rubEl) rubEl.value = '';
+        if (sourceCurrency !== 'USD' && usdEl) usdEl.value = '';
+        return;
+      }
+
+      let usdAmount = 0;
+      if (sourceCurrency === 'USD') usdAmount = val;
+      if (sourceCurrency === 'INR') usdAmount = val / fxRates.INR;
+      if (sourceCurrency === 'RUB') usdAmount = val / fxRates.RUB;
+
+      if (sourceCurrency !== 'INR' && inrEl) {
+        inrEl.value = Math.round(usdAmount * fxRates.INR * 100) / 100;
+      }
+      if (sourceCurrency !== 'RUB' && rubEl) {
+        rubEl.value = Math.round(usdAmount * fxRates.RUB * 100) / 100;
+      }
+      if (sourceCurrency !== 'USD' && usdEl) {
+        usdEl.value = Math.round(usdAmount * 100) / 100;
+      }
+    }
+
+    function setPresetCurrency(curr, amount) {
+      const el = document.getElementById('input-' + curr.toLowerCase());
+      if (el) {
+        el.value = amount;
+        onCurrencyInput(curr, amount);
+      }
+    }
+
+    /*************************************************************************
+     * 10. PRIVATE ENCRYPTED MESSENGER (HTTPS SYNC + LOCAL BROADCAST)
+     *************************************************************************/
+    const CHAT_STORAGE_KEY = 'tomsk_isha_chat_v2';
+    let chatState = {
+      role: 'isha',
+      secret: '',
+      messages: [],
+      presence: {
+        isha: { lastSeen: 0, typingUntil: 0 },
+        tomsk: { lastSeen: 0, typingUntil: 0 }
+      }
+    };
+    let localChannel = null;
+
+    function loadChatState() {
+      try {
+        const raw = localStorage.getItem(CHAT_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && typeof parsed === 'object') {
+            chatState.role = parsed.role || 'isha';
+            chatState.secret = parsed.secret || '';
+            chatState.messages = Array.isArray(parsed.messages) ? parsed.messages : [];
+            if (parsed.presence) chatState.presence = parsed.presence;
+          }
+        }
+      } catch (e) {}
+
+      selectChatRole(chatState.role);
+      const secInput = document.getElementById('chat-secret-input');
+      if (secInput && chatState.secret) secInput.value = chatState.secret;
+
+      if (chatState.secret) {
+        showActiveChatUI();
+        initLocalBroadcastChannel();
+        pullRoomSyncPayload();
+      }
+      renderChatMessages();
+      refreshPartnerPresenceUI();
+    }
+
+    function saveChatStateToStorage() {
+      try {
+        localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatState));
+      } catch (e) {}
+    }
+
+    function selectChatRole(role) {
+      chatState.role = role === 'tomsk' ? 'tomsk' : 'isha';
+      const btnIsha = document.getElementById('role-btn-isha');
+      const btnTomsk = document.getElementById('role-btn-tomsk');
+      if (!btnIsha || !btnTomsk) return;
+
+      if (chatState.role === 'isha') {
+        btnIsha.className = 'p-3 rounded-xl border-2 border-amber-500 bg-amber-500/10 text-left transition flex items-center gap-2.5';
+        btnTomsk.className = 'p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5';
+      } else {
+        btnTomsk.className = 'p-3 rounded-xl border-2 border-sky-500 bg-sky-500/10 text-left transition flex items-center gap-2.5';
+        btnIsha.className = 'p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5';
+      }
+    }
+
+    function saveChatSetup() {
+      const secInput = document.getElementById('chat-secret-input');
+      const secret = (secInput ? secInput.value : '').trim();
+      if (!secret) {
+        if (secInput) secInput.focus();
+        return;
+      }
+      chatState.secret = secret;
+      chatState.presence[chatState.role] = {
+        lastSeen: Date.now(),
+        typingUntil: 0
+      };
+      saveChatStateToStorage();
+      showActiveChatUI();
+      initLocalBroadcastChannel();
+      pushRoomSyncPayload();
+    }
+
+    function openChatSettings() {
+      document.getElementById('chat-setup-card').classList.remove('hidden');
+      document.getElementById('chat-active-card').classList.add('hidden');
+      document.getElementById('chat-cancel-setup-btn').classList.remove('hidden');
+    }
+
+    function cancelChatSetup() {
+      if (chatState.secret) {
+        showActiveChatUI();
+      }
+    }
+
+    function showActiveChatUI() {
+      document.getElementById('chat-setup-card').classList.add('hidden');
+      document.getElementById('chat-active-card').classList.remove('hidden');
+
+      const partnerAvatar = document.getElementById('chat-partner-avatar');
+      const partnerTitle = document.getElementById('chat-partner-title');
+      if (chatState.role === 'isha') {
+        if (partnerAvatar) partnerAvatar.textContent = '🌲';
+        if (partnerTitle) partnerTitle.textContent = 'Томск (на связи)';
+      } else {
+        if (partnerAvatar) partnerAvatar.textContent = '🕉️';
+        if (partnerTitle) partnerTitle.textContent = 'Иша • Коимбатур';
+      }
+      renderChatMessages();
+      scrollToChatBottom();
+    }
+
+    function deriveRoomId(secret) {
+      let h1 = 0xdeadbeef ^ secret.length;
+      let h2 = 0x41c6ce57 ^ secret.length;
+      for (let i = 0, ch; i < secret.length; i++) {
+        ch = secret.charCodeAt(i);
+        h1 = Math.imul(h1 ^ ch, 2654435761);
+        h2 = Math.imul(h2 ^ ch, 1597334677);
+      }
+      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+      return 'ti_' + (h2 >>> 0).toString(16) + (h1 >>> 0).toString(16);
+    }
+
+    function initLocalBroadcastChannel() {
+      if (!chatState.secret || typeof BroadcastChannel === 'undefined') return;
+      try {
+        if (localChannel) localChannel.close();
+        localChannel = new BroadcastChannel('chan_' + deriveRoomId(chatState.secret));
+        localChannel.onmessage = (ev) => {
+          if (ev && ev.data) {
+            mergeIncomingRoomData(ev.data);
+          }
+        };
+      } catch (e) {}
+    }
+
+    function mergeIncomingRoomData(incoming) {
+      if (!incoming || typeof incoming !== 'object') return;
+      let changed = false;
+
+      if (incoming.presence) {
+        ['isha', 'tomsk'].forEach(r => {
+          if (incoming.presence[r] && incoming.presence[r].lastSeen > (chatState.presence[r]?.lastSeen || 0)) {
+            chatState.presence[r] = incoming.presence[r];
+            changed = true;
+          }
+        });
+      }
+
+      if (Array.isArray(incoming.messages)) {
+        const map = new Map();
+        chatState.messages.forEach(m => map.set(m.id, m));
+        incoming.messages.forEach(m => {
+          const existing = map.get(m.id);
+          if (!existing) {
+            map.set(m.id, m);
+            changed = true;
+          } else if (m.read && !existing.read) {
+            existing.read = true;
+            changed = true;
+          }
+        });
+        chatState.messages = Array.from(map.values()).sort((a, b) => a.ts - b.ts).slice(-100);
+      }
+
+      if (incoming.visa && incoming.visa.updatedAt > (visaState.updatedAt || 0)) {
+        visaState = incoming.visa;
+        localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        renderVisaCounter(ishaToday);
+        const syncPill = document.getElementById('visa-sync-pill');
+        if (syncPill) syncPill.classList.remove('hidden');
+      }
+
+      if (changed) {
+        if (activeMainTab === 'chat') {
+          markAllChatMessagesRead();
+        }
+        saveChatStateToStorage();
+        renderChatMessages();
+        refreshPartnerPresenceUI();
+      }
+    }
+
+    async function pushRoomSyncPayload() {
+      if (!chatState.secret) return;
+      chatState.presence[chatState.role] = {
+        lastSeen: Date.now(),
+        typingUntil: chatState.presence[chatState.role]?.typingUntil || 0
+      };
+      saveChatStateToStorage();
+
+      const payload = {
+        presence: chatState.presence,
+        messages: chatState.messages.slice(-80),
+        visa: visaState
+      };
+
+      if (localChannel) {
+        try { localChannel.postMessage(payload); } catch (e) {}
+      }
+
+      try {
+        const roomKey = deriveRoomId(chatState.secret);
+        await fetch(`https://ntfy.sh/${roomKey}`, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {}
+    }
+
+    async function pullRoomSyncPayload() {
+      if (!chatState.secret) return;
+      try {
+        const roomKey = deriveRoomId(chatState.secret);
+        const res = await fetch(`https://ntfy.sh/${roomKey}/json?poll=1&since=24h`);
+        if (!res.ok) return;
+        const text = await res.text();
+        const lines = text.trim().split('\n');
+        lines.forEach(line => {
+          if (!line) return;
+          try {
+            const item = JSON.parse(line);
+            if (item && item.message) {
+              const data = JSON.parse(item.message);
+              mergeIncomingRoomData(data);
+            }
+          } catch (_) {}
+        });
+      } catch (e) {}
+    }
+
+    function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-text-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const msg = {
+        id: 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        sender: chatState.role,
+        text,
+        ts: Date.now(),
+        read: false
+      };
+
+      chatState.messages.push(msg);
+      input.value = '';
+      if (chatState.presence[chatState.role]) {
+        chatState.presence[chatState.role].typingUntil = 0;
+      }
+
+      saveChatStateToStorage();
+      renderChatMessages();
+      scrollToChatBottom();
+      pushRoomSyncPayload();
+    }
+
+    let lastTypingPush = 0;
+    function notifyTyping() {
+      if (!chatState.secret) return;
+      const now = Date.now();
+      if (now - lastTypingPush < 3500) return;
+      lastTypingPush = now;
+      chatState.presence[chatState.role] = {
+        lastSeen: now,
+        typingUntil: now + 5000
+      };
+      pushRoomSyncPayload();
+    }
+
+    function markAllChatMessagesRead() {
+      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
+      let updated = false;
+      chatState.messages.forEach(m => {
+        if (m.sender === partnerRole && !m.read) {
+          m.read = true;
+          updated = true;
+        }
+      });
+      if (updated) {
+        saveChatStateToStorage();
+        renderChatMessages();
+        pushRoomSyncPayload();
+      }
+    }
+
+    function renderChatMessages() {
+      const box = document.getElementById('chat-messages-box');
+      const unreadBadge = document.getElementById('chat-unread-badge');
+      const ovPreview = document.getElementById('ov-chat-preview');
+      const ovSub = document.getElementById('ov-chat-sub');
+
+      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
+      const unreadCount = chatState.messages.filter(m => m.sender === partnerRole && !m.read).length;
+
+      if (unreadBadge) {
+        if (unreadCount > 0 && activeMainTab !== 'chat') {
+          unreadBadge.textContent = String(unreadCount);
+          unreadBadge.classList.remove('hidden');
+        } else {
+          unreadBadge.classList.add('hidden');
+        }
+      }
+
+      if (chatState.messages.length > 0) {
+        const lastMsg = chatState.messages[chatState.messages.length - 1];
+        if (ovPreview) ovPreview.textContent = lastMsg.text;
+        if (ovSub) {
+          const tStr = new Date(lastMsg.ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+          ovSub.textContent = `${lastMsg.sender === 'isha' ? '🕉 Иша' : '🌲 Томск'} • ${tStr}`;
+        }
+      }
+
+      if (!box) return;
+      if (chatState.messages.length === 0) {
+        box.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center p-6 text-stone-400 dark:text-stone-500 text-xs space-y-1.5">
+            <div class="text-3xl">💬</div>
+            <div class="font-bold text-stone-600 dark:text-stone-300">Ваш защищённый чат готов</div>
+            <div>Напиши первое сообщение — оно синхронизируется по вашему секретному слову.</div>
+          </div>
+        `;
+        return;
+      }
+
+      box.innerHTML = chatState.messages.map(m => {
+        const isMine = m.sender === chatState.role;
+        const timeLabel = new Date(m.ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        const ticks = isMine ? (m.read ? '<span class="text-sky-300 font-bold ml-1">✓✓</span>' : '<span class="opacity-75 ml-1">✓</span>') : '';
+
+        return `
+          <div class="flex ${isMine ? 'justify-end' : 'justify-start'}">
+            <div class="max-w-[82%] px-3.5 py-2 rounded-2xl text-xs sm:text-sm ${
+              isMine
+                ? 'bg-amber-600 text-white rounded-br-sm shadow-sm'
+                : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 border border-stone-200/80 dark:border-stone-700 rounded-bl-sm shadow-sm'
+            }">
+              <div class="break-words leading-relaxed">${escapeHtml(m.text)}</div>
+              <div class="text-[10px] ${isMine ? 'text-amber-100/90' : 'text-stone-400'} text-right mt-0.5 tabular-nums">
+                ${timeLabel}${ticks}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function refreshPartnerPresenceUI() {
+      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
+      const pInfo = chatState.presence?.[partnerRole] || { lastSeen: 0, typingUntil: 0 };
+      const now = Date.now();
+      const isOnline = (now - pInfo.lastSeen) < 45000;
+      const isTyping = pInfo.typingUntil > now;
+
+      const dotIds = ['header-partner-dot', 'chat-partner-dot', 'ov-chat-dot'];
+      dotIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.className = isOnline
+            ? el.className.replace('bg-stone-400', 'bg-emerald-500')
+            : el.className.replace('bg-emerald-500', 'bg-stone-400');
+        }
+      });
+
+      const headerLabel = document.getElementById('header-partner-label');
+      if (headerLabel) {
+        headerLabel.textContent = isOnline ? 'В сети' : 'Чат';
+      }
+
+      const presEl = document.getElementById('chat-partner-presence');
+      if (presEl) {
+        if (!chatState.secret) {
+          presEl.textContent = 'Канал не настроен';
+        } else if (isOnline) {
+          presEl.textContent = '🟢 В сети сейчас';
+        } else if (pInfo.lastSeen > 0) {
+          const tStr = new Date(pInfo.lastSeen).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+          presEl.textContent = `Был(а) в сети в ${tStr}`;
+        } else {
+          presEl.textContent = 'Канал активен • ожидание входа';
+        }
+      }
+
+      const typingEl = document.getElementById('chat-typing-indicator');
+      if (typingEl) {
+        if (isTyping) {
+          typingEl.classList.remove('hidden');
+        } else {
+          typingEl.classList.add('hidden');
+        }
+      }
+    }
+
+    function clearChatHistoryPrompt() {
+      document.getElementById('chat-clear-confirm').classList.remove('hidden');
+    }
+
+    function confirmClearChatHistory() {
+      chatState.messages = [];
+      saveChatStateToStorage();
+      renderChatMessages();
+      document.getElementById('chat-clear-confirm').classList.add('hidden');
+      pushRoomSyncPayload();
+    }
+
+    function scrollToChatBottom() {
+      const box = document.getElementById('chat-messages-box');
+      if (box) {
+        setTimeout(() => {
+          box.scrollTop = box.scrollHeight;
+        }, 40);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /*************************************************************************
+     * 11. INITIALIZATION & AUTOMATIC BACKGROUND REFRESH
+     *************************************************************************/
+    window.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      checkStandaloneMode();
+      loadVisaState();
+      loadChatState();
+      updateClocksAndSchedule();
+      renderLunarCalendar();
+      fetchWeather();
+      fetchRates();
+      checkOfficialIshaNotices(false);
+
+      // Tick clocks, schedule & countdowns every second
+      setInterval(updateClocksAndSchedule, 1000);
+
+      // Sync chat & visa state every 12 seconds when configured
+      setInterval(() => {
+        if (document.visibilityState === 'visible' && chatState.secret) {
+          pullRoomSyncPayload();
+        }
+      }, 12000);
+
+      // 1. Auto-update on screen unlock / tab switch
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          updateClocksAndSchedule();
+          renderLunarCalendar();
+          fetchWeather();
+          fetchRates();
+          if (chatState.secret) {
+            pushRoomSyncPayload();
+            pullRoomSyncPayload();
+          }
+        }
+      });
+
+      // 2. Auto-update weather & rates every 15 minutes
+      setInterval(() => {
+        fetchWeather();
+        fetchRates();
+        renderLunarCalendar();
+      }, 15 * 60 * 1000);
+
+      // 3. Auto-update when internet connection returns
+      window.addEventListener('online', () => {
+        fetchWeather();
+        fetchRates();
+        if (chatState.secret) {
+          pushRoomSyncPayload();
+          pullRoomSyncPayload();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

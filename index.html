@@ -1067,15 +1067,46 @@
                 --
               </div>
               <div id="next-amavasya-name" class="text-xs text-stone-600 dark:text-stone-300 mt-0.5">
-                Накануне — Маса Шиваратри
+                Amavasya Meditation / Kalabhairava Shanti
               </div>
             </div>
           </div>
 
+          <!-- Next Shivaratri / Pancha Bhuta Kriya & Pradosham Official Row -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/70 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
+                  🔱 Shivaratri / Pancha Bhuta Kriya
+                </div>
+                <div id="next-shivaratri-date" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white mt-0.5 capitalize truncate">
+                  --
+                </div>
+              </div>
+              <span id="next-shivaratri-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 shrink-0">
+                --
+              </span>
+            </div>
+
+            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-700/70 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  🪔 Ближайший Прадошам (Pradosham)
+                </div>
+                <div id="next-pradosham-date" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white mt-0.5 capitalize truncate">
+                  --
+                </div>
+              </div>
+              <span id="next-pradosham-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 shrink-0">
+                --
+              </span>
+            </div>
+          </div>
+
           <div class="pt-1">
-            <div class="flex items-center justify-between mb-2">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
               <h3 class="text-xs font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">
-                Календарь предстоящих лунных дней
+                Официальный календарь Isha (2026–2027)
               </h3>
               <button type="button" onclick="toggleFullLunarList()" id="btn-toggle-lunar" class="text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline">
                 Показать больше дат ↓
@@ -1450,70 +1481,232 @@
       { start: '20:10', end: '20:40', title: 'Ужин — 3-й поток и закрытие храмов', location: 'Bhiksha Hall / Dhyanalinga', note: 'Dhyanalinga закрывается в 20:30' }
     ];
 
+    // Строго по официальным таблицам 2026-Isha-Lunar-Calendar-English.pdf и 2027_Isha-Lunar-Calendar_English.pdf
     const PANCHANGAM_EVENTS = [
-      { date: '2026-01-03', type: 'purnima', title: 'Pausha Purnima', desc: 'Полнолуние • Pournami Pooja у Линга Бхайрави' },
-      { date: '2026-01-14', type: 'ekadashi', title: 'Shattila Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
-      { date: '2026-01-18', type: 'amavasya', title: 'Mauni Amavasya', desc: 'Новолуние • Ночь Маса Шиваратри накануне' },
-      { date: '2026-01-29', type: 'ekadashi', title: 'Jaya Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
-      { date: '2026-02-01', type: 'purnima', title: 'Magha Purnima', desc: 'Полнолуние • Pournami Pooja у Линга Бхайрави' },
-      { date: '2026-02-13', type: 'ekadashi', title: 'Vijaya Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
-      { date: '2026-02-15', type: 'shivaratri', title: 'Maha Shivaratri', desc: 'Ночь Махашиваратри в Isha Yoga Center' },
-      { date: '2026-02-17', type: 'amavasya', title: 'Phalguna Amavasya', desc: 'Новолуние' },
-      { date: '2026-02-27', type: 'ekadashi', title: 'Amalaki Ekadashi', desc: 'Экадаши • Пост / фруктовый стол в столовой' },
-      { date: '2026-03-03', type: 'purnima', title: 'Phalguna Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-03-15', type: 'ekadashi', title: 'Papamochani Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-03-19', type: 'amavasya', title: 'Chaitra Amavasya', desc: 'Новолуние' },
-      { date: '2026-03-29', type: 'ekadashi', title: 'Kamada Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-04-02', type: 'purnima', title: 'Chaitra Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-04-13', type: 'ekadashi', title: 'Varuthini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-04-17', type: 'amavasya', title: 'Vaishakha Amavasya', desc: 'Новолуние' },
-      { date: '2026-04-27', type: 'ekadashi', title: 'Mohini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-05-01', type: 'purnima', title: 'Buddha Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-05-13', type: 'ekadashi', title: 'Apara Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-05-16', type: 'amavasya', title: 'Jyeshtha Amavasya', desc: 'Новолуние' },
-      { date: '2026-05-27', type: 'ekadashi', title: 'Padmini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-05-31', type: 'purnima', title: 'Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-06-11', type: 'ekadashi', title: 'Parama Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-06-15', type: 'amavasya', title: 'Amavasya', desc: 'Новолуние' },
-      { date: '2026-06-25', type: 'ekadashi', title: 'Nirjala Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-06-29', type: 'purnima', title: 'Jyeshtha Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-07-10', type: 'ekadashi', title: 'Yogini Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-07-14', type: 'amavasya', title: 'Ashadha Amavasya', desc: 'Новолуние' },
-      { date: '2026-07-25', type: 'ekadashi', title: 'Devshayani Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-07-29', type: 'purnima', title: 'Guru Purnima (Гуру Пурнима)', desc: 'Полнолуние • Главный праздник Гуру Пурнима в Ише' },
-      { date: '2026-08-09', type: 'ekadashi', title: 'Kamika Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-08-12', type: 'amavasya', title: 'Shravana Amavasya', desc: 'Новолуние' },
-      { date: '2026-08-23', type: 'ekadashi', title: 'Shravana Putrada Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-08-28', type: 'purnima', title: 'Shravana Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-09-07', type: 'ekadashi', title: 'Aja Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-09-11', type: 'amavasya', title: 'Bhadrapada Amavasya', desc: 'Новолуние' },
-      { date: '2026-09-22', type: 'ekadashi', title: 'Parsva Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-09-26', type: 'purnima', title: 'Bhadrapada Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-10-06', type: 'ekadashi', title: 'Indira Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-10-10', type: 'amavasya', title: 'Mahalaya Amavasya', desc: 'Новолуние' },
-      { date: '2026-10-22', type: 'ekadashi', title: 'Papankusha Ekadashi', desc: 'Экадаши • Пост / фруктовый стол' },
-      { date: '2026-10-26', type: 'purnima', title: 'Sharad Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2026-11-05', type: 'ekadashi', title: 'Rama Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
-      { date: '2026-11-09', type: 'amavasya', title: 'Kartika Amavasya', desc: 'Новолуние • Накануне Маса Шиваратри' },
-      { date: '2026-11-20', type: 'ekadashi', title: 'Devutthana Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
-      { date: '2026-11-24', type: 'purnima', title: 'Kartika Purnima', desc: 'Полнолуние • Pournami Pooja у Линга Бхайрави' },
-      { date: '2026-12-04', type: 'ekadashi', title: 'Utpanna Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
-      { date: '2026-12-08', type: 'amavasya', title: 'Margashirsha Amavasya', desc: 'Новолуние • Накануне Маса Шиваратри' },
-      { date: '2026-12-20', type: 'ekadashi', title: 'Mokshada Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
-      { date: '2026-12-23', type: 'purnima', title: 'Margashirsha Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2027-01-03', type: 'ekadashi', title: 'Saphala Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
-      { date: '2027-01-07', type: 'amavasya', title: 'Pausha Amavasya', desc: 'Новолуние' },
-      { date: '2027-01-18', type: 'ekadashi', title: 'Pausha Putrada Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
-      { date: '2027-01-22', type: 'purnima', title: 'Pausha Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2027-02-02', type: 'ekadashi', title: 'Shattila Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
-      { date: '2027-02-06', type: 'amavasya', title: 'Magha Amavasya', desc: 'Новолуние' },
-      { date: '2027-02-17', type: 'ekadashi', title: 'Jaya Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
-      { date: '2027-02-20', type: 'purnima', title: 'Magha Purnima', desc: 'Полнолуние • Pournami Pooja' },
-      { date: '2027-03-04', type: 'ekadashi', title: 'Vijaya Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
-      { date: '2027-03-06', type: 'shivaratri', title: 'Maha Shivaratri', desc: 'Ночь Махашиваратри в Isha Yoga Center' },
-      { date: '2027-03-08', type: 'amavasya', title: 'Phalguna Amavasya', desc: 'Новолуние' },
-      { date: '2027-03-18', type: 'ekadashi', title: 'Amalaki Ekadashi', desc: 'Экадаши • Пост / фруктовый ужин' },
-      { date: '2027-03-22', type: 'purnima', title: 'Phalguna Purnima', desc: 'Полнолуние • Pournami Pooja' }
+      // === ЯНВАРЬ 2026 ===
+      { date: '2026-01-01', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'Вечерний ритуал Прадошам в ашраме' },
+      { date: '2026-01-02', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (2 янв 18:44 – 3 янв 18:42) • 3 янв — Purnima Pooja / Devi Procession' },
+      { date: '2026-01-14', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин (Phalahara) в Bhiksha Hall' },
+      { date: '2026-01-16', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-01-17', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya' },
+      { date: '2026-01-18', type: 'amavasya', title: 'Thai Amavasya', desc: 'Новолуние (18 янв 01:20 – 19 янв 02:31) • Amavasya Meditation / Kalabhairava Shanti' },
+      { date: '2026-01-29', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-01-30', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+
+      // === ФЕВРАЛЬ 2026 ===
+      { date: '2026-02-01', type: 'purnima', title: 'Thaipusam • Purnima', desc: 'Полнолуние (1 фев 04:41 – 2 фев 04:43) • Purnima Meditation & Pooja • 16 лет Linga Bhairavi' },
+      { date: '2026-02-13', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-02-14', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама накануне Махашиваратри' },
+      { date: '2026-02-15', type: 'mahashivaratri', title: 'Maha Shivaratri (Махашиваратри)', desc: 'Великая ночь Шивы (титхи: 15 фев 17:51 – 16 фев 18:26) • Pancha Bhuta Kriya' },
+      { date: '2026-02-16', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (16 фев 18:27 – 17 фев 18:30) • Amavasya Meditation (16 фев), Offering (16–17 фев)' },
+      { date: '2026-02-27', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+
+      // === МАРТ 2026 ===
+      { date: '2026-03-01', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-03-02', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (2 мар 18:23 – 3 мар 17:52) • Offering: 3 марта' },
+      { date: '2026-03-14', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-03-16', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-03-17', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya' },
+      { date: '2026-03-18', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (18 мар 08:29 – 19 мар 07:29) • Amavasya Meditation & Offering' },
+      { date: '2026-03-28', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-03-30', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+
+      // === АПРЕЛЬ 2026 ===
+      { date: '2026-04-01', type: 'purnima', title: 'Panguni Uthiram • Purnima', desc: 'Полнолуние (1 апр 07:38 – 2 апр 07:57) • Purnima Meditation, Offering & Pooja' },
+      { date: '2026-04-13', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-04-15', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (15 апреля)' },
+      { date: '2026-04-16', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (16 апр 19:32 – 17 апр 17:47) • Meditation: 16 апр, Offering: 17 апр' },
+      { date: '2026-04-27', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-04-29', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-04-30', type: 'purnima', title: 'Purnima Meditation', desc: 'Начало Пурнимы (30 апр 23:07 – 1 мая 23:51) • 1 мая — Buddha Purnima Pooja' },
+
+      // === МАЙ 2026 ===
+      { date: '2026-05-01', type: 'purnima', title: 'Buddha Purnima / Chitra Purnima', desc: 'Purnima Offering & Linga Bhairavi Pooja (1 мая)' },
+      { date: '2026-05-13', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-05-14', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-05-15', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya' },
+      { date: '2026-05-16', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (16 мая 03:59 – 17 мая 02:09) • Amavasya Meditation & Offering' },
+      { date: '2026-05-26', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-05-28', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-05-30', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (30 мая 12:55 – 31 мая 14:45) • Offering: 30 и 31 мая' },
+
+      // === ИЮНЬ 2026 ===
+      { date: '2026-06-11', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-06-12', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-06-13', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya' },
+      { date: '2026-06-14', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (14 июн 11:50 – 15 июн 09:27) • Amavasya Meditation & Offering' },
+      { date: '2026-06-25', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-06-27', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-06-29', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (29 июн 04:58 – 30 июн 06:11) • Offering & Devi Procession' },
+
+      // === ИЮЛЬ 2026 ===
+      { date: '2026-07-10', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-07-12', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (12 июля)' },
+      { date: '2026-07-13', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (13 июл 19:49 – 14 июл 17:33) • Meditation: 13 июл, Offering: 14 июл' },
+      { date: '2026-07-24', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-07-26', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-07-28', type: 'purnima', title: 'Guru Purnima Meditation', desc: 'Полнолуние (28 июл 19:45 – 29 июл 20:58) • 29 июл — Guru Purnima & Dakshinayana' },
+      { date: '2026-07-29', type: 'purnima', title: 'Guru Purnima (Гуру Пурнима)', desc: 'Главный праздник Гуру Пурнима в Ише, Dakshinayana • Purnima Pooja & Offering' },
+
+      // === АВГУСТ 2026 ===
+      { date: '2026-08-08', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-08-10', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-08-11', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya' },
+      { date: '2026-08-12', type: 'amavasya', title: 'Adi Amavasya (Новолуние)', desc: 'Новолуние (12 авг 02:11 – 13 авг 00:16) • Amavasya Meditation & Offering' },
+      { date: '2026-08-23', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-08-25', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-08-27', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (27 авг 09:56 – 28 авг 10:29) • Purnima Offering & Devi Procession' },
+
+      // === СЕНТЯБРЬ 2026 ===
+      { date: '2026-09-07', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-09-08', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-09-09', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya' },
+      { date: '2026-09-10', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (10 сен 10:57 – 11 сен 09:40) • Amavasya Meditation & Offering' },
+      { date: '2026-09-22', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-09-24', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-09-25', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (25 сен 23:13 – 26 сен 22:50) • 26 сен — Purnima Offering & Pooja' },
+
+      // === ОКТЯБРЬ 2026 ===
+      { date: '2026-10-06', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-10-08', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (8 октября)' },
+      { date: '2026-10-09', type: 'amavasya', title: 'Mahalaya Amavasya', desc: 'Новолуние (9 окт 21:53 – 10 окт 21:34) • Meditation: 9 окт, Offering: 10 окт' },
+      { date: '2026-10-22', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-10-23', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама по календарю Иши' },
+      { date: '2026-10-25', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (25 окт 11:31 – 26 окт 10:14) • Purnima Offering & Devi Procession' },
+
+      // === НОЯБРЬ 2026 ===
+      { date: '2026-11-04', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (4 ноября, ср) • Пост / фруктовый ужин (Phalahara) в Bhiksha Hall' },
+      { date: '2026-11-06', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (6 ноября, пт)' },
+      { date: '2026-11-07', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (7 ноября, сб)' },
+      { date: '2026-11-08', type: 'amavasya', title: 'Amavasya • Diwali (Новолуние)', desc: 'Новолуние (8 ноя 12:00 – 9 ноя 12:06) • Amavasya Meditation (8 ноя), Offering (8–9 ноя)' },
+      { date: '2026-11-20', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (20 ноября, пт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-11-22', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (22 ноября, вс)' },
+      { date: '2026-11-23', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (23 ноя 23:20 – 24 ноя 21:24) • 24 ноя — Karthigai Deepam & Dhyanalinga Offering Day' },
+      { date: '2026-11-24', type: 'purnima', title: 'Karthigai Deepam • Purnima Pooja', desc: '27 лет Dhyanalinga Offering Day • Purnima Offering, Yantra Pooja & Devi Procession' },
+
+      // === ДЕКАБРЬ 2026 ===
+      { date: '2026-12-04', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (4 декабря, пт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-12-06', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (6 декабря, вс)' },
+      { date: '2026-12-07', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (7 декабря, пн)' },
+      { date: '2026-12-08', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (8 дек 05:04 – 9 дек 06:48) • Amavasya Meditation & Offering (8 дек)' },
+      { date: '2026-12-20', type: 'ekadashi', title: 'Vaikuntha Ekadashi (Экадаши)', desc: 'Вайкунтха Экадаши (20 декабря, вс) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2026-12-21', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (21 декабря, пн) • Накануне Зимнего солнцестояния (22 дек)' },
+      { date: '2026-12-23', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (23 дек 10:15 – 24 дек 08:10) • 24 дек — Arudra Darshan' },
+
+      // === ЯНВАРЬ 2027 ===
+      { date: '2027-01-03', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (3 января, вс) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-01-05', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Ежемесячная ночь Шиваратри, Pancha Bhuta Kriya и Прадошам (5 января, вт)' },
+      { date: '2027-01-07', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (7 янв 00:35 – 8 янв 02:42) • Amavasya Meditation & Offering (7 янв)' },
+      { date: '2027-01-18', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (18 января, пн) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-01-20', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (20 января, ср)' },
+      { date: '2027-01-21', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (21 янв 21:16 – 22 янв 18:56) • 22 янв — Thaipusam & 17 лет Linga Bhairavi' },
+      { date: '2027-01-22', type: 'purnima', title: 'Thaipusam • Purnima Pooja', desc: '17 лет Linga Bhairavi Devi Aradhana • Purnima Offering & Devi Procession' },
+
+      // === ФЕВРАЛЬ 2027 ===
+      { date: '2027-02-02', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (2 февраля, вт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-02-03', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (3 февраля, ср)' },
+      { date: '2027-02-04', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (4 февраля, чт)' },
+      { date: '2027-02-05', type: 'amavasya', title: 'Thai Amavasya (Новолуние)', desc: 'Новолуние (5 фев 20:25 – 6 фев 22:16) • Meditation: 5 фев, Offering: 6 фев' },
+      { date: '2027-02-17', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (17 февраля, ср) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-02-18', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (18 февраля, чт)' },
+      { date: '2027-02-20', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (20 фев 07:47 – 21 фев 04:26) • Purnima Offering & Devi Procession' },
+
+      // === МАРТ 2027 ===
+      { date: '2027-03-03', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (3 марта, ср) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-03-05', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама накануне Махашиваратри (5 марта, пт)' },
+      { date: '2027-03-06', type: 'mahashivaratri', title: 'Maha Shivaratri (Махашиваратри)', desc: 'Великая ночь Шивы в Ише (титхи: 6 мар 13:10 – 7 мар 14:35) • Ночная медитация у Адийоги' },
+      { date: '2027-03-07', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (7 мар 14:36 – 8 мар 15:36) • Meditation: 7 мар, Offering: 7–8 мар' },
+      { date: '2027-03-18', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (18 марта, чт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-03-20', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (20 марта, сб)' },
+      { date: '2027-03-21', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (21 мар 18:13 – 22 мар 16:45) • 22 мар — Panguni Uthiram & Purnima Pooja' },
+      { date: '2027-03-22', type: 'purnima', title: 'Panguni Uthiram • Purnima Pooja', desc: 'Purnima Offering & Linga Bhairavi Devi Procession (22 марта, пн)' },
+
+      // === АПРЕЛЬ 2027 ===
+      { date: '2027-04-02', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (2 апреля, пт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-04-04', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (4 апреля, вс)' },
+      { date: '2027-04-05', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (5 апреля, пн)' },
+      { date: '2027-04-06', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (6 апр 06:04 – 7 апр 06:01) • Amavasya Meditation & Offering' },
+      { date: '2027-04-16', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (16 апреля, пт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-04-18', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (18 апреля, вс)' },
+      { date: '2027-04-20', type: 'purnima', title: 'Chitra Purnima Meditation & Pooja', desc: 'Полнолуние (20 апр 04:58 – 21 апр 04:20) • Chitra Purnima Offering' },
+
+      // === МАЙ 2027 ===
+      { date: '2027-05-02', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (2 мая, вс) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-05-04', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (4 мая, вт)' },
+      { date: '2027-05-05', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (5 мая 18:10 – 6 мая 17:06) • Meditation: 5 мая, Offering: 6 мая' },
+      { date: '2027-05-16', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (16 мая, вс) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-05-17', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (17 мая, пн)' },
+      { date: '2027-05-19', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (19 мая 16:44 – 20 мая 17:04) • 20 мая — Buddha Purnima & Pooja' },
+      { date: '2027-05-20', type: 'purnima', title: 'Buddha Purnima • Purnima Pooja', desc: 'Purnima Offering & Linga Bhairavi Devi Procession (20 мая, чт)' },
+      { date: '2027-05-31', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (31 мая, пн) • Пост / фруктовый ужин в Bhiksha Hall' },
+
+      // === ИЮНЬ 2027 ===
+      { date: '2027-06-02', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (2 июня, ср)' },
+      { date: '2027-06-03', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (3 июня, чт)' },
+      { date: '2027-06-04', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (4 июн 03:53 – 5 июн 02:08) • Amavasya Meditation & Offering' },
+      { date: '2027-06-14', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (14 июня, пн) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-06-16', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (16 июня, ср)' },
+      { date: '2027-06-18', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (18 июн 05:35 – 19 июн 06:58) • Purnima Offering & Devi Procession' },
+      { date: '2027-06-30', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (30 июня, ср) • Пост / фруктовый ужин в Bhiksha Hall' },
+
+      // === ИЮЛЬ 2027 ===
+      { date: '2027-07-02', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (2 июля, пт)' },
+      { date: '2027-07-03', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (3 июл 11:55 – 4 июл 09:36) • Amavasya Meditation & Offering' },
+      { date: '2027-07-14', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (14 июля, ср) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-07-15', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (15 июля, чт)' },
+      { date: '2027-07-17', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (17 июл 20:00 – 18 июл 21:58) • 18 июл — Guru Purnima & Dakshinayana' },
+      { date: '2027-07-18', type: 'purnima', title: 'Guru Purnima (Гуру Пурнима)', desc: 'Главный праздник Гуру Пурнима в Ише, Dakshinayana • Purnima Pooja & Offering' },
+      { date: '2027-07-29', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (29 июля, чт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-07-31', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (31 июля, сб)' },
+
+      // === АВГУСТ 2027 ===
+      { date: '2027-08-01', type: 'amavasya', title: 'Adi Amavasya (Новолуние)', desc: 'Новолуние (1 авг 19:06 – 2 авг 16:39) • Meditation: 1 авг, Offering: 2 авг' },
+      { date: '2027-08-12', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (12 августа, чт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-08-14', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (14 августа, сб)' },
+      { date: '2027-08-16', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (16 авг 11:33 – 17 авг 13:28) • Offering: 16–17 августа' },
+      { date: '2027-08-28', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (28 августа, сб) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-08-29', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (29 августа, вс)' },
+      { date: '2027-08-30', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (30 августа, пн)' },
+      { date: '2027-08-31', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (31 авг 02:17 – 31 авг 23:58) • Amavasya Meditation & Offering' },
+
+      // === СЕНТЯБРЬ 2027 ===
+      { date: '2027-09-11', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (11 сентября, сб) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-09-13', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (13 сентября, пн)' },
+      { date: '2027-09-15', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (15 сен 03:29 – 16 сен 05:01) • Purnima Offering & Devi Procession' },
+      { date: '2027-09-26', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (26 сентября, вс) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-09-27', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (27 сентября, пн)' },
+      { date: '2027-09-28', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (28 сентября, вт)' },
+      { date: '2027-09-29', type: 'amavasya', title: 'Mahalaya Amavasya', desc: 'Новолуние (29 сен 10:34 – 30 сен 08:41) • Amavasya Meditation & Offering' },
+
+      // === ОКТЯБРЬ 2027 ===
+      { date: '2027-10-11', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (11 октября, пн) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-10-12', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (12 октября, вт)' },
+      { date: '2027-10-14', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (14 окт 19:07 – 15 окт 19:48) • 15 окт — Purnima Offering & Pooja' },
+      { date: '2027-10-15', type: 'purnima', title: 'Purnima Pooja & Offering', desc: 'Linga Bhairavi Yantra Pooja & Devi Procession (15 октября, пт)' },
+      { date: '2027-10-25', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (25 октября, пн) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-10-27', type: 'shivaratri', title: 'Masa Shivaratri & Pradosham', desc: 'Pancha Bhuta Kriya и Прадошам (27 октября, ср)' },
+      { date: '2027-10-28', type: 'amavasya', title: 'Amavasya • Diwali (Новолуние)', desc: 'Новолуние (28 окт 20:49 – 29 окт 19:41) • Meditation: 28 окт, Offering: 29 окт' },
+
+      // === НОЯБРЬ 2027 ===
+      { date: '2027-11-09', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (9 ноября, вт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-11-11', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (11 ноября, чт)' },
+      { date: '2027-11-13', type: 'purnima', title: 'Purnima Meditation & Pooja', desc: 'Полнолуние (13 ноя 10:09 – 14 ноя 10:03) • Purnima Offering & Devi Procession' },
+      { date: '2027-11-24', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (24 ноября, ср) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-11-25', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (25 ноября, чт)' },
+      { date: '2027-11-26', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (26 ноября, пт)' },
+      { date: '2027-11-27', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (27 ноя 09:45 – 28 ноя 09:35) • Amavasya Meditation & Offering' },
+
+      // === ДЕКАБРЬ 2027 ===
+      { date: '2027-12-09', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (9 декабря, чт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-12-11', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (11 декабря, сб) • 28 лет Dhyanalinga Offering Day' },
+      { date: '2027-12-12', type: 'purnima', title: 'Purnima Meditation', desc: 'Полнолуние (13 дек 00:13 – 13 дек 22:53) • 13 дек — Purnima Offering & Pooja' },
+      { date: '2027-12-13', type: 'purnima', title: 'Purnima Pooja & Offering', desc: 'Linga Bhairavi Yantra Pooja & Devi Procession (13 декабря, пн)' },
+      { date: '2027-12-23', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (23 декабря, чт) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2027-12-25', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (25 декабря, сб)' },
+      { date: '2027-12-26', type: 'shivaratri', title: 'Masa Shivaratri / Pancha Bhuta Kriya', desc: 'Ежемесячная ночь Шиваратри и Pancha Bhuta Kriya (26 декабря, вс)' },
+      { date: '2027-12-27', type: 'amavasya', title: 'Amavasya (Новолуние)', desc: 'Новолуние (27 дек 01:24 – 28 дек 02:19) • Amavasya Meditation & Offering' },
+      { date: '2028-01-08', type: 'ekadashi', title: 'Ekadashi (Экадаши)', desc: 'Экадаши (8 января 2028, сб) • Пост / фруктовый ужин в Bhiksha Hall' },
+      { date: '2028-01-09', type: 'pradosham', title: 'Pradosham (Прадошам)', desc: 'День Прадошама (9 января 2028, вс)' }
     ];
 
     let activeMainTab = 'overview';
@@ -1832,14 +2025,13 @@
 
       if (todayISO) {
         const upcomingMasaDates = PANCHANGAM_EVENTS
-          .filter(ev => ev.type === 'amavasya')
-          .map(ev => addDaysToISO(ev.date, -1))
-          .filter(masaDate => masaDate >= todayISO);
+          .filter(ev => (ev.type === 'shivaratri' || ev.type === 'mahashivaratri') && ev.date >= todayISO)
+          .map(ev => ev.date);
 
         if (upcomingMasaDates.length > 0 && masaEl) {
           const nextMasaISO = upcomingMasaDates[0];
           const diffDays = daysBetweenISO(todayISO, nextMasaISO);
-          masaEl.textContent = `🌙 Маса Шиваратри: ${formatRussianDate(nextMasaISO)} (${formatDaysCountdown(diffDays).toLowerCase()})`;
+          masaEl.textContent = `🌙 Шиваратри / Pancha Bhuta Kriya: ${formatRussianDate(nextMasaISO)} (${formatDaysCountdown(diffDays).toLowerCase()})`;
         }
 
         if (masaListEl && upcomingMasaDates.length > 0) {
@@ -2229,6 +2421,8 @@
       const nextEkadashi = upcoming.find(ev => ev.type === 'ekadashi');
       const nextPurnima = upcoming.find(ev => ev.type === 'purnima');
       const nextAmavasya = upcoming.find(ev => ev.type === 'amavasya');
+      const nextShivaratri = upcoming.find(ev => ev.type === 'shivaratri' || ev.type === 'mahashivaratri');
+      const nextPradosham = upcoming.find(ev => ev.type === 'pradosham' || (ev.type === 'shivaratri' && /Pradosham/i.test(ev.title)));
 
       if (nextEkadashi) {
         const diff = daysBetweenISO(ishaToday, nextEkadashi.date);
@@ -2237,45 +2431,78 @@
 
         document.getElementById('next-ekadashi-badge').textContent = badgeText;
         document.getElementById('next-ekadashi-date').textContent = dateFormatted;
-        document.getElementById('next-ekadashi-name').textContent = `${nextEkadashi.title} • Фруктовый стол`;
+        document.getElementById('next-ekadashi-name').textContent = nextEkadashi.desc;
 
         const ovEkText = document.getElementById('ov-ekadashi-text');
         const ovEkSub = document.getElementById('ov-ekadashi-sub');
-        if (ovEkText) ovEkText.textContent = `${dateFormatted} (${badgeText.toLowerCase()})`;
-        if (ovEkSub) ovEkSub.textContent = nextEkadashi.title;
+        if (ovEkText) {
+          ovEkText.textContent = diff === 0
+            ? `Сегодня (${dateFormatted})!`
+            : `${dateFormatted} (${badgeText.toLowerCase()})`;
+        }
+        if (ovEkSub) ovEkSub.textContent = nextEkadashi.desc;
       }
 
       if (nextPurnima) {
         const diff = daysBetweenISO(ishaToday, nextPurnima.date);
         document.getElementById('next-purnima-badge').textContent = formatDaysCountdown(diff);
         document.getElementById('next-purnima-date').textContent = formatRussianDate(nextPurnima.date);
-        document.getElementById('next-purnima-name').textContent = nextPurnima.title;
+        document.getElementById('next-purnima-name').textContent = nextPurnima.desc;
       }
 
       if (nextAmavasya) {
         const diff = daysBetweenISO(ishaToday, nextAmavasya.date);
         document.getElementById('next-amavasya-badge').textContent = formatDaysCountdown(diff);
         document.getElementById('next-amavasya-date').textContent = formatRussianDate(nextAmavasya.date);
-        document.getElementById('next-amavasya-name').textContent = `${nextAmavasya.title} • Накануне Маса Шиваратри`;
+        document.getElementById('next-amavasya-name').textContent = nextAmavasya.desc;
+      }
+
+      if (nextShivaratri) {
+        const diff = daysBetweenISO(ishaToday, nextShivaratri.date);
+        const shivDateEl = document.getElementById('next-shivaratri-date');
+        const shivBadgeEl = document.getElementById('next-shivaratri-badge');
+        if (shivDateEl) shivDateEl.textContent = `${formatRussianDate(nextShivaratri.date)} • ${nextShivaratri.title}`;
+        if (shivBadgeEl) shivBadgeEl.textContent = formatDaysCountdown(diff);
+      }
+
+      if (nextPradosham) {
+        const diff = daysBetweenISO(ishaToday, nextPradosham.date);
+        const pradDateEl = document.getElementById('next-pradosham-date');
+        const pradBadgeEl = document.getElementById('next-pradosham-badge');
+        if (pradDateEl) pradDateEl.textContent = formatRussianDate(nextPradosham.date);
+        if (pradBadgeEl) pradBadgeEl.textContent = formatDaysCountdown(diff);
       }
 
       const listEl = document.getElementById('upcoming-lunar-list');
       if (listEl) {
-        const count = showAllLunarDates ? 14 : 6;
+        const count = showAllLunarDates ? 24 : 8;
         const slice = upcoming.slice(0, count);
         listEl.innerHTML = slice.map(ev => {
           const diff = daysBetweenISO(ishaToday, ev.date);
-          const icon = ev.type === 'ekadashi' ? '🌿' : ev.type === 'purnima' ? '🌕' : ev.type === 'shivaratri' ? '🔱' : '🌑';
+          const icon = ev.type === 'ekadashi'
+            ? '🌿'
+            : ev.type === 'purnima'
+              ? '🌕'
+              : (ev.type === 'shivaratri' || ev.type === 'mahashivaratri')
+                ? '🔱'
+                : ev.type === 'pradosham'
+                  ? '🪔'
+                  : '🌑';
+          const isToday = diff === 0;
+          const rowBorder = isToday
+            ? 'border-amber-500 bg-amber-500/10 ring-1 ring-amber-500/30'
+            : 'border-stone-200/80 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50';
           return `
-            <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-2">
+            <div class="p-3 rounded-xl border ${rowBorder} flex items-center justify-between gap-2">
               <div class="flex items-center gap-2.5 min-w-0">
                 <span class="text-lg shrink-0">${icon}</span>
                 <div class="min-w-0">
                   <div class="font-bold text-stone-900 dark:text-white truncate">${ev.title}</div>
-                  <div class="text-[11px] text-stone-500 dark:text-stone-400 capitalize">${formatRussianDate(ev.date)}</div>
+                  <div class="text-[11px] text-stone-600 dark:text-stone-300 capitalize">${formatRussianDate(ev.date)}</div>
+                  <div class="text-[10px] text-stone-500 dark:text-stone-400 truncate">${ev.desc}</div>
                 </div>
               </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-stone-200/70 dark:bg-stone-700 text-stone-700 dark:text-stone-200 shrink-0">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-lg ${isToday ? 'bg-amber-500 text-white' : 'bg-stone-200/70 dark:bg-stone-700 text-stone-700 dark:text-stone-200'} shrink-0">
                 ${formatDaysCountdown(diff)}
               </span>
             </div>

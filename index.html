@@ -10,17 +10,7 @@
   <meta name="apple-mobile-web-app-title" content="Томск ⇄ Иша" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="theme-color" content="#0c0a09" id="meta-theme-color" />
-
-  <!-- Inline SVG Favicon & Home Screen Icon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' rx='28' fill='%231c1917'/%3E%3Ccircle cx='60' cy='60' r='42' fill='none' stroke='%23d97706' stroke-width='4' stroke-dasharray='6 4'/%3E%3Cpath d='M35 78 L60 36 L85 78 Z' fill='%23f59e0b' fill-opacity='0.2' stroke='%23f59e0b' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='60' cy='62' r='10' fill='%23fbbf24'/%3E%3C/svg%3E" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%231c1917'/%3E%3Ccircle cx='90' cy='90' r='64' fill='none' stroke='%23d97706' stroke-width='6'/%3E%3Cpath d='M50 118 L90 52 L130 118 Z' fill='%23f59e0b' fill-opacity='0.25' stroke='%23f59e0b' stroke-width='6' stroke-linejoin='round'/%3E%3Ccircle cx='90' cy='94' r='15' fill='%23fbbf24'/%3E%3C/svg%3E" />
-
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <meta id="meta-theme-color" name="theme-color" content="#0c0a09" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -30,7 +20,7 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
           }
         }
       }
@@ -442,86 +432,197 @@
             <div class="p-3 rounded-xl bg-white dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 space-y-1">
               <div class="font-bold text-sky-700 dark:text-sky-400">4. Как пользоваться и перезапускать</div>
               <p>
-                Нажми <strong>«⚙️ Настроить»</strong>, выбери дату въезда по штампу в паспорте и срок (30, 90 или 180 дней). Когда ты слетаешь на виза-ран и вернёшься обратно в Индию с новым штампом — просто открой настройку, нажми кнопку <strong>«Сегодня»</strong> и <strong>«Сохранить»</strong>. Счётчик сразу перезапустится и автоматически обновится на обоих ваших телефонах.
+                Нажми <strong>⚙️ Настроить</strong>, выбери дату въезда по штампу в паспорте и срок (30, 90 или 180 дней). Когда ты слетаешь на виза-ран и вернёшься обратно в Индию с новым штампом — просто открой настройку, нажми кнопку <strong>Сегодня</strong> и <strong>Сохранить</strong>. Счётчик сразу перезапустится и автоматически обновится на обоих ваших телефонах.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Live Ashram Status Card (Now & Next) -->
-      <section aria-label="Сейчас в ашраме Иша" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 shadow-sm p-3.5 sm:p-4 space-y-2.5">
-        <div class="flex items-center justify-between">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
-            <span>🕉️</span> <span>Ритм ашрама прямо сейчас</span>
-          </h2>
-          <button type="button" onclick="switchMainTab('ashram')" class="text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline">
-            Расписание →
+      <!-- 1. SHUNYA MANDALA 48-DAY TRACKER CARD -->
+      <section aria-label="Мандала Шуньи на 48 дней" class="bg-white dark:bg-stone-900 rounded-2xl border border-amber-500/30 dark:border-amber-500/20 shadow-sm overflow-hidden">
+        <div class="px-3.5 sm:px-4 py-3 border-b border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="text-base leading-none">🧘‍♀️</span>
+            <div>
+              <h2 class="text-xs font-bold uppercase tracking-wider text-stone-900 dark:text-white">
+                Мандала Шуньи (48 дней • 2 раза в день)
+              </h2>
+            </div>
+          </div>
+          <button type="button" onclick="toggleShunyaEditor()" class="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-[11px] font-bold transition">
+            ⚙️ Изменить
           </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <!-- Happening Now -->
-          <div class="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/25 flex items-start gap-2.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping mt-1.5 shrink-0"></span>
-            <div class="min-w-0">
-              <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
-                Сейчас в центре
+        <div class="p-3.5 sm:p-4 space-y-3">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <div>
+              <div class="text-[11px] font-semibold text-stone-500 dark:text-stone-400">
+                Прогресс мандалы (48 дней • 96 практик):
               </div>
-              <div id="ov-ashram-now-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5">
-                Дхьяналинга открыта для медитации
+              <div class="flex items-baseline gap-2 mt-0.5">
+                <span id="shunya-days-done-num" class="text-2xl sm:text-3xl font-extrabold tracking-tight tabular-nums text-stone-900 dark:text-white">
+                  День 1 из 48
+                </span>
+                <span id="shunya-days-left-sub" class="text-xs text-stone-500 dark:text-stone-400">
+                  (осталось 47 дней)
+                </span>
               </div>
-              <div id="ov-ashram-now-sub" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
-                По времени Коимбатура
+            </div>
+            <div class="text-right">
+              <div id="shunya-sessions-badge" class="inline-flex items-center px-2 py-0.5 rounded-lg bg-amber-500/15 text-amber-800 dark:text-amber-300 text-xs font-extrabold tabular-nums">
+                Выполнено: 0 из 96 практик
+              </div>
+              <div id="shunya-start-date-label" class="text-[11px] font-semibold text-stone-500 dark:text-stone-400 mt-0.5">
+                Старт: 16.11.2026
               </div>
             </div>
           </div>
 
-          <!-- Up Next -->
-          <div class="p-3 rounded-xl bg-amber-500/5 border border-amber-500/25 flex items-start gap-2.5">
-            <span class="text-sm leading-none mt-0.5 shrink-0">⏳</span>
-            <div class="min-w-0">
-              <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                Далее по расписанию
+          <!-- Shunya Progress Bar -->
+          <div class="w-full h-2.5 rounded-full bg-stone-200 dark:bg-stone-800 overflow-hidden">
+            <div id="shunya-progress-bar" class="h-full rounded-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-500" style="width: 2%"></div>
+          </div>
+
+          <!-- Morning & Evening Check-in Buttons for Today -->
+          <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div class="text-xs font-bold text-stone-900 dark:text-white">
+                Отметка практик на сегодня (<span id="shunya-today-date-label">сегодня</span>):
               </div>
-              <div id="ov-ashram-next-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5">
-                Следующее событие
+              <div class="text-[11px] text-stone-500 dark:text-stone-400">
+                Нажми на кнопку после выполнения практики
               </div>
-              <div id="ov-ashram-next-sub" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
-                По расписанию центра
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" id="shunya-btn-am" onclick="toggleShunyaPractice('am')"
+                class="px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <span id="shunya-icon-am">○</span> <span>☀️ Практика 1</span>
+              </button>
+              <button type="button" id="shunya-btn-pm" onclick="toggleShunyaPractice('pm')"
+                class="px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                <span id="shunya-icon-pm">○</span> <span>🌙 Практика 2</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collapsible Shunya Start Date Editor -->
+        <div id="shunya-editor-box" class="hidden p-3.5 bg-stone-50/90 dark:bg-stone-950/70 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <label for="shunya-input-start" class="text-xs font-bold text-stone-700 dark:text-stone-300">Дата 1-го дня мандалы:</label>
+            <input id="shunya-input-start" type="date" value="2026-11-16"
+              class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs font-bold text-stone-900 dark:text-white" />
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="saveShunyaStart()" class="px-3 py-1.5 rounded-xl bg-amber-600 text-white text-xs font-bold">Сохранить</button>
+            <button type="button" onclick="toggleShunyaEditor(false)" class="px-2.5 py-1.5 rounded-xl bg-stone-200 dark:bg-stone-800 text-xs font-semibold">Закрыть</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. VOLUNTEERING COUNTER CARD -->
+      <section aria-label="Счётчик волонтёрства в Ише" class="bg-white dark:bg-stone-900 rounded-2xl border border-emerald-500/30 dark:border-emerald-500/20 shadow-sm overflow-hidden">
+        <div class="px-3.5 sm:px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg shrink-0">
+              🤝
+            </div>
+            <div>
+              <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                Волонтёрство в Isha Yoga Center
               </div>
+              <div class="flex items-baseline gap-2 mt-0.5">
+                <span id="vol-days-num" class="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-white tabular-nums">
+                  0 дней
+                </span>
+                <span id="vol-sub-label" class="text-xs text-stone-500 dark:text-stone-400">
+                  (первый день — 17.11.2026)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="vol-start-label" class="text-[11px] font-semibold text-stone-500 dark:text-stone-400 hidden sm:inline">
+              Старт: 17 нояб.
+            </span>
+            <button type="button" onclick="toggleVolEditor()" class="px-2.5 py-1 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-800 dark:text-emerald-300 text-[11px] font-bold transition">
+              ⚙️ Дата
+            </button>
+          </div>
+        </div>
+
+        <div id="vol-editor-box" class="hidden p-3.5 bg-stone-50/90 dark:bg-stone-950/70 border-t border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <label for="vol-input-start" class="text-xs font-bold text-stone-700 dark:text-stone-300">Первый день волонтёрства:</label>
+            <input id="vol-input-start" type="date" value="2026-11-17"
+              class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-300 dark:border-stone-700 text-xs font-bold text-stone-900 dark:text-white" />
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button type="button" onclick="saveVolStart()" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Сохранить</button>
+            <button type="button" onclick="toggleVolEditor(false)" class="px-2.5 py-1.5 rounded-xl bg-stone-200 dark:bg-stone-800 text-xs font-semibold">Закрыть</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ASHRAM LIVE PULSE ON OVERVIEW -->
+      <section aria-label="Ритм ашрама прямо сейчас" class="bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/90 dark:border-stone-800 p-3.5 sm:p-4 shadow-sm space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
+            <span>🕉️</span> <span>Ритм ашрама прямо сейчас</span>
+          </span>
+          <button type="button" onclick="switchMainTab('ashram')" class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline">
+            Всё расписание →
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+              🟢 Сейчас в центре
+            </div>
+            <div id="ov-ashram-now-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+              Синхронизация...
+            </div>
+            <div id="ov-ashram-now-sub" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+              По времени Коимбатура
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+              ⏳ Далее по расписанию
+            </div>
+            <div id="ov-ashram-next-title" class="text-xs sm:text-sm font-bold text-stone-900 dark:text-white mt-0.5">
+              Загрузка...
+            </div>
+            <div id="ov-ashram-next-sub" class="text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
+              Обратный отсчёт...
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Maha Shivaratri Interactive Countdown & Progress Bar Card (Clickable & Expandable) -->
-      <section aria-label="Отсчёт до ночи Махашиваратри" class="bg-white dark:bg-stone-900 rounded-2xl border border-indigo-500/35 dark:border-indigo-500/30 shadow-sm overflow-hidden">
+      <!-- MAHASHIVARATRI INTERACTIVE CARD -->
+      <section aria-label="Отсчёт до Махашиваратри" class="bg-white dark:bg-stone-900 rounded-2xl border border-indigo-500/30 dark:border-indigo-500/20 shadow-sm overflow-hidden">
         <button type="button" onclick="toggleMsrDetails()" class="w-full text-left p-3.5 sm:p-4 bg-gradient-to-r from-indigo-500/10 via-purple-500/5 to-amber-500/10 hover:from-indigo-500/15 transition space-y-2.5">
           <div class="flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-xl bg-indigo-600/15 dark:bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-lg shrink-0">
-                🔱
+            <div>
+              <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300 flex items-center gap-1">
+                <span>🔱</span> <span>Главное событие года у Адийоги</span>
               </div>
-              <div class="min-w-0">
-                <div class="flex items-center gap-1.5">
-                  <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-300">
-                    Главное событие года у Адийоги
-                  </span>
-                  <span id="msr-expand-hint" class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-indigo-500/15 text-indigo-700 dark:text-indigo-300">
-                    Подробнее ▾
-                  </span>
-                </div>
-                <h2 id="msr-title" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white truncate mt-0.5">
-                  Великая ночь Махашиваратри • 6 марта 2027
-                </h2>
-              </div>
+              <h2 id="msr-title" class="text-xs sm:text-sm font-extrabold text-stone-900 dark:text-white mt-0.5">
+                Великая ночь Махашиваратри • 6 марта 2027
+              </h2>
             </div>
-
-            <div class="text-right shrink-0">
-              <div id="msr-countdown-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-indigo-600 text-white text-xs font-extrabold tabular-nums shadow-sm">
-                <span>⏳</span>
-                <span id="msr-countdown-text">-- дн. -- ч -- м</span>
+            <div class="text-right">
+              <div id="msr-countdown-text" class="text-sm sm:text-base font-extrabold text-indigo-700 dark:text-indigo-300 tabular-nums">
+                Расчёт...
+              </div>
+              <div id="msr-expand-hint" class="text-[10px] font-bold text-stone-500 dark:text-stone-400">
+                Подробнее ▾
               </div>
             </div>
           </div>
@@ -1956,6 +2057,7 @@
 
       renderAshramSchedule(isha.totalMinutes);
       renderVisaCounter(isha.isoDate);
+      renderShunyaAndVol(isha.isoDate);
       updateMahashivaratriCountdown(isha.isoDate);
       refreshPartnerPresenceUI();
     }
@@ -2170,9 +2272,217 @@
       updatedAt: 0
     };
 
+    /*************************************************************************
+     * 5.1 SHUNYA MANDALA & VOLUNTEER STATE LOGIC
+     *************************************************************************/
+    const SHUNYA_STORAGE_KEY = 'tomsk_isha_shunya_v1';
+    let shunyaState = {
+      startDate: '2026-11-16',
+      logs: {}, // format: "YYYY-MM-DD": { am: true, pm: false }
+      updatedAt: 0
+    };
+
+    const VOL_STORAGE_KEY = 'tomsk_isha_vol_v1';
+    let volState = {
+      startDate: '2026-11-17',
+      updatedAt: 0
+    };
+
+    function loadShunyaAndVolStates() {
+      try {
+        const rawShunya = localStorage.getItem(SHUNYA_STORAGE_KEY);
+        if (rawShunya) {
+          const p = JSON.parse(rawShunya);
+          if (p && typeof p === 'object') {
+            if (p.startDate) shunyaState.startDate = p.startDate;
+            if (p.logs && typeof p.logs === 'object') shunyaState.logs = p.logs;
+            shunyaState.updatedAt = Number(p.updatedAt) || 0;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const rawVol = localStorage.getItem(VOL_STORAGE_KEY);
+        if (rawVol) {
+          const p = JSON.parse(rawVol);
+          if (p && typeof p === 'object') {
+            if (p.startDate) volState.startDate = p.startDate;
+            volState.updatedAt = Number(p.updatedAt) || 0;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function saveShunyaState() {
+      try {
+        shunyaState.updatedAt = Date.now();
+        localStorage.setItem(SHUNYA_STORAGE_KEY, JSON.stringify(shunyaState));
+        pushRoomSyncPayload();
+      } catch (e) {}
+    }
+
+    function saveVolState() {
+      try {
+        volState.updatedAt = Date.now();
+        localStorage.setItem(VOL_STORAGE_KEY, JSON.stringify(volState));
+        pushRoomSyncPayload();
+      } catch (e) {}
+    }
+
+    function toggleShunyaEditor(forceState = null) {
+      const box = document.getElementById('shunya-editor-box');
+      if (!box) return;
+      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
+      if (willShow) {
+        const input = document.getElementById('shunya-input-start');
+        if (input) input.value = shunyaState.startDate;
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function saveShunyaStart() {
+      const input = document.getElementById('shunya-input-start');
+      if (input && input.value) {
+        shunyaState.startDate = input.value;
+        saveShunyaState();
+        toggleShunyaEditor(false);
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        renderShunyaAndVol(ishaToday);
+      }
+    }
+
+    function toggleShunyaPractice(slot) {
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      if (!shunyaState.logs[ishaToday]) {
+        shunyaState.logs[ishaToday] = { am: false, pm: false };
+      }
+      shunyaState.logs[ishaToday][slot] = !shunyaState.logs[ishaToday][slot];
+      saveShunyaState();
+      renderShunyaAndVol(ishaToday);
+    }
+
+    function toggleVolEditor(forceState = null) {
+      const box = document.getElementById('vol-editor-box');
+      if (!box) return;
+      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
+      if (willShow) {
+        const input = document.getElementById('vol-input-start');
+        if (input) input.value = volState.startDate;
+        box.classList.remove('hidden');
+      } else {
+        box.classList.add('hidden');
+      }
+    }
+
+    function saveVolStart() {
+      const input = document.getElementById('vol-input-start');
+      if (input && input.value) {
+        volState.startDate = input.value;
+        saveVolState();
+        toggleVolEditor(false);
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        renderShunyaAndVol(ishaToday);
+      }
+    }
+
+    function renderShunyaAndVol(todayISO) {
+      // 1. Shunya Mandala Render
+      const startISO = shunyaState.startDate || '2026-11-16';
+      const daysDiff = daysBetweenISO(startISO, todayISO);
+      const currentDay = Math.max(1, daysDiff + 1);
+      const maxDays = 48;
+      const maxSessions = maxDays * 2; // 96 practices total
+      const daysLeft = Math.max(0, maxDays - currentDay);
+
+      // Count total completed practices & full days from logs
+      let completedSessions = 0;
+      let completedFullDays = 0;
+      if (shunyaState.logs && typeof shunyaState.logs === 'object') {
+        Object.entries(shunyaState.logs).forEach(([dateKey, entry]) => {
+          if (dateKey >= startISO && entry) {
+            if (entry.am) completedSessions++;
+            if (entry.pm) completedSessions++;
+            if (entry.am && entry.pm) completedFullDays++;
+          }
+        });
+      }
+      const sessionsLeft = Math.max(0, maxSessions - completedSessions);
+
+      const doneNumEl = document.getElementById('shunya-days-done-num');
+      const leftSubEl = document.getElementById('shunya-days-left-sub');
+      const sessionsBadgeEl = document.getElementById('shunya-sessions-badge');
+      const startLbl = document.getElementById('shunya-start-date-label');
+      const barEl = document.getElementById('shunya-progress-bar');
+      const todayDateLbl = document.getElementById('shunya-today-date-label');
+
+      if (doneNumEl) doneNumEl.textContent = `День ${Math.min(currentDay, maxDays)} из ${maxDays}`;
+      if (leftSubEl) {
+        leftSubEl.textContent = `(полных дней: ${completedFullDays} • осталось ${daysLeft} ${pluralizeDaysWord(daysLeft)})`;
+      }
+      if (sessionsBadgeEl) {
+        sessionsBadgeEl.textContent = `Выполнено: ${completedSessions} из ${maxSessions} (осталось ${sessionsLeft})`;
+      }
+      if (startLbl) startLbl.textContent = `Старт: ${formatRussianDate(startISO)}`;
+      if (todayDateLbl) todayDateLbl.textContent = formatRussianDate(todayISO);
+
+      const pct = completedSessions > 0
+        ? Math.min(100, Math.max(2, Math.round((completedSessions / maxSessions) * 100)))
+        : Math.min(100, Math.max(2, Math.round((currentDay / maxDays) * 100)));
+      if (barEl) barEl.style.width = `${pct}%`;
+
+      const todayLog = shunyaState.logs[todayISO] || { am: false, pm: false };
+      const btnAm = document.getElementById('shunya-btn-am');
+      const iconAm = document.getElementById('shunya-icon-am');
+      const btnPm = document.getElementById('shunya-btn-pm');
+      const iconPm = document.getElementById('shunya-icon-pm');
+
+      if (btnAm && iconAm) {
+        if (todayLog.am) {
+          btnAm.className = 'px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+          iconAm.textContent = '✓';
+        } else {
+          btnAm.className = 'px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+          iconAm.textContent = '○';
+        }
+      }
+
+      if (btnPm && iconPm) {
+        if (todayLog.pm) {
+          btnPm.className = 'px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+          iconPm.textContent = '✓';
+        } else {
+          btnPm.className = 'px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+          iconPm.textContent = '○';
+        }
+      }
+
+      // 2. Volunteer Counter Render
+      const volStart = volState.startDate || '2026-11-17';
+      const volDiff = daysBetweenISO(volStart, todayISO);
+      const volDaysCount = Math.max(0, volDiff + 1);
+
+      const volNumEl = document.getElementById('vol-days-num');
+      const volSubEl = document.getElementById('vol-sub-label');
+      const volStartLbl = document.getElementById('vol-start-label');
+
+      if (volNumEl) volNumEl.textContent = `${volDaysCount} ${pluralizeDaysWord(volDaysCount)}`;
+      if (volStartLbl) volStartLbl.textContent = `Старт: ${formatRussianDate(volStart)}`;
+      if (volSubEl) {
+        if (volDiff < 0) {
+          volSubEl.textContent = `(до начала осталось ${Math.abs(volDiff)} дн.)`;
+        } else if (volDiff === 0) {
+          volSubEl.textContent = '(первый день волонтёрства сегодня!)';
+        } else {
+          volSubEl.textContent = `(идёт волонтёрство)`;
+        }
+      }
+    }
+
     function loadVisaState() {
       try {
-        const raw = localStorage.getItem(VISA_STORAGE_KEY);
+        let raw = localStorage.getItem(VISA_STORAGE_KEY) || readCookieBackup('ti_visa_backup');
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && typeof parsed === 'object') {
@@ -2190,6 +2500,8 @@
       syncVisaInputsFromState();
       const isha = getTimePartsInZone(LOCATIONS.isha.tz);
       renderVisaCounter(isha.isoDate);
+      loadShunyaAndVolStates();
+      renderShunyaAndVol(isha.isoDate);
     }
 
     function syncVisaInputsFromState() {
@@ -2255,6 +2567,7 @@
       };
 
       localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
+      writeCookieBackup('ti_visa_backup', JSON.stringify(visaState));
       toggleVisaEditor(false);
       renderVisaCounter(ishaToday);
       pushRoomSyncPayload();
@@ -3055,6 +3368,20 @@
         if (syncPill) syncPill.classList.remove('hidden');
       }
 
+      if (incoming.shunya && (Number(incoming.shunya.updatedAt) || 0) >= (shunyaState.updatedAt || 0)) {
+        shunyaState = incoming.shunya;
+        localStorage.setItem(SHUNYA_STORAGE_KEY, JSON.stringify(shunyaState));
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        renderShunyaAndVol(ishaToday);
+      }
+
+      if (incoming.vol && (Number(incoming.vol.updatedAt) || 0) >= (volState.updatedAt || 0)) {
+        volState = incoming.vol;
+        localStorage.setItem(VOL_STORAGE_KEY, JSON.stringify(volState));
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        renderShunyaAndVol(ishaToday);
+      }
+
       if (changed) {
         if (activeMainTab === 'chat') {
           markAllChatMessagesRead();
@@ -3077,7 +3404,9 @@
         clearedAt: chatState.clearedAt || 0,
         presence: chatState.presence,
         messages: chatState.messages.slice(-80),
-        visa: visaState
+        visa: visaState,
+        shunya: shunyaState,
+        vol: volState
       };
 
       if (localChannel) {

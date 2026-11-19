@@ -441,7 +441,7 @@
 
       <!-- 1. SHUNYA MANDALA 48-DAY TRACKER CARD -->
       <section aria-label="Мандала Шуньи на 48 дней" class="bg-white dark:bg-stone-900 rounded-2xl border border-amber-500/30 dark:border-amber-500/20 shadow-sm overflow-hidden">
-        <div class="px-3.5 sm:px-4 py-3 border-b border-stone-200/80 dark:border-stone-800 flex items-center justify-between gap-2">
+        <div class="px-3.5 sm:px-4 py-3 border-b border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-2 min-w-0">
             <span class="text-base leading-none">🧘‍♀️</span>
             <div>
@@ -450,9 +450,14 @@
               </h2>
             </div>
           </div>
-          <button type="button" onclick="toggleShunyaEditor()" class="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-[11px] font-bold transition">
-            ⚙️ Изменить
-          </button>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" onclick="toggleShunyaCalendar()" id="shunya-cal-btn" class="px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/15 text-stone-700 dark:text-stone-300 text-[11px] font-bold transition flex items-center gap-1">
+              <span>📅</span> <span>Все дни</span>
+            </button>
+            <button type="button" onclick="toggleShunyaEditor()" class="px-2.5 py-1 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-300 text-[11px] font-bold transition">
+              ⚙️ Изменить
+            </button>
+          </div>
         </div>
 
         <div class="p-3.5 sm:p-4 space-y-3">
@@ -485,26 +490,62 @@
             <div id="shunya-progress-bar" class="h-full rounded-full bg-gradient-to-r from-amber-500 to-emerald-500 transition-all duration-500" style="width: 2%"></div>
           </div>
 
-          <!-- Morning & Evening Check-in Buttons for Today -->
-          <div class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <div class="text-xs font-bold text-stone-900 dark:text-white">
-                Отметка практик на сегодня (<span id="shunya-today-date-label">сегодня</span>):
+          <!-- Morning & Evening Check-in Buttons with Date Navigation (Today / Yesterday / Past Days) -->
+          <div id="shunya-checkin-box" class="p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 space-y-2.5 transition-colors">
+            <!-- Date Switcher Row -->
+            <div class="flex items-center justify-between gap-2">
+              <button type="button" id="shunya-prev-day-btn" onclick="shiftShunyaDate(-1)" aria-label="Предыдущий день"
+                class="w-8 h-8 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 hover:border-amber-500/60 active:scale-95 disabled:opacity-35 disabled:pointer-events-none flex items-center justify-center text-sm font-bold text-stone-700 dark:text-stone-200 shadow-sm transition shrink-0">
+                ←
+              </button>
+
+              <div class="text-center min-w-0 flex-1">
+                <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                  <span id="shunya-today-date-label" class="text-xs font-extrabold text-stone-900 dark:text-white capitalize truncate">
+                    Сегодня
+                  </span>
+                  <button type="button" id="shunya-go-today-btn" onclick="resetShunyaDateToToday()"
+                    class="hidden px-2 py-0.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-800 dark:text-amber-300 text-[10px] font-bold transition">
+                    Вернуться на сегодня
+                  </button>
+                </div>
+                <div id="shunya-checkin-hint" class="text-[11px] text-stone-500 dark:text-stone-400">
+                  Нажми на кнопку после выполнения практики
+                </div>
               </div>
-              <div class="text-[11px] text-stone-500 dark:text-stone-400">
-                Нажми на кнопку после выполнения практики
-              </div>
+
+              <button type="button" id="shunya-next-day-btn" onclick="shiftShunyaDate(1)" aria-label="Следующий день"
+                class="w-8 h-8 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 hover:border-amber-500/60 active:scale-95 disabled:opacity-35 disabled:pointer-events-none flex items-center justify-center text-sm font-bold text-stone-700 dark:text-stone-200 shadow-sm transition shrink-0">
+                →
+              </button>
             </div>
-            <div class="flex items-center gap-2">
+
+            <!-- Practice 1 & Practice 2 Toggle Buttons -->
+            <div class="grid grid-cols-2 gap-2">
               <button type="button" id="shunya-btn-am" onclick="toggleShunyaPractice('am')"
-                class="px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                class="px-3 py-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]">
                 <span id="shunya-icon-am">○</span> <span>☀️ Практика 1</span>
               </button>
               <button type="button" id="shunya-btn-pm" onclick="toggleShunyaPractice('pm')"
-                class="px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                class="px-3 py-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]">
                 <span id="shunya-icon-pm">○</span> <span>🌙 Практика 2</span>
               </button>
             </div>
+          </div>
+
+          <!-- Collapsible 48-Day Calendar Grid -->
+          <div id="shunya-calendar-box" class="hidden p-3 rounded-xl bg-stone-50/90 dark:bg-stone-950/60 border border-stone-200/80 dark:border-stone-800 space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+              <span class="font-bold text-stone-800 dark:text-stone-200">
+                Календарь мандалы (нажми на день для отметки):
+              </span>
+              <div class="flex items-center gap-2 text-[10px] text-stone-500 dark:text-stone-400">
+                <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span>2/2</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500"></span>1/2</span>
+                <span class="inline-flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-stone-300 dark:bg-stone-700"></span>0/2</span>
+              </div>
+            </div>
+            <div id="shunya-calendar-grid" class="grid grid-cols-6 sm:grid-cols-8 gap-1.5"></div>
           </div>
         </div>
 
@@ -2281,113 +2322,88 @@
       logs: {}, // format: "YYYY-MM-DD": { am: true, pm: false }
       updatedAt: 0
     };
+    let shunyaSelectedDate = null; // null = follow today's date in Isha timezone
+    let lastShunyaGridSig = '';
 
     const VOL_STORAGE_KEY = 'tomsk_isha_vol_v1';
-    let volState = {
-      startDate: '2026-11-17',
-      updatedAt: 0
-    };
-
-    function loadShunyaAndVolStates() {
-      try {
-        const rawShunya = localStorage.getItem(SHUNYA_STORAGE_KEY);
-        if (rawShunya) {
-          const p = JSON.parse(rawShunya);
-          if (p && typeof p === 'object') {
-            if (p.startDate) shunyaState.startDate = p.startDate;
-            if (p.logs && typeof p.logs === 'object') shunyaState.logs = p.logs;
-            shunyaState.updatedAt = Number(p.updatedAt) || 0;
-          }
-        }
-      } catch (e) {}
-
-      try {
-        const rawVol = localStorage.getItem(VOL_STORAGE_KEY);
-        if (rawVol) {
-          const p = JSON.parse(rawVol);
-          if (p && typeof p === 'object') {
-            if (p.startDate) volState.startDate = p.startDate;
-            volState.updatedAt = Number(p.updatedAt) || 0;
-          }
-        }
-      } catch (e) {}
-    }
-
-    function saveShunyaState() {
-      try {
-        shunyaState.updatedAt = Date.now();
-        localStorage.setItem(SHUNYA_STORAGE_KEY, JSON.stringify(shunyaState));
-        pushRoomSyncPayload();
-      } catch (e) {}
-    }
-
-    function saveVolState() {
-      try {
-        volState.updatedAt = Date.now();
-        localStorage.setItem(VOL_STORAGE_KEY, JSON.stringify(volState));
-        pushRoomSyncPayload();
-      } catch (e) {}
-    }
-
-    function toggleShunyaEditor(forceState = null) {
-      const box = document.getElementById('shunya-editor-box');
-      if (!box) return;
-      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
-      if (willShow) {
-        const input = document.getElementById('shunya-input-start');
-        if (input) input.value = shunyaState.startDate;
-        box.classList.remove('hidden');
-      } else {
-        box.classList.add('hidden');
-      }
-    }
-
+// ... existing code ... -->
     function saveShunyaStart() {
       const input = document.getElementById('shunya-input-start');
       if (input && input.value) {
         shunyaState.startDate = input.value;
+        if (shunyaSelectedDate && shunyaSelectedDate < shunyaState.startDate) {
+          shunyaSelectedDate = null;
+        }
         saveShunyaState();
         toggleShunyaEditor(false);
         const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-        renderShunyaAndVol(ishaToday);
+        renderShunyaAndVol(ishaToday, true);
+      }
+    }
+
+    function getActiveShunyaDate(todayISO) {
+      const startISO = shunyaState.startDate || '2026-11-16';
+      if (!shunyaSelectedDate) return todayISO;
+      if (shunyaSelectedDate > todayISO) return todayISO;
+      if (todayISO >= startISO && shunyaSelectedDate < startISO) return startISO;
+      return shunyaSelectedDate;
+    }
+
+    function shiftShunyaDate(delta) {
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      const startISO = shunyaState.startDate || '2026-11-16';
+      const minDate = startISO < ishaToday ? startISO : ishaToday;
+      const current = getActiveShunyaDate(ishaToday);
+      let next = addDaysToISO(current, delta);
+      if (next < minDate) next = minDate;
+      if (next > ishaToday) next = ishaToday;
+      shunyaSelectedDate = (next === ishaToday) ? null : next;
+      renderShunyaAndVol(ishaToday, true);
+    }
+
+    function selectShunyaDate(isoStr) {
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      if (!isoStr || isoStr > ishaToday) return;
+      shunyaSelectedDate = (isoStr === ishaToday) ? null : isoStr;
+      renderShunyaAndVol(ishaToday, true);
+    }
+
+    function resetShunyaDateToToday() {
+      shunyaSelectedDate = null;
+      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+      renderShunyaAndVol(ishaToday, true);
+    }
+
+    function toggleShunyaCalendar(forceState = null) {
+      const box = document.getElementById('shunya-calendar-box');
+      const btn = document.getElementById('shunya-cal-btn');
+      if (!box) return;
+      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
+      if (willShow) {
+        box.classList.remove('hidden');
+        if (btn) btn.className = 'px-2.5 py-1 rounded-xl bg-amber-500 text-white text-[11px] font-bold transition flex items-center gap-1';
+        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
+        renderShunyaAndVol(ishaToday, true);
+      } else {
+        box.classList.add('hidden');
+        if (btn) btn.className = 'px-2.5 py-1 rounded-xl bg-stone-100 dark:bg-stone-800 hover:bg-amber-500/15 text-stone-700 dark:text-stone-300 text-[11px] font-bold transition flex items-center gap-1';
       }
     }
 
     function toggleShunyaPractice(slot) {
       const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      if (!shunyaState.logs[ishaToday]) {
-        shunyaState.logs[ishaToday] = { am: false, pm: false };
+      const targetDate = getActiveShunyaDate(ishaToday);
+      if (!shunyaState.logs[targetDate]) {
+        shunyaState.logs[targetDate] = { am: false, pm: false };
       }
-      shunyaState.logs[ishaToday][slot] = !shunyaState.logs[ishaToday][slot];
+      shunyaState.logs[targetDate][slot] = !shunyaState.logs[targetDate][slot];
       saveShunyaState();
-      renderShunyaAndVol(ishaToday);
+      renderShunyaAndVol(ishaToday, true);
     }
 
     function toggleVolEditor(forceState = null) {
-      const box = document.getElementById('vol-editor-box');
-      if (!box) return;
-      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
-      if (willShow) {
-        const input = document.getElementById('vol-input-start');
-        if (input) input.value = volState.startDate;
-        box.classList.remove('hidden');
-      } else {
-        box.classList.add('hidden');
-      }
-    }
-
-    function saveVolStart() {
-      const input = document.getElementById('vol-input-start');
-      if (input && input.value) {
-        volState.startDate = input.value;
-        saveVolState();
-        toggleVolEditor(false);
-        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-        renderShunyaAndVol(ishaToday);
-      }
-    }
-
-    function renderShunyaAndVol(todayISO) {
+// ... existing code ... -->
+    function renderShunyaAndVol(todayISO, forceGrid = false) {
       // 1. Shunya Mandala Render
       const startISO = shunyaState.startDate || '2026-11-16';
       const daysDiff = daysBetweenISO(startISO, todayISO);
@@ -2395,13 +2411,14 @@
       const maxDays = 48;
       const maxSessions = maxDays * 2; // 96 practices total
       const daysLeft = Math.max(0, maxDays - currentDay);
+      const endISO = addDaysToISO(startISO, maxDays - 1);
 
-      // Count total completed practices & full days from logs
+      // Count total completed practices & full days from logs within mandala window
       let completedSessions = 0;
       let completedFullDays = 0;
       if (shunyaState.logs && typeof shunyaState.logs === 'object') {
         Object.entries(shunyaState.logs).forEach(([dateKey, entry]) => {
-          if (dateKey >= startISO && entry) {
+          if (dateKey >= startISO && dateKey <= endISO && entry) {
             if (entry.am) completedSessions++;
             if (entry.pm) completedSessions++;
             if (entry.am && entry.pm) completedFullDays++;
@@ -2416,6 +2433,11 @@
       const startLbl = document.getElementById('shunya-start-date-label');
       const barEl = document.getElementById('shunya-progress-bar');
       const todayDateLbl = document.getElementById('shunya-today-date-label');
+      const checkinHintEl = document.getElementById('shunya-checkin-hint');
+      const checkinBoxEl = document.getElementById('shunya-checkin-box');
+      const prevBtn = document.getElementById('shunya-prev-day-btn');
+      const nextBtn = document.getElementById('shunya-next-day-btn');
+      const goTodayBtn = document.getElementById('shunya-go-today-btn');
 
       if (doneNumEl) doneNumEl.textContent = `День ${Math.min(currentDay, maxDays)} из ${maxDays}`;
       if (leftSubEl) {
@@ -2425,1272 +2447,131 @@
         sessionsBadgeEl.textContent = `Выполнено: ${completedSessions} из ${maxSessions} (осталось ${sessionsLeft})`;
       }
       if (startLbl) startLbl.textContent = `Старт: ${formatRussianDate(startISO)}`;
-      if (todayDateLbl) todayDateLbl.textContent = formatRussianDate(todayISO);
+
+      // Active date selected for check-in (today by default, or any past day via arrows/calendar)
+      const activeDate = getActiveShunyaDate(todayISO);
+      const isEditingPast = activeDate !== todayISO;
+      const diffFromToday = daysBetweenISO(activeDate, todayISO);
+      const activeDayNum = daysBetweenISO(startISO, activeDate) + 1;
+      const dayNumTag = (activeDayNum >= 1 && activeDayNum <= maxDays) ? ` • День ${activeDayNum}` : '';
+
+      let relPrefix = '';
+      if (diffFromToday === 0) relPrefix = 'Сегодня, ';
+      else if (diffFromToday === 1) relPrefix = 'Вчера, ';
+      else if (diffFromToday === 2) relPrefix = 'Позавчера, ';
+
+      if (todayDateLbl) {
+        todayDateLbl.textContent = `${relPrefix}${formatRussianDate(activeDate)}${dayNumTag}`;
+      }
+      if (checkinHintEl) {
+        checkinHintEl.textContent = isEditingPast
+          ? 'Режим отметки за прошлый день — нажми для сохранения'
+          : 'Нажми на кнопку после выполнения практики';
+      }
+      if (checkinBoxEl) {
+        checkinBoxEl.className = isEditingPast
+          ? 'p-3 rounded-xl bg-amber-500/10 border border-amber-500/40 space-y-2.5 transition-colors'
+          : 'p-3 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/80 dark:border-stone-800 space-y-2.5 transition-colors';
+      }
+      if (goTodayBtn) {
+        if (isEditingPast) goTodayBtn.classList.remove('hidden');
+        else goTodayBtn.classList.add('hidden');
+      }
+
+      const minNavDate = startISO < todayISO ? startISO : todayISO;
+      if (prevBtn) prevBtn.disabled = activeDate <= minNavDate;
+      if (nextBtn) nextBtn.disabled = activeDate >= todayISO;
 
       const pct = completedSessions > 0
         ? Math.min(100, Math.max(2, Math.round((completedSessions / maxSessions) * 100)))
         : Math.min(100, Math.max(2, Math.round((currentDay / maxDays) * 100)));
       if (barEl) barEl.style.width = `${pct}%`;
 
-      const todayLog = shunyaState.logs[todayISO] || { am: false, pm: false };
+      const selectedLog = shunyaState.logs[activeDate] || { am: false, pm: false };
       const btnAm = document.getElementById('shunya-btn-am');
       const iconAm = document.getElementById('shunya-icon-am');
       const btnPm = document.getElementById('shunya-btn-pm');
       const iconPm = document.getElementById('shunya-icon-pm');
 
       if (btnAm && iconAm) {
-        if (todayLog.am) {
-          btnAm.className = 'px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+        if (selectedLog.am) {
+          btnAm.className = 'px-3 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]';
           iconAm.textContent = '✓';
         } else {
-          btnAm.className = 'px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+          btnAm.className = 'px-3 py-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]';
           iconAm.textContent = '○';
         }
       }
 
       if (btnPm && iconPm) {
-        if (todayLog.pm) {
-          btnPm.className = 'px-3 py-2 rounded-xl bg-emerald-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+        if (selectedLog.pm) {
+          btnPm.className = 'px-3 py-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]';
           iconPm.textContent = '✓';
         } else {
-          btnPm.className = 'px-3 py-2 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm';
+          btnPm.className = 'px-3 py-2.5 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98]';
           iconPm.textContent = '○';
         }
       }
 
-      // 2. Volunteer Counter Render
-      const volStart = volState.startDate || '2026-11-17';
-      const volDiff = daysBetweenISO(volStart, todayISO);
-      const volDaysCount = Math.max(0, volDiff + 1);
-
-      const volNumEl = document.getElementById('vol-days-num');
-      const volSubEl = document.getElementById('vol-sub-label');
-      const volStartLbl = document.getElementById('vol-start-label');
-
-      if (volNumEl) volNumEl.textContent = `${volDaysCount} ${pluralizeDaysWord(volDaysCount)}`;
-      if (volStartLbl) volStartLbl.textContent = `Старт: ${formatRussianDate(volStart)}`;
-      if (volSubEl) {
-        if (volDiff < 0) {
-          volSubEl.textContent = `(до начала осталось ${Math.abs(volDiff)} дн.)`;
-        } else if (volDiff === 0) {
-          volSubEl.textContent = '(первый день волонтёрства сегодня!)';
-        } else {
-          volSubEl.textContent = `(идёт волонтёрство)`;
-        }
-      }
-    }
-
-    function loadVisaState() {
-      try {
-        let raw = localStorage.getItem(VISA_STORAGE_KEY) || readCookieBackup('ti_visa_backup');
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object') {
-            visaState = {
-              entryDate: parsed.entryDate || '',
-              totalDays: Number(parsed.totalDays) || 90,
-              inclusiveDayOne: parsed.inclusiveDayOne !== false,
-              updatedAt: Number(parsed.updatedAt) || 0
-            };
-          }
-        }
-      } catch (e) {
-        // Ignore storage read errors
-      }
-      syncVisaInputsFromState();
-      const isha = getTimePartsInZone(LOCATIONS.isha.tz);
-      renderVisaCounter(isha.isoDate);
-      loadShunyaAndVolStates();
-      renderShunyaAndVol(isha.isoDate);
-    }
-
-    function syncVisaInputsFromState() {
-      const dateInput = document.getElementById('visa-input-date');
-      const daysInput = document.getElementById('visa-input-days');
-      const incInput = document.getElementById('visa-input-inclusive');
-
-      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      if (dateInput) dateInput.value = visaState.entryDate || ishaToday;
-      if (daysInput) daysInput.value = visaState.totalDays || 90;
-      if (incInput) incInput.checked = visaState.inclusiveDayOne !== false;
-    }
-
-    function toggleVisaEditor(forceState = null) {
-      const box = document.getElementById('visa-editor-box');
-      if (!box) return;
-      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
-      if (willShow) {
-        syncVisaInputsFromState();
-        box.classList.remove('hidden');
-      } else {
-        box.classList.add('hidden');
-      }
-    }
-
-    function toggleVisaRules(forceState = null) {
-      const box = document.getElementById('visa-rules-box');
-      if (!box) return;
-      const willShow = forceState !== null ? forceState : box.classList.contains('hidden');
-      if (willShow) {
-        box.classList.remove('hidden');
-      } else {
-        box.classList.add('hidden');
-      }
-    }
-
-    function setVisaEntryToday() {
-      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      const dateInput = document.getElementById('visa-input-date');
-      if (dateInput) dateInput.value = ishaToday;
-    }
-
-    function setVisaPresetDays(days) {
-      const daysInput = document.getElementById('visa-input-days');
-      if (daysInput) daysInput.value = days;
-    }
-
-    function saveVisaSettings() {
-      const dateInput = document.getElementById('visa-input-date');
-      const daysInput = document.getElementById('visa-input-days');
-      const incInput = document.getElementById('visa-input-inclusive');
-
-      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      const entryDate = (dateInput && dateInput.value) ? dateInput.value : ishaToday;
-      const totalDays = Math.max(1, Math.min(3650, parseInt(daysInput ? daysInput.value : '90', 10) || 90));
-      const inclusiveDayOne = incInput ? incInput.checked : true;
-
-      visaState = {
-        entryDate,
-        totalDays,
-        inclusiveDayOne,
-        updatedAt: Date.now()
-      };
-
-      localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
-      writeCookieBackup('ti_visa_backup', JSON.stringify(visaState));
-      toggleVisaEditor(false);
-      renderVisaCounter(ishaToday);
-      pushRoomSyncPayload();
-    }
-
-    function resetVisaCounter() {
-      visaState = {
-        entryDate: '',
-        totalDays: 90,
-        inclusiveDayOne: true,
-        updatedAt: Date.now()
-      };
-      localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
-      toggleVisaEditor(false);
-      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      renderVisaCounter(ishaToday);
-      pushRoomSyncPayload();
-    }
-
-    function renderVisaCounter(todayISO) {
-      const emptyEl = document.getElementById('visa-empty-state');
-      const activeEl = document.getElementById('visa-active-display');
-      const editBtnLabel = document.getElementById('visa-edit-btn-label');
-      if (!emptyEl || !activeEl) return;
-
-      if (!visaState.entryDate) {
-        emptyEl.classList.remove('hidden');
-        activeEl.classList.add('hidden');
-        if (editBtnLabel) editBtnLabel.textContent = 'Настроить';
-        return;
-      }
-
-      emptyEl.classList.add('hidden');
-      activeEl.classList.remove('hidden');
-      if (editBtnLabel) editBtnLabel.textContent = 'Изменить';
-
-      const totalDays = Number(visaState.totalDays) || 90;
-      const inclusive = visaState.inclusiveDayOne !== false;
-      const offsetDays = inclusive ? (totalDays - 1) : totalDays;
-
-      const finalExitISO = addDaysToISO(visaState.entryDate, offsetDays);
-      const safeExitISO = addDaysToISO(finalExitISO, -2);
-
-      const daysElapsedRaw = daysBetweenISO(visaState.entryDate, todayISO);
-      const currentDayNumber = Math.max(1, daysElapsedRaw + (inclusive ? 1 : 0));
-      const daysRemainingAfterToday = daysBetweenISO(todayISO, finalExitISO);
-      const daysRemainingInclusive = Math.max(0, daysRemainingAfterToday + 1);
-
-      const totalLabel = document.getElementById('visa-total-days-label');
-      if (totalLabel) totalLabel.textContent = String(totalDays);
-
-      const entryText = document.getElementById('visa-entry-date-text');
-      const safeText = document.getElementById('visa-safe-date-text');
-      const finalText = document.getElementById('visa-final-date-text');
-      const ruleText = document.getElementById('visa-rule-mode-text');
-
-      if (entryText) entryText.textContent = formatRussianDate(visaState.entryDate);
-      if (safeText) safeText.textContent = formatRussianDate(safeExitISO);
-      if (finalText) finalText.textContent = formatRussianDate(finalExitISO);
-      if (ruleText) {
-        ruleText.textContent = inclusive
-          ? 'День прилёта учтён как 1-й день'
-          : 'Без учёта дня прилёта (+сутки)';
-      }
-
-      const numEl = document.getElementById('visa-days-left-num');
-      const subEl = document.getElementById('visa-days-left-sub');
-      const badgeEl = document.getElementById('visa-day-progress-badge');
-      const barEl = document.getElementById('visa-progress-bar');
-      const bannerEl = document.getElementById('visa-traffic-banner');
-      const dotEl = document.getElementById('visa-traffic-dot');
-      const trafficTextEl = document.getElementById('visa-traffic-text');
-
-      if (daysRemainingAfterToday < 0) {
-        const overdue = Math.abs(daysRemainingAfterToday);
-        if (numEl) numEl.textContent = `Срок истёк (${overdue} ${pluralizeDaysWord(overdue)} назад)`;
-        if (subEl) subEl.textContent = 'Обнови дату штампа, если уже сделан виза-ран';
-      } else if (daysRemainingAfterToday === 0) {
-        if (numEl) numEl.textContent = 'Сегодня крайний день!';
-        if (subEl) subEl.textContent = `(${totalDays}-й день пребывания)`;
-      } else {
-        if (numEl) numEl.textContent = `${daysRemainingAfterToday} ${pluralizeDaysWord(daysRemainingAfterToday)}`;
-        if (subEl) subEl.textContent = `(включая сегодня: ${daysRemainingInclusive} дн.)`;
-      }
-
-      if (badgeEl) {
-        if (daysElapsedRaw < 0) {
-          badgeEl.textContent = `Вылет через ${Math.abs(daysElapsedRaw)} дн.`;
-        } else {
-          badgeEl.textContent = `День ${Math.min(currentDayNumber, totalDays)} из ${totalDays}`;
-        }
-      }
-
-      const usedPct = Math.min(100, Math.max(3, Math.round((currentDayNumber / totalDays) * 100)));
-      if (barEl) barEl.style.width = `${usedPct}%`;
-
-      if (daysRemainingAfterToday > 15) {
-        if (bannerEl) bannerEl.className = 'px-3 py-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 flex items-center justify-between gap-2 text-xs font-semibold';
-        if (dotEl) dotEl.textContent = '🟢';
-        if (trafficTextEl) trafficTextEl.textContent = 'Спокойный режим • Запас времени достаточный';
-        if (barEl) barEl.className = 'h-full rounded-full bg-emerald-500 transition-all duration-500';
-      } else if (daysRemainingAfterToday >= 7) {
-        if (bannerEl) bannerEl.className = 'px-3 py-2 rounded-xl border border-amber-500/40 bg-amber-500/15 text-amber-950 dark:text-amber-200 flex items-center justify-between gap-2 text-xs font-semibold';
-        if (dotEl) dotEl.textContent = '🟡';
-        if (trafficTextEl) trafficTextEl.textContent = 'Пора планировать виза-ран и присматривать билеты';
-        if (barEl) barEl.className = 'h-full rounded-full bg-amber-500 transition-all duration-500';
-      } else {
-        if (bannerEl) bannerEl.className = 'px-3 py-2 rounded-xl border border-rose-500/40 bg-rose-500/15 text-rose-950 dark:text-rose-200 flex items-center justify-between gap-2 text-xs font-semibold';
-        if (dotEl) dotEl.textContent = '🔴';
-        if (trafficTextEl) trafficTextEl.textContent = 'Внимание: скоро крайний срок выезда из Индии!';
-        if (barEl) barEl.className = 'h-full rounded-full bg-rose-500 transition-all duration-500';
-      }
-    }
-
-    /*************************************************************************
-     * 6. LUNAR CALENDAR (PANCHANGAM) & MOON PHASE MATH
-     *************************************************************************/
-    function calculateMoonPhase(date = new Date()) {
-      const synodicMonth = 29.53058867;
-      const knownNewMoon = Date.UTC(2000, 0, 6, 18, 14, 0);
-      const diffDays = (date.getTime() - knownNewMoon) / 86400000;
-      const phase = ((diffDays % synodicMonth) + synodicMonth) % synodicMonth;
-      const normalized = phase / synodicMonth;
-      const illumination = Math.round((1 - Math.cos(normalized * 2 * Math.PI)) * 50);
-
-      let emoji = '🌕';
-      let name = 'Полнолуние';
-      if (normalized < 0.03 || normalized > 0.97) {
-        emoji = '🌑'; name = 'Новолуние (Амавасья)';
-      } else if (normalized < 0.22) {
-        emoji = '🌒'; name = 'Растущий серп (Шукла Пакша)';
-      } else if (normalized < 0.28) {
-        emoji = '🌓'; name = 'Первая четверть';
-      } else if (normalized < 0.47) {
-        emoji = '🌔'; name = 'Растущая Луна';
-      } else if (normalized < 0.53) {
-        emoji = '🌕'; name = 'Полнолуние (Пурнима)';
-      } else if (normalized < 0.72) {
-        emoji = '🌖'; name = 'Убывающая Луна (Кришна Пакша)';
-      } else if (normalized < 0.78) {
-        emoji = '🌗'; name = 'Последняя четверть';
-      } else {
-        emoji = '🌘'; name = 'Убывающий серп';
-      }
-
-      return { emoji, name, illumination };
-    }
-
-    function renderLunarCalendar() {
-      const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-      const moon = calculateMoonPhase(new Date());
-
-      const emojiEl = document.getElementById('moon-phase-emoji');
-      const ovEmojiEl = document.getElementById('ov-moon-emoji');
-      const nameEl = document.getElementById('moon-phase-name');
-      const illumEl = document.getElementById('moon-phase-illum');
-
-      if (emojiEl) emojiEl.textContent = moon.emoji;
-      if (ovEmojiEl) ovEmojiEl.textContent = moon.emoji;
-      if (nameEl) nameEl.textContent = moon.name;
-      if (illumEl) illumEl.textContent = `Освещённость диска: ${moon.illumination}%`;
-
-      const upcoming = PANCHANGAM_EVENTS.filter(ev => ev.date >= ishaToday);
-      const nextEkadashi = upcoming.find(ev => ev.type === 'ekadashi');
-      const nextPurnima = upcoming.find(ev => ev.type === 'purnima');
-      const nextAmavasya = upcoming.find(ev => ev.type === 'amavasya');
-      const nextShivaratri = upcoming.find(ev => ev.type === 'shivaratri' || ev.type === 'mahashivaratri');
-      const nextPradosham = upcoming.find(ev => ev.type === 'pradosham' || (ev.type === 'shivaratri' && /Pradosham/i.test(ev.title)));
-
-      if (nextEkadashi) {
-        const diff = daysBetweenISO(ishaToday, nextEkadashi.date);
-        const badgeText = formatDaysCountdown(diff);
-        const dateFormatted = formatRussianDate(nextEkadashi.date);
-
-        document.getElementById('next-ekadashi-badge').textContent = badgeText;
-        document.getElementById('next-ekadashi-date').textContent = dateFormatted;
-        document.getElementById('next-ekadashi-name').textContent = nextEkadashi.desc;
-
-        const ovEkText = document.getElementById('ov-ekadashi-text');
-        const ovEkSub = document.getElementById('ov-ekadashi-sub');
-        if (ovEkText) {
-          ovEkText.textContent = diff === 0
-            ? `Сегодня (${dateFormatted})!`
-            : `${dateFormatted} (${badgeText.toLowerCase()})`;
-        }
-        if (ovEkSub) ovEkSub.textContent = nextEkadashi.desc;
-      }
-
-      if (nextPurnima) {
-        const diff = daysBetweenISO(ishaToday, nextPurnima.date);
-        document.getElementById('next-purnima-badge').textContent = formatDaysCountdown(diff);
-        document.getElementById('next-purnima-date').textContent = formatRussianDate(nextPurnima.date);
-        document.getElementById('next-purnima-name').textContent = nextPurnima.desc;
-      }
-
-      if (nextAmavasya) {
-        const diff = daysBetweenISO(ishaToday, nextAmavasya.date);
-        document.getElementById('next-amavasya-badge').textContent = formatDaysCountdown(diff);
-        document.getElementById('next-amavasya-date').textContent = formatRussianDate(nextAmavasya.date);
-        document.getElementById('next-amavasya-name').textContent = nextAmavasya.desc;
-      }
-
-      if (nextShivaratri) {
-        const diff = daysBetweenISO(ishaToday, nextShivaratri.date);
-        const shivDateEl = document.getElementById('next-shivaratri-date');
-        const shivBadgeEl = document.getElementById('next-shivaratri-badge');
-        if (shivDateEl) shivDateEl.textContent = `${formatRussianDate(nextShivaratri.date)} • ${nextShivaratri.title}`;
-        if (shivBadgeEl) shivBadgeEl.textContent = formatDaysCountdown(diff);
-      }
-
-      if (nextPradosham) {
-        const diff = daysBetweenISO(ishaToday, nextPradosham.date);
-        const pradDateEl = document.getElementById('next-pradosham-date');
-        const pradBadgeEl = document.getElementById('next-pradosham-badge');
-        if (pradDateEl) pradDateEl.textContent = formatRussianDate(nextPradosham.date);
-        if (pradBadgeEl) pradBadgeEl.textContent = formatDaysCountdown(diff);
-      }
-
-      const listEl = document.getElementById('upcoming-lunar-list');
-      if (listEl) {
-        const count = showAllLunarDates ? 24 : 8;
-        const slice = upcoming.slice(0, count);
-        listEl.innerHTML = slice.map(ev => {
-          const diff = daysBetweenISO(ishaToday, ev.date);
-          const icon = ev.type === 'ekadashi'
-            ? '🌿'
-            : ev.type === 'purnima'
-              ? '🌕'
-              : (ev.type === 'shivaratri' || ev.type === 'mahashivaratri')
-                ? '🔱'
-                : ev.type === 'pradosham'
-                  ? '🪔'
-                  : '🌑';
-          const isToday = diff === 0;
-          const rowBorder = isToday
-            ? 'border-amber-500 bg-amber-500/10 ring-1 ring-amber-500/30'
-            : 'border-stone-200/80 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50';
-          return `
-            <div class="p-3 rounded-xl border ${rowBorder} flex items-center justify-between gap-2">
-              <div class="flex items-center gap-2.5 min-w-0">
-                <span class="text-lg shrink-0">${icon}</span>
-                <div class="min-w-0">
-                  <div class="font-bold text-stone-900 dark:text-white truncate">${ev.title}</div>
-                  <div class="text-[11px] text-stone-600 dark:text-stone-300 capitalize">${formatRussianDate(ev.date)}</div>
-                  <div class="text-[10px] text-stone-500 dark:text-stone-400 truncate">${ev.desc}</div>
-                </div>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-lg ${isToday ? 'bg-amber-500 text-white' : 'bg-stone-200/70 dark:bg-stone-700 text-stone-700 dark:text-stone-200'} shrink-0">
-                ${formatDaysCountdown(diff)}
-              </span>
-            </div>
-          `;
-        }).join('');
-      }
-    }
-
-    function toggleFullLunarList() {
-      showAllLunarDates = !showAllLunarDates;
-      const btn = document.getElementById('btn-toggle-lunar');
-      if (btn) {
-        btn.textContent = showAllLunarDates ? 'Свернуть список ↑' : 'Показать больше дат ↓';
-      }
-      renderLunarCalendar();
-    }
-
-    /*************************************************************************
-     * 7. OPEN-METEO WEATHER FETCHER (ISHA FOOTHILLS & TOMSK)
-     *************************************************************************/
-    function decodeWMO(code, isDay = 1) {
-      const map = {
-        0: { i: isDay ? '☀️' : '🌙', d: 'Ясно' },
-        1: { i: isDay ? '🌤️' : '🌙', d: 'Преимущественно ясно' },
-        2: { i: '⛅', d: 'Переменная облачность' },
-        3: { i: '☁️', d: 'Пасмурно' },
-        45: { i: '🌫️', d: 'Туман' },
-        48: { i: '🌫️', d: 'Изморозь' },
-        51: { i: '🌦️', d: 'Лёгкая морось' },
-        53: { i: '🌦️', d: 'Морось' },
-        55: { i: '🌧️', d: 'Сильная морось' },
-        61: { i: '🌦️', d: 'Небольшой дождь' },
-        63: { i: '🌧️', d: 'Умеренный дождь' },
-        65: { i: '🌧️', d: 'Сильный дождь' },
-        71: { i: '🌨️', d: 'Небольшой снег' },
-        73: { i: '🌨️', d: 'Снегопад' },
-        75: { i: '❄️', d: 'Сильный снег' },
-        77: { i: '❄️', d: 'Снежные зёрна' },
-        80: { i: '🌦️', d: 'Ливневый дождь' },
-        81: { i: '🌧️', d: 'Сильный ливень' },
-        82: { i: '⛈️', d: 'Тропический ливень' },
-        85: { i: '🌨️', d: 'Снежный заряд' },
-        86: { i: '❄️', d: 'Сильный снегопад' },
-        95: { i: '⛈️', d: 'Гроза' },
-        96: { i: '⛈️', d: 'Гроза с градом' },
-        99: { i: '⛈️', d: 'Сильная гроза' }
-      };
-      return map[code] || { i: '⛅', d: 'Переменная облачность' };
-    }
-
-    function formatSignedTemp(val) {
-      const r = Math.round(Number(val) || 0);
-      return r > 0 ? `+${r}°` : `${r}°`;
-    }
-
-    function describeUV(uvVal) {
-      const uv = Math.round(Number(uvVal) || 0);
-      if (uv <= 2) return `${uv} (Низкий)`;
-      if (uv <= 5) return `${uv} (Умеренный)`;
-      if (uv <= 7) return `${uv} (Высокий)`;
-      if (uv <= 10) return `${uv} (Очень высокий)`;
-      return `${uv} (Экстремальный)`;
-    }
-
-    async function fetchSingleCityWeather(key, loc) {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,wind_speed_10m,uv_index&hourly=temperature_2m,precipitation_probability,weather_code,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max&wind_speed_unit=ms&timezone=${encodeURIComponent(loc.tz)}`;
-
-      const res = await fetch(url);
-      if (!res.ok) throw new Error('Weather API HTTP error');
-      const data = await res.json();
-      renderCityWeather(key, data);
-    }
-
-    function renderCityWeather(key, data) {
-      if (!data || !data.current || !data.daily) return;
-
-      const cur = data.current;
-      const daily = data.daily;
-      const hourly = data.hourly;
-
-      const wInfo = decodeWMO(cur.weather_code, cur.is_day);
-      const tempNow = `${formatSignedTemp(cur.temperature_2m)}C`;
-      const feelsLike = `${formatSignedTemp(cur.apparent_temperature)}C`;
-      const tMax = formatSignedTemp(daily.temperature_2m_max[0]);
-      const tMin = formatSignedTemp(daily.temperature_2m_min[0]);
-      const uvText = describeUV(cur.uv_index);
-      const maxUvToday = Math.round(Number(daily.uv_index_max?.[0] || cur.uv_index || 0));
-
-      // Overview Mini Card
-      const ovIcon = document.getElementById(`ov-${key}-icon`);
-      const ovTemp = document.getElementById(`ov-${key}-temp`);
-      const ovHum = document.getElementById(`ov-${key}-hum`);
-      const ovDesc = document.getElementById(`ov-${key}-desc`);
-      const ovUv = document.getElementById(`ov-${key}-uv-badge`);
-      const ovMinMax = document.getElementById(`ov-${key}-minmax`);
-
-      if (ovIcon) ovIcon.textContent = wInfo.i;
-      if (ovTemp) ovTemp.textContent = tempNow;
-      if (ovHum) ovHum.textContent = `💧${Math.round(cur.relative_humidity_2m)}%`;
-      if (ovDesc) ovDesc.textContent = wInfo.d;
-      if (ovUv) ovUv.textContent = `☀️ УФ сейчас: ${Math.round(cur.uv_index || 0)} (макс ${maxUvToday})`;
-      if (ovMinMax) ovMinMax.textContent = `Макс ${tMax} / Мин ${tMin}`;
-
-      // Detailed Card
-      document.getElementById(`${key}-w-icon`).textContent = wInfo.i;
-      document.getElementById(`${key}-temp-now`).textContent = tempNow;
-      document.getElementById(`${key}-w-desc`).textContent = wInfo.d;
-      document.getElementById(`${key}-feels-like`).textContent = feelsLike;
-      document.getElementById(`${key}-today-max`).textContent = tMax;
-      document.getElementById(`${key}-today-min`).textContent = tMin;
-      document.getElementById(`${key}-uv`).textContent = uvText;
-      document.getElementById(`${key}-humidity`).textContent = `${Math.round(cur.relative_humidity_2m)}%`;
-      document.getElementById(`${key}-wind`).textContent = `${Number(cur.wind_speed_10m).toFixed(1)} м/с`;
-      document.getElementById(`${key}-precip`).textContent = `${cur.precipitation || 0} мм`;
-
-      if (daily.sunrise?.[0] && daily.sunset?.[0]) {
-        const sr = daily.sunrise[0].split('T')[1] || '06:10';
-        const ss = daily.sunset[0].split('T')[1] || '18:10';
-        document.getElementById(`${key}-sun-times`).textContent = `${sr} / ${ss}`;
-      }
-
-      if (key === 'isha') {
-        const adviceEl = document.getElementById('isha-uv-advice');
-        if (adviceEl) {
-          if (cur.uv_index >= 6) {
-            adviceEl.innerHTML = `<span>☀️</span><span><strong>Высокий УФ (${Math.round(cur.uv_index)}):</strong> каменные дорожки в ашраме сейчас горячие для ходьбы босиком — бери зонт или головной убор.</span>`;
-          } else {
-            adviceEl.innerHTML = `<span>🌿</span><span>Комфортный УФ-индекс (${Math.round(cur.uv_index || 0)}). Днём максимум УФ до ${maxUvToday} — для дневных переходов до Адийоги пригодится зонт от солнца/дождя.</span>`;
-          }
-        }
-      }
-
-      // Render 24h Hourly Strip
-      const hourlyStrip = document.getElementById(`${key}-hourly-strip`);
-      if (hourlyStrip && hourly && hourly.time) {
-        const currentHourStr = getTimePartsInZone(LOCATIONS[key].tz).timeStr.slice(0, 2);
-        const todayISO = getTimePartsInZone(LOCATIONS[key].tz).isoDate;
-        let startIdx = hourly.time.findIndex(t => t.startsWith(`${todayISO}T${currentHourStr}`));
-        if (startIdx < 0) startIdx = 0;
-
-        const sliceHours = hourly.time.slice(startIdx, startIdx + 24);
-        hourlyStrip.innerHTML = sliceHours.map((isoTime, idx) => {
-          const i = startIdx + idx;
-          const hh = isoTime.split('T')[1]?.slice(0, 5) || '00:00';
-          const temp = formatSignedTemp(hourly.temperature_2m[i]);
-          const pop = hourly.precipitation_probability?.[i] || 0;
-          const hIcon = decodeWMO(hourly.weather_code[i], 1).i;
-          return `
-            <div class="min-w-[62px] p-2 rounded-xl bg-stone-50 dark:bg-stone-800/60 border border-stone-200/70 dark:border-stone-800 flex flex-col items-center text-center shrink-0">
-              <span class="text-[10px] font-semibold text-stone-500 dark:text-stone-400 tabular-nums">${idx === 0 ? 'Сейчас' : hh}</span>
-              <span class="text-lg my-1 select-none">${hIcon}</span>
-              <span class="text-xs font-extrabold text-stone-900 dark:text-white tabular-nums">${temp}</span>
-              <span class="text-[10px] font-medium ${pop >= 40 ? 'text-sky-600 dark:text-sky-400' : 'text-stone-400'}">${pop > 0 ? `💧${pop}%` : '—'}</span>
-            </div>
-          `;
-        }).join('');
-      }
-
-      // Render 7-Day Forecast
-      const dailyList = document.getElementById(`${key}-daily-list`);
-      if (dailyList && daily.time) {
-        dailyList.innerHTML = daily.time.slice(0, 7).map((dateStr, idx) => {
-          const dInfo = decodeWMO(daily.weather_code[idx], 1);
-          const maxT = formatSignedTemp(daily.temperature_2m_max[idx]);
-          const minT = formatSignedTemp(daily.temperature_2m_min[idx]);
-          const pop = daily.precipitation_probability_max?.[idx] || 0;
-          const uvMax = Math.round(daily.uv_index_max?.[idx] || 0);
-          const dayLabel = idx === 0 ? 'Сегодня' : idx === 1 ? 'Завтра' : formatRussianDate(dateStr);
-
-          return `
-            <div class="py-2.5 flex items-center justify-between gap-2">
-              <div class="w-32 sm:w-40 font-semibold text-stone-800 dark:text-stone-200 capitalize truncate">
-                ${dayLabel}
-              </div>
-              <div class="flex items-center gap-1.5 min-w-0 flex-1">
-                <span class="text-base select-none">${dInfo.i}</span>
-                <span class="text-stone-600 dark:text-stone-400 truncate hidden sm:inline">${dInfo.d}</span>
-                ${pop > 15 ? `<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-sky-500/15 text-sky-700 dark:text-sky-300">💧${pop}%</span>` : ''}
-                ${key === 'isha' ? `<span class="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300">УФ ${uvMax}</span>` : ''}
-              </div>
-              <div class="font-bold tabular-nums text-right shrink-0">
-                <span class="text-stone-900 dark:text-white">${maxT}</span>
-                <span class="text-stone-400 dark:text-stone-500 ml-1">${minT}</span>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-    }
-
-    async function fetchWeather() {
-      try {
-        await Promise.all([
-          fetchSingleCityWeather('isha', LOCATIONS.isha),
-          fetchSingleCityWeather('tomsk', LOCATIONS.tomsk)
-        ]);
-        const nowStr = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        const updEl = document.getElementById('last-updated-text');
-        if (updEl) updEl.textContent = `Обновлено в ${nowStr}`;
-      } catch (e) {
-        // Fallback already rendered in HTML
-      }
-    }
-
-    /*************************************************************************
-     * 8. OFFICIAL ISHA PAGE CHECKER (CORS PROXY + CACHE FALLBACK)
-     *************************************************************************/
-    async function checkOfficialIshaNotices(manual = false) {
-      const statusEl = document.getElementById('official-parser-status');
-      const detailsEl = document.getElementById('official-parser-details');
-      const dotEl = document.getElementById('parser-status-dot');
-
-      if (manual && statusEl) {
-        statusEl.textContent = 'Запрос к официальной странице isha.sadhguru.org...';
-      }
-
-      try {
-        const targetUrl = 'https://isha.sadhguru.org/en/center/welcome-isha-yoga-center-coimbatore';
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-        const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error('Proxy error');
-        const json = await res.json();
-        const html = (json && json.contents) ? String(json.contents) : '';
-
-        const hasDhyanalinga = /Dhyanalinga/i.test(html);
-        const nowTime = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-
-        if (hasDhyanalinga) {
-          if (dotEl) dotEl.className = 'w-2 h-2 rounded-full bg-emerald-500 inline-block';
-          if (statusEl) statusEl.textContent = `✓ Проверено с официальным сайтом Isha сегодня в ${nowTime}`;
-          if (detailsEl) {
-            detailsEl.textContent = 'Экстренных закрытий на официальном сайте не обнаружено. Все святыни (Dhyanalinga 06:00–20:30, Linga Bhairavi 06:30–13:20 и 16:20–20:20, кунды 06:00–20:00) и столовая Bhiksha Hall работают в штатном режиме.';
-          }
-        }
-      } catch (e) {
-        if (statusEl) {
-          statusEl.textContent = '✓ Активно штатное расписание Isha Yoga Center';
-        }
-      }
-    }
-
-    /*************************************************************************
-     * 9. CURRENCY CONVERTER (INR ⇄ RUB ⇄ USD)
-     *************************************************************************/
-    async function fetchRates() {
-      try {
-        const res = await fetch('https://open.er-api.com/v6/latest/USD');
-        if (!res.ok) throw new Error('FX error');
-        const data = await res.json();
-        if (data && data.rates && data.rates.INR && data.rates.RUB) {
-          fxRates.INR = Number(data.rates.INR);
-          fxRates.RUB = Number(data.rates.RUB);
-          localStorage.setItem('tomsk_isha_fx_cache', JSON.stringify(fxRates));
-        }
-      } catch (e) {
-        try {
-          const cached = JSON.parse(localStorage.getItem('tomsk_isha_fx_cache'));
-          if (cached && cached.INR && cached.RUB) fxRates = cached;
-        } catch (_) {}
-      }
-      updateCurrencyBadgeAndDefault();
-    }
-
-    function updateCurrencyBadgeAndDefault() {
-      const rubPerInr = fxRates.RUB / fxRates.INR;
-      const badge = document.getElementById('fx-rate-badge');
-      const ovFx = document.getElementById('ov-fx-text');
-
-      if (badge) {
-        badge.textContent = `1 ₹ ≈ ${rubPerInr.toFixed(2)} ₽ • 1 $ ≈ ${fxRates.INR.toFixed(1)} ₹`;
-      }
-      if (ovFx) {
-        ovFx.textContent = `1 000 ₹ ≈ ${Math.round(1000 * rubPerInr).toLocaleString('ru-RU')} ₽`;
-      }
-
-      const inrInput = document.getElementById('input-inr');
-      onCurrencyInput('INR', inrInput ? inrInput.value : 1000);
-    }
-
-    function onCurrencyInput(sourceCurrency, rawVal) {
-      const val = parseFloat(rawVal);
-      const inrEl = document.getElementById('input-inr');
-      const rubEl = document.getElementById('input-rub');
-      const usdEl = document.getElementById('input-usd');
-
-      if (isNaN(val) || val < 0) {
-        if (sourceCurrency !== 'INR' && inrEl) inrEl.value = '';
-        if (sourceCurrency !== 'RUB' && rubEl) rubEl.value = '';
-        if (sourceCurrency !== 'USD' && usdEl) usdEl.value = '';
-        return;
-      }
-
-      let usdAmount = 0;
-      if (sourceCurrency === 'USD') usdAmount = val;
-      if (sourceCurrency === 'INR') usdAmount = val / fxRates.INR;
-      if (sourceCurrency === 'RUB') usdAmount = val / fxRates.RUB;
-
-      if (sourceCurrency !== 'INR' && inrEl) {
-        inrEl.value = Math.round(usdAmount * fxRates.INR * 100) / 100;
-      }
-      if (sourceCurrency !== 'RUB' && rubEl) {
-        rubEl.value = Math.round(usdAmount * fxRates.RUB * 100) / 100;
-      }
-      if (sourceCurrency !== 'USD' && usdEl) {
-        usdEl.value = Math.round(usdAmount * 100) / 100;
-      }
-    }
-
-    function setPresetCurrency(curr, amount) {
-      const el = document.getElementById('input-' + curr.toLowerCase());
-      if (el) {
-        el.value = amount;
-        onCurrencyInput(curr, amount);
-      }
-    }
-
-    /*************************************************************************
-     * 10. PRIVATE ENCRYPTED MESSENGER (HTTPS SYNC + LOCAL BROADCAST)
-     *************************************************************************/
-    const CHAT_STORAGE_KEY = 'tomsk_isha_chat_v2';
-    const LEGACY_CHAT_KEYS = [
-      'tomsk_isha_chat_v1',
-      'tomsk_isha_chat',
-      'isha_tomsk_chat',
-      'tomsk_isha_messenger'
-    ];
-    let chatState = {
-      role: 'isha',
-      secret: '',
-      clearedAt: 0,
-      messages: [],
-      presence: {
-        isha: { lastSeen: 0, typingUntil: 0 },
-        tomsk: { lastSeen: 0, typingUntil: 0 }
-      }
-    };
-    let localChannel = null;
-
-    function readCookieBackup(name) {
-      try {
-        const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-        return match ? decodeURIComponent(match[1]) : '';
-      } catch (e) {
-        return '';
-      }
-    }
-
-    function writeCookieBackup(name, val) {
-      try {
-        document.cookie = `${name}=${encodeURIComponent(val)}; path=/; max-age=31536000; SameSite=Lax`;
-      } catch (e) {}
-    }
-
-    function loadChatState() {
-      try {
-        let raw = localStorage.getItem(CHAT_STORAGE_KEY);
-
-        // Migrate from any previous storage key if needed
-        if (!raw) {
-          for (const k of LEGACY_CHAT_KEYS) {
-            const legacyRaw = localStorage.getItem(k);
-            if (legacyRaw) {
-              raw = legacyRaw;
-              break;
+      // Render collapsible 48-day calendar grid (memoized to avoid 1-sec flicker)
+      const calBox = document.getElementById('shunya-calendar-box');
+      const calGrid = document.getElementById('shunya-calendar-grid');
+      if (calBox && calGrid && !calBox.classList.contains('hidden')) {
+        const sig = `${startISO}|${todayISO}|${activeDate}|${shunyaState.updatedAt}|${completedSessions}`;
+        if (forceGrid || sig !== lastShunyaGridSig) {
+          lastShunyaGridSig = sig;
+          const cells = [];
+          for (let i = 0; i < maxDays; i++) {
+            const dISO = addDaysToISO(startISO, i);
+            const dayNum = i + 1;
+            const log = shunyaState.logs[dISO] || { am: false, pm: false };
+            const count = (log.am ? 1 : 0) + (log.pm ? 1 : 0);
+            const isFuture = dISO > todayISO;
+            const isTodayCell = dISO === todayISO;
+            const isSelected = dISO === activeDate;
+            const shortDate = `${dISO.slice(8, 10)}.${dISO.slice(5, 7)}`;
+
+            let stateCls = '';
+            if (isFuture) {
+              stateCls = 'bg-stone-100/70 dark:bg-stone-900/50 border-stone-200/60 dark:border-stone-800/70 text-stone-400 dark:text-stone-600 opacity-55 cursor-not-allowed';
+            } else if (count === 2) {
+              stateCls = 'bg-emerald-500/20 border-emerald-500/50 text-emerald-900 dark:text-emerald-200 hover:bg-emerald-500/30';
+            } else if (count === 1) {
+              stateCls = 'bg-amber-500/20 border-amber-500/50 text-amber-950 dark:text-amber-200 hover:bg-amber-500/30';
+            } else {
+              stateCls = 'bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-700 text-stone-700 dark:text-stone-300 hover:border-amber-500/50';
             }
+
+            const ringCls = isSelected
+              ? 'ring-2 ring-amber-500 ring-offset-1 ring-offset-stone-50 dark:ring-offset-stone-950 font-extrabold'
+              : (isTodayCell ? 'ring-1 ring-sky-500/70' : '');
+
+            const dotAm = log.am ? 'bg-emerald-500' : 'bg-stone-300 dark:bg-stone-700';
+            const dotPm = log.pm ? 'bg-emerald-500' : 'bg-stone-300 dark:bg-stone-700';
+
+            cells.push(`
+              <button type="button" ${isFuture ? 'disabled' : `onclick="selectShunyaDate('${dISO}')"`}
+                title="День ${dayNum} (${shortDate})"
+                class="p-1.5 rounded-xl border text-center flex flex-col items-center justify-center gap-0.5 transition active:scale-95 ${stateCls} ${ringCls}">
+                <span class="text-[11px] font-bold leading-none tabular-nums">${dayNum}</span>
+                <span class="text-[9px] opacity-75 leading-none tabular-nums">${shortDate}</span>
+                <span class="flex items-center gap-1 mt-0.5">
+                  <span class="w-1.5 h-1.5 rounded-full ${dotAm}"></span>
+                  <span class="w-1.5 h-1.5 rounded-full ${dotPm}"></span>
+                </span>
+              </button>
+            `);
           }
+          calGrid.innerHTML = cells.join('');
         }
-
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object') {
-            chatState.role = parsed.role || 'isha';
-            chatState.secret = parsed.secret || parsed.passphrase || '';
-            chatState.clearedAt = Number(parsed.clearedAt) || 0;
-            chatState.messages = Array.isArray(parsed.messages) ? parsed.messages : [];
-            if (parsed.presence) chatState.presence = parsed.presence;
-          }
-        }
-
-        // Fallback to cookie backup if localStorage was reset
-        if (!chatState.secret) {
-          const cookieSecret = readCookieBackup('ti_chat_secret');
-          const cookieRole = readCookieBackup('ti_chat_role');
-          if (cookieSecret) chatState.secret = cookieSecret;
-          if (cookieRole === 'tomsk' || cookieRole === 'isha') chatState.role = cookieRole;
-        }
-      } catch (e) {}
-
-      selectChatRole(chatState.role);
-      const secInput = document.getElementById('chat-secret-input');
-      if (secInput && chatState.secret) secInput.value = chatState.secret;
-
-      if (chatState.secret) {
-        saveChatStateToStorage();
-        showActiveChatUI();
-        initLocalBroadcastChannel();
-        pullRoomSyncPayload();
-      }
-      renderChatMessages();
-      refreshPartnerPresenceUI();
-    }
-
-    function saveChatStateToStorage() {
-      try {
-        const serialized = JSON.stringify(chatState);
-        localStorage.setItem(CHAT_STORAGE_KEY, serialized);
-        localStorage.setItem('tomsk_isha_chat_v1', serialized);
-        if (chatState.secret) {
-          writeCookieBackup('ti_chat_secret', chatState.secret);
-          writeCookieBackup('ti_chat_role', chatState.role);
-        }
-      } catch (e) {}
-    }
-
-    function selectChatRole(role) {
-      chatState.role = role === 'tomsk' ? 'tomsk' : 'isha';
-      const btnIsha = document.getElementById('role-btn-isha');
-      const btnTomsk = document.getElementById('role-btn-tomsk');
-      if (!btnIsha || !btnTomsk) return;
-
-      if (chatState.role === 'isha') {
-        btnIsha.className = 'p-3 rounded-xl border-2 border-amber-500 bg-amber-500/10 text-left transition flex items-center gap-2.5';
-        btnTomsk.className = 'p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5';
-      } else {
-        btnTomsk.className = 'p-3 rounded-xl border-2 border-sky-500 bg-sky-500/10 text-left transition flex items-center gap-2.5';
-        btnIsha.className = 'p-3 rounded-xl border-2 border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 text-left transition flex items-center gap-2.5';
-      }
-    }
-
-    async function saveChatSetup() {
-      const secInput = document.getElementById('chat-secret-input');
-      const secret = (secInput ? secInput.value : '').trim();
-      if (!secret) {
-        if (secInput) secInput.focus();
-        return;
-      }
-      chatState.secret = secret;
-      chatState.presence[chatState.role] = {
-        lastSeen: Date.now(),
-        typingUntil: 0
-      };
-      saveChatStateToStorage();
-      showActiveChatUI();
-      initLocalBroadcastChannel();
-
-      // IMPORTANT: Pull existing history from the cloud FIRST before pushing our state
-      await pullRoomSyncPayload();
-      await pushRoomSyncPayload();
-    }
-
-    function openChatSettings() {
-      document.getElementById('chat-setup-card').classList.remove('hidden');
-      document.getElementById('chat-active-card').classList.add('hidden');
-      document.getElementById('chat-cancel-setup-btn').classList.remove('hidden');
-    }
-
-    function cancelChatSetup() {
-      if (chatState.secret) {
-        showActiveChatUI();
-      }
-    }
-
-    function showActiveChatUI() {
-      document.getElementById('chat-setup-card').classList.add('hidden');
-      document.getElementById('chat-active-card').classList.remove('hidden');
-
-      const partnerAvatar = document.getElementById('chat-partner-avatar');
-      const partnerTitle = document.getElementById('chat-partner-title');
-      if (chatState.role === 'isha') {
-        if (partnerAvatar) partnerAvatar.textContent = '🌲';
-        if (partnerTitle) partnerTitle.textContent = 'Томск (на связи)';
-      } else {
-        if (partnerAvatar) partnerAvatar.textContent = '🕉️';
-        if (partnerTitle) partnerTitle.textContent = 'Иша • Коимбатур';
-      }
-      renderChatMessages();
-      scrollToChatBottom();
-    }
-
-    function deriveRoomId(secret) {
-      let h1 = 0xdeadbeef ^ secret.length;
-      let h2 = 0x41c6ce57 ^ secret.length;
-      for (let i = 0, ch; i < secret.length; i++) {
-        ch = secret.charCodeAt(i);
-        h1 = Math.imul(h1 ^ ch, 2654435761);
-        h2 = Math.imul(h2 ^ ch, 1597334677);
-      }
-      h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-      h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-      return 'ti_' + (h2 >>> 0).toString(16) + (h1 >>> 0).toString(16);
-    }
-
-    function initLocalBroadcastChannel() {
-      if (!chatState.secret || typeof BroadcastChannel === 'undefined') return;
-      try {
-        if (localChannel) localChannel.close();
-        localChannel = new BroadcastChannel('chan_' + deriveRoomId(chatState.secret));
-        localChannel.onmessage = (ev) => {
-          if (ev && ev.data) {
-            mergeIncomingRoomData(ev.data);
-          }
-        };
-      } catch (e) {}
-    }
-
-    function mergeIncomingRoomData(incoming) {
-      if (!incoming || typeof incoming !== 'object') return;
-      let changed = false;
-
-      if (incoming.clearedAt && Number(incoming.clearedAt) > (chatState.clearedAt || 0)) {
-        chatState.clearedAt = Number(incoming.clearedAt);
-        chatState.messages = chatState.messages.filter(m => m.ts > chatState.clearedAt);
-        changed = true;
       }
 
-      if (incoming.presence) {
-        ['isha', 'tomsk'].forEach(r => {
-          if (incoming.presence[r] && incoming.presence[r].lastSeen > (chatState.presence[r]?.lastSeen || 0)) {
-            chatState.presence[r] = incoming.presence[r];
-            changed = true;
-          }
-        });
-      }
-
-      if (Array.isArray(incoming.messages)) {
-        const map = new Map();
-        chatState.messages.forEach(m => {
-          if (m.ts > (chatState.clearedAt || 0)) map.set(m.id, m);
-        });
-        incoming.messages.forEach(m => {
-          if (!m || !m.id || m.ts <= (chatState.clearedAt || 0)) return;
-          const existing = map.get(m.id);
-          if (!existing) {
-            map.set(m.id, m);
-            changed = true;
-          } else if (m.read && !existing.read) {
-            existing.read = true;
-            changed = true;
-          }
-        });
-        chatState.messages = Array.from(map.values()).sort((a, b) => a.ts - b.ts).slice(-120);
-      }
-
-      if (incoming.visa && incoming.visa.updatedAt > (visaState.updatedAt || 0)) {
-        visaState = incoming.visa;
-        localStorage.setItem(VISA_STORAGE_KEY, JSON.stringify(visaState));
-        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-        renderVisaCounter(ishaToday);
-        const syncPill = document.getElementById('visa-sync-pill');
-        if (syncPill) syncPill.classList.remove('hidden');
-      }
-
+      // 2. Volunteer Counter Render
+// ... existing code ... -->
       if (incoming.shunya && (Number(incoming.shunya.updatedAt) || 0) >= (shunyaState.updatedAt || 0)) {
         shunyaState = incoming.shunya;
         localStorage.setItem(SHUNYA_STORAGE_KEY, JSON.stringify(shunyaState));
         const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-        renderShunyaAndVol(ishaToday);
+        renderShunyaAndVol(ishaToday, true);
       }
-
-      if (incoming.vol && (Number(incoming.vol.updatedAt) || 0) >= (volState.updatedAt || 0)) {
-        volState = incoming.vol;
-        localStorage.setItem(VOL_STORAGE_KEY, JSON.stringify(volState));
-        const ishaToday = getTimePartsInZone(LOCATIONS.isha.tz).isoDate;
-        renderShunyaAndVol(ishaToday);
-      }
-
-      if (changed) {
-        if (activeMainTab === 'chat') {
-          markAllChatMessagesRead();
-        }
-        saveChatStateToStorage();
-        renderChatMessages();
-        refreshPartnerPresenceUI();
-      }
-    }
-
-    async function pushRoomSyncPayload() {
-      if (!chatState.secret) return;
-      chatState.presence[chatState.role] = {
-        lastSeen: Date.now(),
-        typingUntil: chatState.presence[chatState.role]?.typingUntil || 0
-      };
-      saveChatStateToStorage();
-
-      const payload = {
-        clearedAt: chatState.clearedAt || 0,
-        presence: chatState.presence,
-        messages: chatState.messages.slice(-80),
-        visa: visaState,
-        shunya: shunyaState,
-        vol: volState
-      };
-
-      if (localChannel) {
-        try { localChannel.postMessage(payload); } catch (e) {}
-      }
-
-      try {
-        const roomKey = deriveRoomId(chatState.secret);
-        await fetch(`https://ntfy.sh/${roomKey}`, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {}
-    }
-
-    async function pullRoomSyncPayload() {
-      if (!chatState.secret) return;
-      try {
-        const roomKey = deriveRoomId(chatState.secret);
-        const res = await fetch(`https://ntfy.sh/${roomKey}/json?poll=1&since=all`);
-        if (!res.ok) return;
-        const text = await res.text();
-        const lines = text.trim().split('\n');
-        lines.forEach(line => {
-          if (!line) return;
-          try {
-            const item = JSON.parse(line);
-            if (item && item.message) {
-              const data = JSON.parse(item.message);
-              mergeIncomingRoomData(data);
-            }
-          } catch (_) {}
-        });
-      } catch (e) {}
-    }
-
-    function handleChatSubmit(e) {
-      e.preventDefault();
-      const input = document.getElementById('chat-text-input');
-      if (!input) return;
-      const text = input.value.trim();
-      if (!text) return;
-
-      const msg = {
-        id: 'm_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
-        sender: chatState.role,
-        text,
-        ts: Date.now(),
-        read: false
-      };
-
-      chatState.messages.push(msg);
-      input.value = '';
-      if (chatState.presence[chatState.role]) {
-        chatState.presence[chatState.role].typingUntil = 0;
-      }
-
-      saveChatStateToStorage();
-      renderChatMessages();
-      scrollToChatBottom();
-      pushRoomSyncPayload();
-    }
-
-    let lastTypingPush = 0;
-    function notifyTyping() {
-      if (!chatState.secret) return;
-      const now = Date.now();
-      if (now - lastTypingPush < 3500) return;
-      lastTypingPush = now;
-      chatState.presence[chatState.role] = {
-        lastSeen: now,
-        typingUntil: now + 5000
-      };
-      pushRoomSyncPayload();
-    }
-
-    function markAllChatMessagesRead() {
-      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
-      let updated = false;
-      chatState.messages.forEach(m => {
-        if (m.sender === partnerRole && !m.read) {
-          m.read = true;
-          updated = true;
-        }
-      });
-      if (updated) {
-        saveChatStateToStorage();
-        renderChatMessages();
-        pushRoomSyncPayload();
-      }
-    }
-
-    function renderChatMessages() {
-      const box = document.getElementById('chat-messages-box');
-      const unreadBadge = document.getElementById('chat-unread-badge');
-      const ovPreview = document.getElementById('ov-chat-preview');
-      const ovSub = document.getElementById('ov-chat-sub');
-
-      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
-      const unreadCount = chatState.messages.filter(m => m.sender === partnerRole && !m.read).length;
-
-      if (unreadBadge) {
-        if (unreadCount > 0 && activeMainTab !== 'chat') {
-          unreadBadge.textContent = String(unreadCount);
-          unreadBadge.classList.remove('hidden');
-        } else {
-          unreadBadge.classList.add('hidden');
-        }
-      }
-
-      if (chatState.messages.length > 0) {
-        const lastMsg = chatState.messages[chatState.messages.length - 1];
-        if (ovPreview) ovPreview.textContent = lastMsg.text;
-        if (ovSub) {
-          const tStr = new Date(lastMsg.ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-          ovSub.textContent = `${lastMsg.sender === 'isha' ? '🕉 Иша' : '🌲 Томск'} • ${tStr}`;
-        }
-      }
-
-      if (!box) return;
-      if (chatState.messages.length === 0) {
-        box.innerHTML = `
-          <div class="h-full flex flex-col items-center justify-center text-center p-6 text-stone-400 dark:text-stone-500 text-xs space-y-1.5">
-            <div class="text-3xl">💬</div>
-            <div class="font-bold text-stone-600 dark:text-stone-300">Ваш защищённый чат готов</div>
-            <div>Напиши первое сообщение — оно синхронизируется по вашему секретному слову.</div>
-          </div>
-        `;
-        return;
-      }
-
-      box.innerHTML = chatState.messages.map(m => {
-        const isMine = m.sender === chatState.role;
-        const timeLabel = new Date(m.ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        const ticks = isMine ? (m.read ? '<span class="text-sky-300 font-bold ml-1">✓✓</span>' : '<span class="opacity-75 ml-1">✓</span>') : '';
-
-        return `
-          <div class="flex ${isMine ? 'justify-end' : 'justify-start'}">
-            <div class="max-w-[82%] px-3.5 py-2 rounded-2xl text-xs sm:text-sm ${
-              isMine
-                ? 'bg-amber-600 text-white rounded-br-sm shadow-sm'
-                : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 border border-stone-200/80 dark:border-stone-700 rounded-bl-sm shadow-sm'
-            }">
-              <div class="break-words leading-relaxed">${escapeHtml(m.text)}</div>
-              <div class="text-[10px] ${isMine ? 'text-amber-100/90' : 'text-stone-400'} text-right mt-0.5 tabular-nums">
-                ${timeLabel}${ticks}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function refreshPartnerPresenceUI() {
-      const partnerRole = chatState.role === 'isha' ? 'tomsk' : 'isha';
-      const pInfo = chatState.presence?.[partnerRole] || { lastSeen: 0, typingUntil: 0 };
-      const now = Date.now();
-      const isOnline = (now - pInfo.lastSeen) < 45000;
-      const isTyping = pInfo.typingUntil > now;
-
-      const dotIds = ['header-partner-dot', 'chat-partner-dot', 'ov-chat-dot'];
-      dotIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.className = isOnline
-            ? el.className.replace('bg-stone-400', 'bg-emerald-500')
-            : el.className.replace('bg-emerald-500', 'bg-stone-400');
-        }
-      });
-
-      const headerLabel = document.getElementById('header-partner-label');
-      if (headerLabel) {
-        headerLabel.textContent = isOnline ? 'В сети' : 'Чат';
-      }
-
-      const presEl = document.getElementById('chat-partner-presence');
-      if (presEl) {
-        if (!chatState.secret) {
-          presEl.textContent = 'Канал не настроен';
-        } else if (isOnline) {
-          presEl.textContent = '🟢 В сети сейчас';
-        } else if (pInfo.lastSeen > 0) {
-          const tStr = new Date(pInfo.lastSeen).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-          presEl.textContent = `Был(а) в сети в ${tStr}`;
-        } else {
-          presEl.textContent = 'Канал активен • ожидание входа';
-        }
-      }
-
-      const typingEl = document.getElementById('chat-typing-indicator');
-      if (typingEl) {
-        if (isTyping) {
-          typingEl.classList.remove('hidden');
-        } else {
-          typingEl.classList.add('hidden');
-        }
-      }
-    }
-
-    function clearChatHistoryPrompt() {
-      document.getElementById('chat-clear-confirm').classList.remove('hidden');
-    }
-
-    function confirmClearChatHistory() {
-      chatState.clearedAt = Date.now();
-      chatState.messages = [];
-      saveChatStateToStorage();
-      renderChatMessages();
-      document.getElementById('chat-clear-confirm').classList.add('hidden');
-      pushRoomSyncPayload();
-    }
-
-    function scrollToChatBottom() {
-      const box = document.getElementById('chat-messages-box');
-      if (box) {
-        setTimeout(() => {
-          box.scrollTop = box.scrollHeight;
-        }, 40);
-      }
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    /*************************************************************************
-     * 11. INITIALIZATION & AUTOMATIC BACKGROUND REFRESH
-     *************************************************************************/
-    window.addEventListener('DOMContentLoaded', () => {
-      initTheme();
-      checkStandaloneMode();
-      loadVisaState();
-      loadChatState();
-      updateClocksAndSchedule();
-      renderLunarCalendar();
-      fetchWeather();
-      fetchRates();
-      checkOfficialIshaNotices(false);
-
-      // Tick clocks, schedule & countdowns every second
-      setInterval(updateClocksAndSchedule, 1000);
-
-      // Sync chat & visa state every 12 seconds when configured
-      setInterval(() => {
-        if (document.visibilityState === 'visible' && chatState.secret) {
-          pullRoomSyncPayload();
-        }
-      }, 12000);
-
-      // 1. Auto-update on screen unlock / tab switch
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-          updateClocksAndSchedule();
-          renderLunarCalendar();
-          fetchWeather();
-          fetchRates();
-          if (chatState.secret) {
-            pushRoomSyncPayload();
-            pullRoomSyncPayload();
-          }
-        }
-      });
-
-      // 2. Auto-update weather & rates every 15 minutes
-      setInterval(() => {
-        fetchWeather();
-        fetchRates();
-        renderLunarCalendar();
-      }, 15 * 60 * 1000);
-
-      // 3. Auto-update when internet connection returns
-      window.addEventListener('online', () => {
-        fetchWeather();
-        fetchRates();
-        if (chatState.secret) {
-          pushRoomSyncPayload();
-          pullRoomSyncPayload();
-        }
-      });
-    });
-  </script>
-</body>
-</html>
+// ... existing code ... -->

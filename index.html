@@ -2581,20 +2581,28 @@
     // =========================================================================
     // 11. BOOTSTRAP ON WINDOW LOAD
     // =========================================================================
-    window.onload = function () {
-      initTheme();
-      renderAshramScheduleList();
-      initLunarCalendarUI();
-      loadVisaState();
-      loadShunyaAndVolStates();
-      loadChatState();
-      updateClocksAndSchedule();
-      fetchAllWeather(false);
-      fetchCurrencyRates(false);
-      checkOfficialIshaUpdates(false);
+    // 11. BOOTSTRAP IMMEDIATELY ON DOM READY (SAFE & RELIABLE)
+    // =========================================================================
+    let appBootstrapped = false;
+    function bootstrapApp() {
+      if (appBootstrapped) return;
+      appBootstrapped = true;
+
+      try { initTheme(); } catch (e) {}
+      try { renderAshramScheduleList(); } catch (e) {}
+      try { initLunarCalendarUI(); } catch (e) {}
+      try { loadVisaState(); } catch (e) {}
+      try { loadShunyaAndVolStates(); } catch (e) {}
+      try { loadChatState(); } catch (e) {}
+      try { updateClocksAndSchedule(); } catch (e) {}
+      try { fetchAllWeather(false); } catch (e) {}
+      try { fetchCurrencyRates(false); } catch (e) {}
+      try { checkOfficialIshaUpdates(false); } catch (e) {}
 
       // Tick clocks & timers every second
-      setInterval(updateClocksAndSchedule, 1000);
+      setInterval(() => {
+        try { updateClocksAndSchedule(); } catch (e) {}
+      }, 1000);
 
       // Chat & state cloud polling every 5 seconds
       setInterval(() => {
@@ -2612,9 +2620,12 @@
       }, 18000);
 
       document.addEventListener('visibilitychange', () => {
-        if (!document.hidden && chatState.secret) {
-          sendPresencePing();
-          syncChatNow(false, false);
+        if (!document.hidden) {
+          try { updateClocksAndSchedule(); } catch (e) {}
+          if (chatState.secret) {
+            sendPresencePing();
+            syncChatNow(false, false);
+          }
         }
       });
 
@@ -2623,7 +2634,14 @@
         fetchAllWeather(false);
         fetchCurrencyRates(false);
       }, 1800000);
-    };
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootstrapApp);
+    } else {
+      bootstrapApp();
+    }
+    window.addEventListener('load', bootstrapApp);
   </script>
 </body>
 </html>
